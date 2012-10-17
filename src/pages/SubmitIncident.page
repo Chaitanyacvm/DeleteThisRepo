@@ -1,0 +1,11 @@
+<apex:page standardController="FM_Incident__c" extensions="FM_SubmitIncident" tabStyle="FM_Incident__c" action="{!submitIncident}">
+    <apex:form >
+    
+        <apex:pageBlock title="Submit Incident">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="back" action="{!back}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

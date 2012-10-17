@@ -1,0 +1,1497 @@
+<apex:page controller="IR_Booking_Complete_Booking_Controller" showHeader="false" standardStylesheets="false" title="Register and Ship Stage">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <apex:stylesheet value="{!$Resource.IR_Style}"/>        
+        
+        <style type="text/css">        
+        <!--[if IE 7]>
+            #stepLabel{
+                margin-left: 432px;
+            }
+        <![endif]-->
+        
+        <!--[if  lt IE 7]>
+            #stepLabel{
+                margin-left: 442px;
+            }
+        <![endif]-->
+        
+            #stepLabel{
+                margin-left: 442px;
+            }
+            
+            .requiredInput {
+               background-image: url({!URLFOR($Resource.IR_Required)});
+               background-repeat:no-repeat;
+               background-position:left center;
+            }
+            
+            .addresses {
+               position:relative;
+               width:auto;
+               margin-top:1%;
+            }
+            
+            .colAddress {
+               position:relative;
+               float:left;
+               width:49%;
+            }
+            
+            .delAddress {
+               position:relative;
+               float:right;
+               width:49%;
+            }
+            
+            .custInfo {
+               position:relative;
+               width:auto;
+            }
+            
+            .packages {
+               position:relative;
+               width:auto;
+               margin-top:1%;
+            }
+            
+            .custInfoLeft {
+               position:relative;
+               float:left;
+               width:37%;
+               word-wrap:break-word;
+            }
+            
+            .custInfoRight {
+               position:relative;
+               float:right;
+               width:59%;
+            }
+            
+            .packagesLeft {
+               position:relative;
+               float:left;
+               width:31%;
+            }
+            
+            .packagesRight {
+               position:relative;
+               float:right;
+               width:64%;
+            }
+            
+            .packagesButton {
+               position:relative;
+               float:right;
+               padding-right:20px;
+               text-align:right;
+            }
+            
+            .greyOrangeButton {
+               background-image: url({!URLFOR($Resource.IR_Package_Button_BG)});
+            }
+            
+            .grey-button {
+               padding: 15px 0px;
+               background:transparent url({!URLFOR($Resource.IR_grey_left)}) no-repeat left center;
+            }
+            
+            .grey-button span {
+               background:transparent url({!URLFOR($Resource.IR_grey_right)}) no-repeat right center;
+            }
+            
+            .white-button {
+               background:transparent url({!URLFOR($Resource.IR_white_left)}) no-repeat left center;
+            }
+            
+            .white-button span {
+               background:transparent url({!URLFOR($Resource.IR_white_right)}) no-repeat right center;
+            }
+            
+            .white-button {
+               background:transparent url({!URLFOR($Resource.IR_white_left)}) no-repeat left center;
+            }
+            
+            .white-button span {
+               background:transparent url({!URLFOR($Resource.IR_white_right)}) no-repeat right center;
+            }
+            
+            .white-button-grey {
+               background:transparent url({!URLFOR($Resource.IR_white_left_grey)}) no-repeat left center;
+            }
+            
+            .white-button-grey span {
+               background:transparent url({!URLFOR($Resource.IR_white_right_grey)}) no-repeat right center;
+            }
+            
+            .wrapper {
+               width:940px;
+            }
+            .alignText{            
+               text-align:center;            
+            }           
+            .header p {
+                position:relative;                  
+                margin-top:-25px;
+                margin-bottom:2px;                  
+                text-align:right;
+                }                
+            .header a{
+                color:#FF6600;
+                font-weight:bold;
+            }
+            textarea {
+                border: 1px solid #CCCCCC;
+                height: 26px;
+                font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+                font-size: 11px;
+                text-align: left;
+                vertical-align: middle;
+                padding-top: 2px;
+                padding-right: 3px;
+                padding-bottom: 3px;
+                padding-left: 5px;
+                margin-top: 2px;
+                margin-left:9px;
+            }
+       </style>
+       
+       <apex:includeScript value="{!$Resource.IR_jquery_min}"/>
+       
+       <!--START HELP TEXT-->
+       <apex:includeScript value="{!$Resource.IR_jquery_tooltip_js}"/>
+       <apex:stylesheet value="{!$Resource.IR_tooltip_css}"/>
+       <style>
+       #tooltip {
+           font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+           font-size: 8px;
+       }
+       </style>
+       <!--END HELP TEXT-->
+       
+       <!--START FANCYBOX-->
+       <apex:includeScript value="{!$Resource.IR_jquery_fancybox_js}"/>
+       <apex:stylesheet value="{!$Resource.IR_jquery_fancybox_css}"/>
+       <style>
+       #fancybox-loading div {
+           background-image: url({!URLFOR($Resource.IR_fancybox)});
+       }
+       
+       #fancybox-close {
+           background-image: url({!URLFOR($Resource.IR_fancybox)});
+       }
+       </style>
+       <!--END FANCYBOX-->
+   </head>
+   
+   <body>
+       <apex:outputPanel id="wrapper" layout="block" styleClass="wrapper">
+           <!--START HELP TEXT-->
+           <script type="text/javascript"> 
+               $(function() {
+               $('.helpHover *').tooltip();
+               });
+           </script>
+           <!--END HELP TEXT-->
+           
+           <!--START FANCYBOX-->
+           <script type="text/javascript">
+               $(document).ready(function() {
+       
+                   $(".fancybox").fancybox({
+                       'autoScale'         : false,
+                       'transitionIn'      : 'none',
+                       'transitionOut'     : 'none',
+                       'type'              : 'iframe',
+                       'width'             : '85%',
+                       'height'            : '90%'
+                   });
+               });
+           </script>
+           <!--END FANCYBOX-->
+           
+           <apex:outputPanel layout="block" styleClass="header">
+               <h2>Register and Ship</h2>
+               <h3>Step 1</h3><p>What do I require to use TNT online services? Click <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Quick_Checklist_Page)}">here</a> to check</p>               
+           </apex:outputPanel>
+           
+           <apex:messages id="userMessages" rendered="{!!customer.Saved_Customer__c}"/>
+           
+           <apex:repeat value="{!consignmentBundles}" var="consignmentBundle">
+               <apex:form >
+                   <apex:outputPanel id="custInfo" layout="block" styleClass="custInfo">
+                       <apex:outputPanel layout="block" styleClass="sectionMain">
+                           <apex:outputPanel layout="block" styleClass="sectionHeader">
+                               <apex:outputPanel style="text-align:left;position:relative;float:left;">Account and Billing Details</apex:outputPanel>
+                               <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                               <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                           </apex:outputPanel>
+                           
+                           <!-- Start Of Disabled Customer Information Section -->
+                           <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!customer.Saved_Customer__c}">
+                               <apex:outputPanel layout="block" styleClass="custInfoLeft">
+                                   <table columns="2" width="95%" id="standardTable">
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custCompanyOutput">{!$ObjectType.IR_Customer__c.fields.Company__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custCompanyOutput" value="{!customer.Company__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custTitleOutput">{!$ObjectType.IR_Customer__c.fields.Title__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custTitleOutput" value="{!customer.Title__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custFirstNameOutput">{!$ObjectType.IR_Customer__c.fields.First_Name__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custFirstNameOutput" value="{!customer.First_Name__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custSurnameOutput">{!$ObjectType.IR_Customer__c.fields.Surname__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custSurnameOutput" value="{!customer.Surname__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <!--<tr>
+                                           <td width="30%"><apex:outputLabel for="custJobTitleOutput">{!$ObjectType.IR_Customer__c.fields.Job_Title__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custJobTitleOutput" value="{!customer.Job_Title__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custTelOutput">{!$ObjectType.IR_Customer__c.fields.Telephone__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custTelOutput" value="{!customer.Telephone__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custMobileOutput">{!$ObjectType.IR_Customer__c.fields.Mobile_Phone__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custMobileOutput" value="{!customer.Mobile_Phone__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custFaxOutput">{!$ObjectType.IR_Customer__c.fields.Fax__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custFaxOutput" value="{!customer.Fax__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custEmailOutput">{!$ObjectType.IR_Customer__c.fields.Email__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custEmailOutput" value="{!customer.Email__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custVATRegNumOutput">{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="custVATRegNumOutput" value="{!customer.VAT_Registration_Number__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="extTransLiaSetOutput">{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:outputField id="extTransLiaSetOutput" value="{!customer.Extended_Transit_Liability_Setting__c}" styleClass="fullInput"/></td>
+                                       </tr>-->
+                                   </table>
+                               </apex:outputPanel>  
+                               
+                               <apex:outputPanel layout="block" styleClass="custInfoRight">
+                                   <table columns="4" width="95%" id="standardTable">
+                                       <tr>
+                                           <td width="100%"><apex:outputText value="{!fullCustAddress}"/></td>
+                                       </tr>
+                                       <tr>
+                                           <td width="100%">
+                                               <apex:commandButton value="Edit Account" styleClass="greyOrangeButton" action="{!editCustAddress}" status="editCustLoadingStatus" reRender="wrapper" rendered="{!!customer.Has_Multiple_Orders__c}"/>
+                                               
+                                               <apex:actionStatus id="editCustLoadingStatus">
+                                                   <apex:facet name="start">
+                                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                   </apex:facet>
+                                               </apex:actionStatus>
+                                           </td>
+                                       </tr>
+                                   </table>
+                               </apex:outputPanel>
+                               
+                               <apex:outputPanel layout="block" styleClass="clear">
+                               </apex:outputPanel>
+                           </apex:outputPanel>
+                           <!-- End Of Disabled Customer Information Section -->
+                           
+                           <!-- Start Of Enabled Customer Information Section -->
+                           <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!!customer.Saved_Customer__c}">
+                               <apex:outputPanel layout="block" styleClass="custInfoLeft">
+                                   <table columns="2" width="100%" id="standardTable">
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custCompanyInput">{!$ObjectType.IR_Customer__c.fields.Company__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custCompanyInput" value="{!customer.Company__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custTitleInput">{!$ObjectType.IR_Customer__c.fields.Title__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custTitleInput" value="{!customer.Title__c}" styleClass="fullInput" required="true"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custFirstNameInput">{!$ObjectType.IR_Customer__c.fields.First_Name__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custFirstNameInput" value="{!customer.First_Name__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <!--<tr>
+                                           <td width="30%"><apex:outputLabel for="custInitialInput">{!$ObjectType.IR_Customer__c.fields.Initial__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custInitialInput" value="{!customer.Initial__c}" styleClass="fullInput"/></td>
+                                       </tr>-->
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custSurnameInput">{!$ObjectType.IR_Customer__c.fields.Surname__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custSurnameInput" value="{!customer.Surname__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custJobTitleInput">{!$ObjectType.IR_Customer__c.fields.Job_Title__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custJobTitleInput" value="{!customer.Job_Title__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custTelInput">{!$ObjectType.IR_Customer__c.fields.Telephone__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Telephone__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                           <td width="70%">
+                                               <div class="requiredInput"><div class="requiredBlock"></div>
+                                                   <apex:inputText value="{!tel.countryCode}" size="2" maxlength="4"/>
+                                                   <apex:inputText value="{!tel.plainStd}" size="5" maxlength="7" style="margin-left:4px;"/>
+                                                   <apex:inputText id="custTelInput" value="{!tel.phoneNumber}" size="12" maxlength="9" style="margin-left:4px;"/>
+                                               </div>
+                                           </td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custMobileInput">{!$ObjectType.IR_Customer__c.fields.Mobile_Phone__c.label}:</apex:outputLabel></td>
+                                           <td width="70%">
+                                               <div>
+                                                   <apex:inputText value="{!mob.countryCode}" size="2" maxlength="4"/>
+                                                   <apex:inputText value="{!mob.plainStd}" size="5" maxlength="7" style="margin-left:4px;"/>
+                                                   <apex:inputText id="custMobileInput" value="{!mob.phoneNumber}" size="12" maxlength="9" style="margin-left:4px;"/>
+                                               </div>
+                                           </td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custFaxInput">{!$ObjectType.IR_Customer__c.fields.Fax__c.label}:</apex:outputLabel></td>
+                                           <td width="70%">
+                                               <div>
+                                                   <apex:inputText value="{!fax.countryCode}" size="2" maxlength="4"/>
+                                                   <apex:inputText value="{!fax.plainStd}" size="5" maxlength="7" style="margin-left:4px;"/>
+                                                   <apex:inputText id="custFaxInput" value="{!fax.phoneNumber}" size="12" maxlength="9" style="margin-left:4px;"/>
+                                               </div>
+                                           </td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custEmailInput">{!$ObjectType.IR_Customer__c.fields.Email__c.label}:</apex:outputLabel></td>
+                                           <td width="70%"><apex:inputField id="custEmailInput" value="{!customer.Email__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custEmailConfInput">Email Confirmation:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Email__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                           <td width="70%"><div class="requiredInput"><div class="requiredBlock"></div><apex:inputText id="custEmailConfInput" value="{!custEmailConf}" styleClass="fullInput"/></div></td>
+                                       </tr>
+                                       
+                                       <tr>
+                                           <td width="30%"><apex:outputLabel for="custVATRegNum">{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                           <td width="70%"><apex:inputField id="custVATRegNum" value="{!customer.VAT_Registration_Number__c}" styleClass="fullInput"/></td>
+                                       </tr>
+                                   </table>
+                               </apex:outputPanel>
+                               
+                               <apex:outputPanel layout="block" styleClass="custInfoRight">
+                                   <apex:outputPanel rendered="{!showCustAddrLookup}"> 
+                                       <table columns="2" width="95%" id="standardTable">
+                                           <tr>
+                                               <td width="50%">
+                                                   <apex:outputLabel for="custPostcodeOutput_Lookup" title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}">{!$ObjectType.IR_Customer__c.fields.Postcode__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span>
+                                                   <b><apex:outputField id="custPostcodeOutput_Lookup" value="{!customer.Postcode__c}"/></b>
+                                               </td>
+                                               
+                                               <td width="50%">
+                                                   <apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!lookupCustAddress}" status="lookupCustAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                   
+                                                   <apex:actionStatus id="lookupCustAddressLoadingStatus_Lookup">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%">
+                                                   <apex:selectList id="custAddressOptionsList_Lookup" value="{!selectedCustAddress}" size="1" style="width:70%;" rendered="{!hasAddress}">
+                                                       <apex:selectOptions value="{!custAddressOptions}"/>
+                                                       <apex:actionSupport event="onchange" action="{!selectCustAddress}" status="selectCustAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                   </apex:selectList>
+                                                   
+                                                   <apex:actionStatus id="selectCustAddressLoadingStatus_Lookup">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>
+                                               </td>
+                                               <td width="50%">
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%"><apex:outputLabel for="custAddress1Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_1__c.label}:</apex:outputLabel></td>
+                                               <td width="50%"><apex:outputLabel for="custTownCityInput_Lookup">{!$ObjectType.IR_Customer__c.fields.Town_City__c.label}:</apex:outputLabel></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%">
+                                               	<!-- <div class="requiredInput"><div class="requiredBlock"></div><apex:inputField id="custAddress1Input_Lookup" value="{!customer.Address_1__c}" styleClass="fullInput"/></div> -->
+                                                   <apex:outputField id="custAddress1Input_Lookup" value="{!customer.Address_1__c}" styleClass="fullInput"/>
+                                               </td>
+                                               <td width="50%">
+                                               		<!-- <div class="requiredInput"><div class="requiredBlock"></div><apex:inputField id="custTownCityInput_Lookup" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!allowCustAddressInput}"/></div>-->                                                   
+                                                   <apex:outputField id="custTownCityOutput_Lookup" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!!allowCustAddressInput}"/>
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%"><apex:outputLabel for="custAddress2Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_2__c.label}:</apex:outputLabel></td>
+                                               <td width="50%"><apex:outputLabel for="custCountyInput_Lookup">{!$ObjectType.IR_Customer__c.fields.County__c.label}:</apex:outputLabel></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%">
+                                               	<!-- <apex:inputField id="custAddress2Input_Lookup" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!allowCustAddressInput}"/> -->                                                   
+                                                   <apex:outputField id="custAddress2Output_Lookup" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!!allowCustAddressInput}"/>
+                                               </td>
+                                               <td width="50%">
+                                               	<!-- <apex:inputField id="custCountyInput_Lookup" value="{!customer.County__c}" styleClass="fullInput" rendered="{!allowCustAddressInput}"/> -->                                                   
+                                                   <apex:outputField id="custCountyOutput_Lookup" value="{!customer.County__c}" styleClass="fullInput" rendered="{!!allowCustAddressInput}"/>
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%"><apex:outputLabel for="custAddress3Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_3__c.label}:</apex:outputLabel></td>
+                                               <td width="50%"><apex:outputLabel for="custCountryInput_Lookup">{!$ObjectType.IR_Customer__c.fields.Country__c.label}:</apex:outputLabel></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="50%">
+                                               <!-- <apex:inputField id="custAddress3Input_Lookup" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!allowCustAddressInput}"/> -->                                                   
+                                                   <apex:outputField id="custAddress3Output_Lookup" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!!allowCustAddressInput}"/>
+                                               </td>
+                                               
+                                               <td width="50%"><apex:outputField id="custCountryOutput_Lookup" value="{!customer.Country__c}" styleClass="fullInput"/></td>
+                                           </tr>
+                                       </table>
+                                   </apex:outputPanel>
+                                   
+                                   <br/>
+                                   <table columns="2" width="95%" id="standardTable" style="text-align:right;">
+                                       <tr>
+                                           <td width="80%"><apex:outputLabel for="extTransLiaSet">{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span> <!-- <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Enhanced_Liability)}?cid={!customer.Id}"></a> --> </td>
+                                           <td width="20%">
+                                               <apex:selectList value="{!customer.Extended_Transit_Liability_Setting__c}" size="1">
+                                                   <apex:selectOptions value="{!accountETLOptions}"/>
+                                                   
+                                                   <apex:actionSupport event="onchange" status="extTransLiaSetLoadingStatus" action="{!quickSaveCustAddress}" reRender="wrapper"/>
+                                               </apex:selectList>
+                                               <!--<apex:inputField id="extTransLiaSet" value="{!customer.Extended_Transit_Liability_Setting__c}" styleClass="fullInput">
+                                                   <apex:actionSupport event="onchange" status="extTransLiaSetLoadingStatus" action="{!quickSaveCustAddress}" reRender="wrapper"/>
+                                               </apex:inputField>-->
+                                               
+                                               <apex:actionStatus id="extTransLiaSetLoadingStatus">
+                                                   <apex:facet name="start">
+                                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                   </apex:facet>
+                                               </apex:actionStatus>
+                                           </td>
+                                       </tr>
+                                   </table> 
+                                   <br />
+                                   <br />
+                                   <table columns="2" width="95%" id="standardTable" style="text-align:right;">
+                                       <tr>
+                                           <td width="100%">
+                                               Accept&nbsp;<a class="fancybox" href="{!URLFOR($Page.IR_Booking_Rate_Card_Page)}?cid={!customer.Id}&df=0">Rate Agreement</a> and <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Offer_Conditions_Page)}">Terms of Offer</a>&nbsp;&nbsp;
+                                               <apex:inputField id="notRecentlyTraded" value="{!customer.Rate_And_Offer_Terms__c}"/>
+                                           </td>
+                                       </tr>
+                                       <tr>
+                                           <td width="100%">
+                                               Accept&nbsp;<a class="fancybox" href="{!URLFOR($Page.IR_Booking_Terms_And_Conditions_Page)}">Terms and Conditions of Carriage</a>&nbsp;&nbsp;
+                                               <apex:inputField id="acceptedTandC" value="{!customer.Terms_and_Conditions__c}"/>
+                                           </td>
+                                       </tr>
+                                   </table> 
+                                   <br/>
+                                   <table columns="2" width="95%" id="standardTable">
+                                       <tr>
+                                           <td width="100%" style="text-align:right;">
+                                               <apex:commandButton value="Save Account" styleClass="greyOrangeButton" action="{!saveCustAddress}" status="saveCustAddressLoadingStatus" reRender="wrapper"/>
+                                               
+                                               <apex:actionStatus id="saveCustAddressLoadingStatus">
+                                                   <apex:facet name="start">
+                                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                   </apex:facet>
+                                               </apex:actionStatus>
+                                           </td>
+                                       </tr>
+                                   </table>
+                               </apex:outputPanel>
+                               
+                               <apex:outputPanel layout="block" styleClass="clear">
+                               </apex:outputPanel>
+                           </apex:outputPanel>
+                       </apex:outputPanel>
+                   </apex:outputPanel>
+               </apex:form>
+                  
+                  <!-- End Of Account and billing section-->   
+                                            
+               <apex:outputPanel layout="block" styleClass="addresses">
+               <div><h3>Step 2<span id="stepLabel">Step 3</span></h3></div>
+               <apex:messages id="userMessages" rendered="{!AND(OR(!consignmentBundle.consignment.Saved_From_Address__c,!consignmentBundle.consignment.Saved_To_Address__c),customer.Saved_Customer__c)}"/> 
+                   <apex:form >
+                       <apex:outputPanel id="colAddress" layout="block" styleClass="colAddress">
+                           <apex:outputPanel layout="block" styleClass="sectionMain">
+                               <apex:outputPanel layout="block" styleClass="sectionHeader">
+                                   <apex:outputPanel style="text-align:left;position:relative;float:left;">Ship From Address</apex:outputPanel>
+                                   <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                                   <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                               </apex:outputPanel>
+                                                               
+                               <apex:outputPanel rendered="{!consignmentBundle.consignment.Show_Col_Address__c}"> 
+                                   <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!consignmentBundle.consignment.Saved_From_Address__c}">
+                                       <table columns="4" width="98%" id="standardTable">
+                                           <tr>
+                                               <td width="20%"><apex:outputLabel for="fromCompanyOutput">{!$ObjectType.IR_Consignment__c.fields.From_Company__c.label}:</apex:outputLabel></td>
+                                               <td width="30%">
+                                                   <apex:outputField id="fromCompanyOutput" value="{!consignmentBundle.consignment.From_Company__c}" styleClass="fullInput"/>
+                                               </td>
+                                               
+                                               <td width="20%"><apex:outputLabel for="fromContactNameOutput">{!$ObjectType.IR_Consignment__c.fields.From_Contact_Name__c.label}:</apex:outputLabel></td>
+                                               <td width="30%">
+                                                   <apex:outputField id="fromContactNameOutput" value="{!consignmentBundle.consignment.From_Contact_Name__c}" styleClass="fullInput"/>
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="20%"><apex:outputLabel for="fromContactNumberOutput">{!$ObjectType.IR_Consignment__c.fields.From_Contact_Number__c.label}:</apex:outputLabel></td>
+                                               <td width="30%">
+                                                   <apex:outputField id="fromContactNumberOutput" value="{!consignmentBundle.consignment.From_Contact_Number__c}" styleClass="fullInput"/>
+                                               </td>
+                                               <td width="20%"></td>
+                                               <td width="30%"></td>
+                                           </tr>
+                                       </table>
+                                       <br />
+                                       <table columns="4" width="99%" id="standardTable">
+                                           <tr>
+                                               <td width="100%"><apex:outputText value="{!consignmentBundle.fullFromAddress}"/></td>
+                                           </tr>
+                                           <tr>
+                                               <td width="100%">
+                                                   <apex:commandButton value="Edit Address" styleClass="greyOrangeButton" action="{!consignmentBundle.editFromAddress}" status="editFromAddressLoadingStatus" reRender="wrapper" rendered="{!!customer.Has_Multiple_Orders__c}"/>
+                                                   
+                                                   <apex:actionStatus id="editFromAddressLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>
+                                               </td>
+                                           </tr>
+                                       </table>
+                                   </apex:outputPanel>
+                                   
+                         <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!!consignmentBundle.consignment.Saved_From_Address__c}"> 
+                                       <table columns="4" width="98%" id="standardTable">
+                                           <tr>
+                                               <td width="20%"><apex:outputLabel for="fromCompanyInput">{!$ObjectType.IR_Consignment__c.fields.From_Company__c.label}:</apex:outputLabel></td>
+                                               <td width="30%">
+                                                   <apex:inputField id="fromCompanyInput" value="{!consignmentBundle.consignment.From_Company__c}" styleClass="fullInput"/>
+                                               </td>
+                                               
+                                               <td width="20%"><apex:outputLabel for="fromContactNameInput">{!$ObjectType.IR_Consignment__c.fields.From_Contact_Name__c.label}:</apex:outputLabel></td>
+                                               <td width="30%">
+                                                   <apex:inputField id="fromContactNameInput" value="{!consignmentBundle.consignment.From_Contact_Name__c}" styleClass="fullInput" required="true"/>
+                                               </td>
+                                           </tr>
+                                       </table>
+                                       
+                                       <table columns="4" width="98%" id="standardTable">
+                                           <tr>
+                                               <td width="20%"><apex:outputLabel for="fromContactNumberInput">{!$ObjectType.IR_Consignment__c.fields.From_Contact_Number__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.From_Contact_Number__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="80%">                                               
+                                                   <div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:inputText value="{!consignmentBundle.fromTel.countryCode}" size="2" maxlength="4"/>
+                                                       <apex:inputText value="{!consignmentBundle.fromTel.plainStd}" size="5" maxlength="7" style="margin-left:4px;"/>
+                                                       <apex:inputText id="fromContactNumberInput" value="{!consignmentBundle.fromTel.phoneNumber}" size="12" maxlength="9" style="margin-left:4px;"/>
+                                                   </div>
+                                               </td>
+                                               <td width="20%"></td>
+                                               <td width="30%"></td>
+                                           </tr>
+                                       </table>
+                                       <br />
+                                       
+                                       <apex:outputPanel rendered="{!consignmentBundle.showFromAddrLookup}">
+                                           <table columns="2" width="95%" id="standardTable">
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:outputLabel for="fromPostcodeOutput_Lookup" title="{!$ObjectType.IR_Consignment__c.fields.From_Postcode__c.inlineHelpText}">{!$ObjectType.IR_Consignment__c.fields.From_Postcode__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.From_Postcode__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span>
+                                                       <b><apex:outputField id="fromPostcodeOutput_Lookup" value="{!consignmentBundle.consignment.From_Postcode__c}"/></b>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!consignmentBundle.lookupFromAddress}" status="lookupFromAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="lookupFromAddressLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:selectList id="fromAddressOptionsList_Lookup" value="{!consignmentBundle.selectedFromAddress}" size="1" style="width:70%;" rendered="{!consignmentBundle.hasFromAddress}">
+                                                           <apex:selectOptions value="{!consignmentBundle.fromAddressOptions}"/>
+                                                           <apex:actionSupport event="onchange" action="{!consignmentBundle.selectFromAddress}" status="selectFromAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       </apex:selectList>
+                                                       
+                                                       <apex:actionStatus id="selectFromAddressLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress1Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_Address_1__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromTownCityInput_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_Town_City__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress1Input_Lookup" value="{!consignmentBundle.consignment.From_Address_1__c}" styleClass="fullInput" required="true"/>
+                                                   </td>
+                                                   <td width="50%"><div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:inputField id="fromTownCityInput_Lookup" value="{!consignmentBundle.consignment.From_Town_City__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/></div>
+                                                       <apex:outputField id="fromTownCityOutput_Lookup" value="{!consignmentBundle.consignment.From_Town_City__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress2Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_Address_2__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromCountyInput_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_County__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress2Input_Lookup" value="{!consignmentBundle.consignment.From_Address_2__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromAddress2Output_Lookup" value="{!consignmentBundle.consignment.From_Address_2__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromCountyInput_Lookup" value="{!consignmentBundle.consignment.From_County__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromCountyOutput_Lookup" value="{!consignmentBundle.consignment.From_County__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress3Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_Address_3__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromCountryOutput_Lookup">{!$ObjectType.IR_Consignment__c.fields.From_Country__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress3Input_Lookup" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromAddress3Output_Lookup" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                                   
+                                                   <td width="50%"><apex:outputField id="fromCountryOutput_Lookup" value="{!consignmentBundle.consignment.From_Country__c}" styleClass="fullInput"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"></td>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Save Address" styleClass="greyOrangeButton" action="{!consignmentBundle.saveFromAddress}" status="saveFromAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="saveFromAddressLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                       </apex:outputPanel>                                       
+                                       <apex:outputPanel rendered="{!!consignmentBundle.showFromAddrLookup}">
+                                           <table columns="2" width="95%" id="standardTable">
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress1Input_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Address_1__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromTownCityInput_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Town_City__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress1Input_Validate" value="{!consignmentBundle.consignment.From_Address_1__c}" styleClass="fullInput" required="true"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromTownCityInput_Validate" value="{!consignmentBundle.consignment.From_Town_City__c}" styleClass="fullInput" required="true" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromTownCityOutput_Validate" value="{!consignmentBundle.consignment.From_Town_City__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress2Input_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Address_2__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromCountyInput_Validate">{!$ObjectType.IR_Consignment__c.fields.From_County__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress2Input_Validate" value="{!consignmentBundle.consignment.From_Address_2__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromAddress2Output_Validate" value="{!consignmentBundle.consignment.From_Address_2__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromCountyInput_Validate" value="{!consignmentBundle.consignment.From_County__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromCountyOutput_Validate" value="{!consignmentBundle.consignment.From_County__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromAddress3Input_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Address_3__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="fromCountryOutput_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Country__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress3Input_Validate" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromAddress3Output_Validate" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                                   
+                                                   <td width="50%"><apex:outputField id="fromCountryOutput_Validate" value="{!consignmentBundle.consignment.From_Country__c}" styleClass="fullInput"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="fromPostcodeOutput_Validate">{!$ObjectType.IR_Consignment__c.fields.From_Postcode__c.label}:</apex:outputLabel></td>
+                                                   
+                                                   <td width="50%"></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><b><apex:outputField id="fromPostcodeOutput_Validate" value="{!consignmentBundle.consignment.From_Postcode__c}"/></b></td>
+                                                   
+                                                   <td width="50%"></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Validate" styleClass="greyOrangeButton" action="{!consignmentBundle.lookupFromAddress}" status="lookupFromAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="lookupFromAddressLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                       <apex:selectList id="fromAddressOptionsList_Validate" value="{!consignmentBundle.selectedFromAddress}" size="1" style="width:70%;" rendered="{!consignmentBundle.hasFromAddress}">
+                                                           <apex:selectOptions value="{!consignmentBundle.fromAddressOptions}"/>
+                                                           <apex:actionSupport event="onchange" action="{!consignmentBundle.selectFromAddress}" status="selectFromAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                                       </apex:selectList>
+                                                       
+                                                       <apex:actionStatus id="selectFromAddressLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="fromAddress3Input" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowFromInput}"/>
+                                                       <apex:outputField id="fromAddress3Output" value="{!consignmentBundle.consignment.From_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowFromInput}"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Save Address" styleClass="greyOrangeButton" action="{!consignmentBundle.saveFromAddress}" status="saveFromAddressLoadingStatus" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="saveFromAddressLoadingStatus">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                </apex:outputPanel><!-- showFromAddrLookup panel -->
+                     </apex:outputPanel>                              
+                  </apex:outputPanel>
+                </apex:outputPanel>                      
+              </apex:outputPanel>
+     </apex:form>
+                    <!-- Ship to address panel start-->                         
+                   <apex:form >                   
+                       <apex:outputPanel id="delAddress" layout="block" styleClass="delAddress">                       
+                           <apex:outputPanel layout="block" styleClass="sectionMain">
+                               <apex:outputPanel layout="block" styleClass="sectionHeader">
+                                   <apex:outputPanel style="text-align:left;position:relative;float:left;">Ship To Address</apex:outputPanel>
+                                   <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                                   <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                               </apex:outputPanel>
+                               
+        <apex:outputPanel rendered="{!consignmentBundle.consignment.Show_Del_Address__c}"> 
+          <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!consignmentBundle.consignment.Saved_To_Address__c}">
+           <table columns="4" width="98%" id="standardTable">
+             <tr>
+                 <td width="20%"><apex:outputLabel for="toCompanyOutput">{!$ObjectType.IR_Consignment__c.fields.To_Company__c.label}:</apex:outputLabel></td>
+                 <td width="30%">
+                    <apex:outputField id="toCompanyOutput" value="{!consignmentBundle.consignment.To_Company__c}" styleClass="fullInput"/>
+                 </td>                                                
+                 <td width="20%"><apex:outputLabel for="toContactNameOutput">{!$ObjectType.IR_Consignment__c.fields.To_Contact_Name__c.label}:</apex:outputLabel></td>
+                 <td width="30%">
+                  <apex:outputField id="toContactNameOutput" value="{!consignmentBundle.consignment.To_Contact_Name__c}" styleClass="fullInput"/>
+                 </td>
+             </tr>
+                                           
+             <tr>
+                 <td width="20%"><apex:outputLabel for="toContactNumberOutput">{!$ObjectType.IR_Consignment__c.fields.To_Contact_Number__c.label}:</apex:outputLabel></td>
+                 <td width="30%">
+                    <apex:outputField id="toContactNumberOutput" value="{!consignmentBundle.consignment.To_Contact_Number__c}" styleClass="fullInput"/>
+                 </td>
+                 <td width="20%"></td>
+                 <td width="30%"></td>
+             </tr>
+            </table>
+            <br />
+            <table columns="4" width="99%" id="standardTable">
+              <tr>
+                  <td width="100%"><apex:outputText value="{!consignmentBundle.fullToAddress}"/></td>
+              </tr>
+              <tr>
+                  <td width="100%">
+                        <apex:commandButton value="Edit Address" styleClass="greyOrangeButton" action="{!consignmentBundle.editToAddress}" status="editToAddressLoadingStatus" reRender="wrapper"/>                                                   
+                             <apex:actionStatus id="editToAddressLoadingStatus">
+                                <apex:facet name="start">
+                                  <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                </apex:facet>
+                             </apex:actionStatus>
+                  </td>
+              </tr>
+            </table>
+</apex:outputPanel>                                    
+   <apex:outputPanel layout="block" styleClass="sectionBody" rendered="{!!consignmentBundle.consignment.Saved_To_Address__c}"> 
+         <table columns="4" width="98%" id="standardTable">
+            <tr>
+                <td width="20%"><apex:outputLabel for="toCompanyInput">{!$ObjectType.IR_Consignment__c.fields.To_Company__c.label}:</apex:outputLabel></td>
+         
+                <td width="30%"><div class="requiredInput"><div class="requiredBlock"></div>
+                    <apex:inputField id="toCompanyInput" value="{!consignmentBundle.consignment.To_Company__c}" styleClass="fullInput"/></div>
+                </td>                                               
+         
+                <td width="20%"><apex:outputLabel for="toContactNameInput">{!$ObjectType.IR_Consignment__c.fields.To_Contact_Name__c.label}:</apex:outputLabel></td>
+         
+                <td width="30%">
+                   <apex:inputField id="toContactNameInput" value="{!consignmentBundle.consignment.To_Contact_Name__c}" styleClass="fullInput" required="true"/>
+                </td>
+         
+            </tr>
+         </table>
+                                       
+         <table columns="4" width="98%" id="standardTable">
+             <tr>
+                 <td width="20%"><apex:outputLabel for="toContactNumberInput">{!$ObjectType.IR_Consignment__c.fields.To_Contact_Number__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.To_Contact_Number__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                 <td width="80%">
+                                                   <div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:inputText value="{!consignmentBundle.toTel.countryCode}" size="2" maxlength="4"/>
+                                                       <apex:inputText value="{!consignmentBundle.toTel.plainStd}" size="5" maxlength="7" style="margin-left:4px;"/>
+                                                       <apex:inputText id="toContactNumberInput" value="{!consignmentBundle.toTel.phoneNumber}" size="12" maxlength="9" style="margin-left:4px;"/>
+                                                   </div>
+                                               </td>
+                                               <td width="20%"></td>
+                                               <td width="30%"></td>
+                                           </tr>
+                                       </table>
+                                       <br />
+                                       
+                                       <apex:outputPanel rendered="{!consignmentBundle.showToAddrLookup}">
+                                           <table columns="2" width="95%" id="standardTable">
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:outputLabel for="toPostcodeInput">{!$ObjectType.IR_Consignment__c.fields.To_Postcode__c.label}:</apex:outputLabel>
+                                                       <apex:inputField id="toPostcodeInput" value="{!consignmentBundle.consignment.To_Postcode__c}" required="true">
+                                                           <apex:actionSupport event="onchange" action="{!disableComplete}" status="changeToPostcodeLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       </apex:inputField>
+                                                       
+                                                       <apex:actionStatus id="changeToPostcodeLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!consignmentBundle.lookupToAddress}" status="lookupToAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="lookupToAddressLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:selectList id="toAddressOptionsList_Lookup" value="{!consignmentBundle.selectedToAddress}" size="1" style="width:70%;" rendered="{!consignmentBundle.hasToAddress}">
+                                                           <apex:selectOptions value="{!consignmentBundle.toAddressOptions}"/>
+                                                           <apex:actionSupport event="onchange" action="{!consignmentBundle.selectToAddress}" status="selectToAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                       </apex:selectList>
+                                                       
+                                                       <apex:actionStatus id="selectToAddressLoadingStatus_Lookup">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress1Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_Address_1__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toTownCityInput_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_Town_City__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:inputField id="toAddress1Input_Lookup" value="{!consignmentBundle.consignment.To_Address_1__c}" styleClass="fullInput"/>
+                                                   </div></td>
+                                                   <td width="50%"><div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:inputField id="toTownCityInput_Lookup" value="{!consignmentBundle.consignment.To_Town_City__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/></div>
+                                                       <apex:outputField id="toTownCityOutput_Lookup" value="{!consignmentBundle.consignment.To_Town_City__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress2Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_Address_2__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toCountyInput_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_County__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toAddress2Input_Lookup" value="{!consignmentBundle.consignment.To_Address_2__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toAddress2Output_Lookup" value="{!consignmentBundle.consignment.To_Address_2__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toCountyInput_Lookup" value="{!consignmentBundle.consignment.To_County__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toCountyOutput_Lookup" value="{!consignmentBundle.consignment.To_County__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress3Input_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_Address_3__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toCountryOutput_Lookup">{!$ObjectType.IR_Consignment__c.fields.To_Country__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toAddress3Input_Lookup" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toAddress3Output_Lookup" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                                   
+                                                   <td width="50%"><apex:outputField id="toCountryOutput_Lookup" value="{!consignmentBundle.consignment.To_Country__c}" styleClass="fullInput"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"></td>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Save Address" styleClass="greyOrangeButton" action="{!consignmentBundle.saveToAddress}" status="saveToAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="saveToAddressLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                       </apex:outputPanel>
+                                       
+                                       <apex:outputPanel rendered="{!!consignmentBundle.showToAddrLookup}">
+                                           <table columns="2" width="95%" id="standardTable">
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress1Input_Validate">{!$ObjectType.IR_Consignment__c.fields.To_Address_1__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toTownCityInput_Validate">{!$ObjectType.IR_Consignment__c.fields.To_Town_City__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toAddress1Input_Validate" value="{!consignmentBundle.consignment.To_Address_1__c}" styleClass="fullInput" required="true"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toTownCityInput_Validate" value="{!consignmentBundle.consignment.To_Town_City__c}" styleClass="fullInput" required="true"/>
+                                                       <!--<apex:inputField id="toTownCityInput_Validate" value="{!consignmentBundle.consignment.To_Town_City__c}" styleClass="fullInput" required="true" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toTownCityOutput_Validate" value="{!consignmentBundle.consignment.To_Town_City__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>-->
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress2Input_Validate">{!$ObjectType.IR_Consignment__c.fields.To_Address_2__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toCountyInput_Validate">{!$ObjectType.IR_Consignment__c.fields.To_County__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toAddress2Input_Validate" value="{!consignmentBundle.consignment.To_Address_2__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toAddress2Output_Validate" value="{!consignmentBundle.consignment.To_Address_2__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toCountyInput_Validate" value="{!consignmentBundle.consignment.To_County__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toCountyOutput_Validate" value="{!consignmentBundle.consignment.To_County__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toAddress3Input_Validate">{!$ObjectType.IR_Consignment__c.fields.To_Address_3__c.label}:</apex:outputLabel></td>
+                                                   <td width="50%"><apex:outputLabel for="toCountryOutput_Validate">{!$ObjectType.IR_Consignment__c.fields.To_Country__c.label}:</apex:outputLabel></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toAddress3Input_Validate" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toAddress3Output_Validate" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>
+                                                   </td>
+                                                   
+                                                   <td width="50%"><apex:outputField id="toCountryOutput_Validate" value="{!consignmentBundle.consignment.To_Country__c}" styleClass="fullInput"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%"><apex:outputLabel for="toPostcodeOutput_Validate" rendered="{!consignmentBundle.hasToPostcode}">{!$ObjectType.IR_Consignment__c.fields.To_Postcode__c.label}:</apex:outputLabel></td>
+                                                   
+                                                   <td width="50%"></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:inputField id="toPostcodeOutput_Validate" value="{!consignmentBundle.consignment.To_Postcode__c}" rendered="{!consignmentBundle.hasToPostcode}">
+                                                           <apex:actionSupport event="onchange" action="{!disableComplete}" status="changeToPostcodeLoadingStatus_Validate" reRender="wrapper"/>
+                                                       </apex:inputField>
+                                                       
+                                                       <apex:actionStatus id="changeToPostcodeLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%"></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!consignmentBundle.lookupToAddress}" status="lookupToAddressLoadingStatus_Validate" reRender="wrapper" rendered="{!consignmentBundle.hasToPostcode}"/>
+                                                       
+                                                       <apex:actionStatus id="lookupToAddressLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                                   
+                                                   <td width="50%">
+                                                       <apex:selectList id="toAddressOptionsList_Validate" value="{!consignmentBundle.selectedToAddress}" size="1" style="width:70%;" rendered="{!consignmentBundle.hasToAddress}">
+                                                           <apex:selectOptions value="{!consignmentBundle.toAddressOptions}"/>
+                                                           <apex:actionSupport event="onchange" action="{!consignmentBundle.selectToAddress}" status="selectToAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                                       </apex:selectList>
+                                                       
+                                                       <apex:actionStatus id="selectToAddressLoadingStatus_Validate">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td width="50%">
+                                                       <!--<apex:inputField id="toAddress3Input" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!consignmentBundle.allowToInput}"/>
+                                                       <apex:outputField id="toAddress3Output" value="{!consignmentBundle.consignment.To_Address_3__c}" styleClass="fullInput" rendered="{!!consignmentBundle.allowToInput}"/>-->
+                                                   </td>
+                                                   <td width="50%">
+                                                       <apex:commandButton value="Save Address" styleClass="greyOrangeButton" action="{!consignmentBundle.saveToAddress}" status="saveToAddressLoadingStatus" reRender="wrapper"/>
+                                                       
+                                                       <apex:actionStatus id="saveToAddressLoadingStatus">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                       </apex:outputPanel>
+                                   </apex:outputPanel>
+                               </apex:outputPanel>
+                           </apex:outputPanel>
+                       </apex:outputPanel>
+                   </apex:form>
+                       
+                   <apex:outputPanel layout="block" styleClass="clear">
+                   </apex:outputPanel>
+               </apex:outputPanel>
+               
+               <apex:form >
+               <h3>Step 4</h3>
+               <apex:messages id="userMessages" rendered="{!AND(consignmentBundle.consignment.Show_Ship_Details__c,!!customer.Saved_Customer__c)}"/>
+                   <apex:outputPanel id="packages" layout="block" styleClass="packages">
+                       <apex:outputPanel layout="block" styleClass="sectionMain">
+                           <apex:outputPanel layout="block" styleClass="sectionHeader">
+                               <apex:outputPanel style="text-align:left;position:relative;float:left;">Shipping Details</apex:outputPanel>
+                               <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                               <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                           </apex:outputPanel>
+                           <apex:outputPanel rendered="{!consignmentBundle.consignment.Show_Ship_Details__c}">                                                      
+                               <apex:outputPanel layout="block" styleClass="sectionBody">
+                                   <apex:outputPanel layout="block" styleClass="packagesLeft">
+                                       <table width="100%" id="standardTable">
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="custSenderRef">{!$ObjectType.IR_Customer__c.fields.Sender_Reference__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Sender_Reference__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%"><apex:inputField id="custSenderRef" value="{!customer.Sender_Reference__c}" style="width:100%;"/></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="consPickColDate">{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Date__c.label}:</apex:outputLabel></td>
+                                               <td width="40%"><apex:outputField id="consPickColDate" value="{!consignmentBundle.consignment.Pickup_Collection_Date__c}" style="width:50%;"/></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="consService">{!$ObjectType.IR_Consignment__c.fields.Service__c.label}:</apex:outputLabel></td>
+                                               <td width="40%"><apex:outputField id="consService" value="{!consignmentBundle.consignment.Service__c}" style="width:100%;"/></td>
+                                           </tr>
+                                       </table>
+                                       
+                                       <table width="100%" id="standardTable">
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="pickupFrom_select">{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_from__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_from__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%">
+                                                   <div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:selectList id="pickupFrom_select" value="{!consignmentBundle.selectedFromTime}" size="1">
+                                                           <apex:selectOptions value="{!consignmentBundle.pickFromTimes}"/>
+                                                           
+                                                           <apex:actionSupport event="onchange" status="pickupColTimeFromStatus" action="{!consignmentBundle.updateTimeFrom}" reRender="openUntil_select"/>
+                                                       </apex:selectList>
+                                                       
+                                                       <apex:actionStatus id="pickupColTimeFromStatus">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </div>
+                                               </td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="openUntil_select">{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_to__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_to__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%">
+                                                   <div class="requiredInput"><div class="requiredBlock"></div>
+                                                       <apex:selectList id="openUntil_select" value="{!consignmentBundle.selectedToTime}" size="1" disabled="{!consignmentBundle.disableOpenUntil}">
+                                                           <apex:selectOptions value="{!consignmentBundle.openUntilTimes}"/>
+                                                       </apex:selectList>
+                                                   </div>
+                                               </td>
+                                           </tr>
+                                           
+                                           <!--<tr>
+                                               <td width="60%"><apex:outputLabel for="pickupColTimeFrom">{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_from__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_from__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%"><div class="requiredInput"><div class="requiredBlock"></div><apex:inputField id="pickupColTimeFrom" value="{!consignmentBundle.consignment.Pickup_Collection_Time_from__c}" style="width:100%;"/></div></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="pickupColTimeTo">{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_to__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Time_to__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%"><div class="requiredInput"><div class="requiredBlock"></div><apex:inputField id="pickupColTimeTo" value="{!consignmentBundle.consignment.Pickup_Collection_Time_to__c}" style="width:100%;"/></div></td>
+                                           </tr>-->
+                                           
+                                           <tr>
+                                               <!--<apex:outputPanel rendered="{!consignmentBundle.nationalConsignment}">-->
+                                                   <td width="60%">
+                                                       <apex:outputLabel for="domTransitLiability" rendered="{!consignmentBundle.showETLCheckbox}">{!$ObjectType.IR_Consignment__c.fields.Transit_Liability__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Transit_Liability__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}" rendered="{!consignmentBundle.showETLCheckbox}"/></span></span>
+                                                   </td>
+                                                   
+                                                   <td width="40%">
+                                                       <apex:inputCheckbox id="domTransitLiability" value="{!consignmentBundle.consignment.Transit_Liability__c}" rendered="{!consignmentBundle.showETLCheckbox}">
+                                                           <apex:actionSupport event="onclick" status="domTransitLiabilityLoadingStatus" action="{!recalculatePrices}" reRender="wrapper"/>
+                                                       </apex:inputCheckbox>
+                                                       
+                                                       <apex:actionStatus id="domTransitLiabilityLoadingStatus">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               <!--</apex:outputPanel>
+                                               
+                                               <apex:outputPanel rendered="{!!consignmentBundle.nationalConsignment}">
+                                                   <td width="60%">
+                                                       <apex:outputLabel for="intTransitLiability" rendered="{!consignmentBundle.showETLCheckbox}">{!$ObjectType.IR_Consignment__c.fields.Transit_Liability__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Transit_Liability__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}" rendered="{!consignmentBundle.showETLCheckbox}"/></span></span>
+                                                   </td>
+                                                   
+                                                   <td width="40%">
+                                                       <apex:inputCheckbox id="intTransitLiability" value="{!consignmentBundle.consignment.Transit_Liability__c}" rendered="{!consignmentBundle.showETLCheckbox}">
+                                                           <apex:actionSupport event="onclick" status="intTransitLiabilityLoadingStatus" action="{!forceRequote}" reRender="wrapper"/>
+                                                       </apex:inputCheckbox>
+                                                       
+                                                       <apex:actionStatus id="intTransitLiabilityLoadingStatus">
+                                                           <apex:facet name="start">
+                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                           </apex:facet>
+                                                       </apex:actionStatus>
+                                                   </td>
+                                               </apex:outputPanel>-->
+                                           </tr>                                          
+                                           <tr>     
+                                                                                                    
+                                                    <td width="60%"><apex:outputLabel for="estimatedValueInput" rendered="{!consignmentBundle.showEstVal}">{!$ObjectType.IR_Consignment__c.fields.Estimated_Value__c.label}:</apex:outputLabel></td>
+                                               <td width="40%">
+                                               <div class="requiredInput">
+                                                   <div class="requiredBlock"></div>                                                 
+                                                   
+                                                   <apex:inputField id="estimatedValueInput" value="{!consignmentBundle.consignment.Estimated_Value__c}" rendered="{!consignmentBundle.showEstVal}">
+                                                       <apex:actionSupport event="onblur" status="estimatedValueInputLoadingStatus" action="{!recalculatePrices}" reRender="wrapper"/>
+                                                   </apex:inputField>                                                   
+                                                   </div>                                                   
+                                                   <apex:actionStatus id="estimatedValueInputLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>                                                                                                      
+                                               </td>                                                                                                                                                                                                                             
+                                           </tr>                                                                                    
+                                           <tr>
+                                               <td width="60%"><apex:outputpanel rendered="{!consignmentBundle.renderCommercialInv}"><a class="fancybox" href="{!URLFOR($Page.IR_Booking_Commercial_Invoice_Page)}">{!$ObjectType.IR_Consignment__c.fields.Commercial_Invoice__c.Label}</a><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Commercial_Invoice__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></apex:outputpanel></td>
+                                               <td width="40%"><apex:inputField id="commercialInvoiceInput" value="{!consignmentBundle.consignment.Commercial_Invoice__c}" rendered="{!consignmentBundle.renderCommercialInv}"/></td>
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="descriptionOfGoodsInput">{!$ObjectType.IR_Consignment__c.fields.Description_of_Goods__c.label}:</apex:outputLabel></td>
+                                               <td width="40%"><div class="requiredInput"><div class="requiredBlock"></div><apex:inputText id="descriptionOfGoodsInput" value="{!consignmentBundle.consignment.Description_of_Goods__c}" style="width:100%;height:26px;" maxlength="60"/></div></td><!-- required="{!!consignmentBundle.nationalConsignment}"/></td>-->
+                                           </tr>
+                                           
+                                           <tr>
+                                               <td width="60%"><apex:outputLabel for="instructionsInput">{!$ObjectType.IR_Consignment__c.fields.Instructions__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Instructions__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                               <td width="40%" style="margin-left:2px;"><apex:inputText id="instructionsInput" value="{!consignmentBundle.consignment.Instructions__c}" style="width:100%;height:26px;" maxlength="60"/></td>
+                                           </tr>
+                                       </table>
+                                   </apex:outputPanel>
+                                   
+                                   <apex:outputPanel id="packagesRight" layout="block" styleClass="packagesRight">
+                                       <apex:outputPanel layout="block" style="width:100%;" rendered="{!showEditPackageTable}">
+                                           <apex:outputLabel for="conType">{!$ObjectType.IR_Consignment__c.fields.Type__c.label}</apex:outputLabel>&nbsp;
+                                           <b><apex:outputText value="{!consignmentBundle.consignment.Type__c}"/></b>
+                                           &nbsp;&nbsp;&nbsp;
+                                           
+                                           <apex:outputLabel value="{!$ObjectType.IR_Consignment__c.fields.Number_of_Packages__c.label}"/>:&nbsp;
+                                           <b><apex:outputText id="quantityOutput" value="{!consignmentBundle.quantity}"/></b>
+                                           &nbsp;&nbsp;&nbsp;
+                                           
+                                           <apex:dataTable id="packagesTable" value="{!consignmentBundle.orderedPackageBundles}" var="packageBundle" styleClass="table-keyline packagesCell" headerClass="packagesTableHeader" rules="COLS" frame="VSIDES" width="99%">
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">                                               
+                                               <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Height__c.label}<span style="font-weight:normal;"><br/>150cm max</span></apex:facet>
+                                                   <apex:inputField value="{!packageBundle.thePackage.Height__c}" styleClass="short-input">
+                                                       <!--<apex:actionSupport event="onchange" action="{!disableComplete}" status="changeHeightLoadingStatus" reRender="wrapper" immediate="true"/>-->
+                                                   </apex:inputField>
+                                                   
+                                                   <!--<apex:actionStatus id="changeHeightLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>-->
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                        <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Length__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>
+                                                   <apex:inputField value="{!packageBundle.thePackage.Length__c}" styleClass="short-input">
+                                                       <!--<apex:actionSupport event="onchange" action="{!disableComplete}" status="changeLengthLoadingStatus" reRender="wrapper"/>-->
+                                                   </apex:inputField>
+                                                   
+                                                   <!--<apex:actionStatus id="changeLengthLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>-->
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                        <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Width__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>
+                                                   <apex:inputField value="{!packageBundle.thePackage.Width__c}" styleClass="short-input">
+                                                       <!--<apex:actionSupport event="onchange" action="{!disableComplete}" status="changeWidthLoadingStatus" reRender="wrapper"/>-->
+                                                   </apex:inputField>
+                                                   
+                                                   <!--<apex:actionStatus id="changeWidthLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>-->
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                                <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Weight_kg__c.label}<span style="font-weight:normal;"><br/>300kg max</span></apex:facet>
+                                                   <apex:inputField value="{!packageBundle.thePackage.Weight_kg__c}" styleClass="short-input">
+                                                       <!--<apex:actionSupport event="onchange" action="{!disableComplete}" status="changeWeightLoadingStatus" reRender="wrapper"/>-->
+                                                   </apex:inputField>
+                                                   
+                                                   <!--<apex:actionStatus id="changeWeightLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>-->
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  headerValue="{!$ObjectType.Quote_Settings__c.fields.Action__c.label}" width="20%">
+                                                   <apex:commandButton value="Remove Package" styleClass="greyOrangeButton" action="{!removePackage}" status="removePackageLoadingStatus" reRender="wrapper">
+                                                       <apex:param name="selectedIndex" assignTo="{!consignmentBundle.selectedIndex}" value="{!packageBundle.index}"/>
+                                                   </apex:commandButton>
+                                                   
+                                                   <apex:actionStatus id="removePackageLoadingStatus">
+                                                       <apex:facet name="start">
+                                                           <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                       </apex:facet>
+                                                   </apex:actionStatus>
+                                                   
+                                                   <apex:facet name="footer">
+                                                       <apex:outputPanel >                                                       		                                                        
+                                                           <apex:commandButton value="Add Package" styleClass="greyOrangeButton" action="{!addPackage}" status="newPackageLoadingStatus" reRender="wrapper"/>
+                                                           <apex:actionStatus id="newPackageLoadingStatus">
+                                                               <apex:facet name="start">
+                                                                   <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                               </apex:facet>
+                                                           </apex:actionStatus>
+                                                       </apex:outputPanel>
+                                                   </apex:facet>
+                                               </apex:column>
+                                       			 
+                                       			 <apex:facet name="footer">
+                                               		   		<apex:commandButton value="Save Details" styleClass="greyOrangeButton" action="{!savePackageDetails}" status="newPackageLoadingStatus" reRender="wrapper"/>                                               		   		   
+                                                 </apex:facet>                                               
+                                               
+                                           </apex:dataTable>
+                                       </apex:outputPanel>
+                                       
+                                       <!-- New section with edit details button -->
+                                                                           
+                                       <apex:outputPanel layout="block" style="width:100%;" rendered="{!NOT(showEditPackageTable)}">
+                                           <apex:outputLabel for="conType">{!$ObjectType.IR_Consignment__c.fields.Type__c.label}</apex:outputLabel>&nbsp;
+                                           <b><apex:outputText value="{!consignmentBundle.consignment.Type__c}"/></b>
+                                           &nbsp;&nbsp;&nbsp;
+                                           
+                                           <apex:outputLabel value="{!$ObjectType.IR_Consignment__c.fields.Number_of_Packages__c.label}"/>:&nbsp;
+                                           <b><apex:outputText id="quantityOutput_1" value="{!consignmentBundle.quantity}"/></b>
+                                           &nbsp;&nbsp;&nbsp;
+                                           
+                                           <apex:dataTable id="packagesTable_1" value="{!consignmentBundle.orderedPackageBundles}" var="packageBundle" styleClass="table-keyline packagesCell" headerClass="packagesTableHeader" rules="COLS" frame="VSIDES" width="99%">
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">                                               
+                                               <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Height__c.label}<span style="font-weight:normal;"><br/>150cm max</span></apex:facet>
+                                                   <apex:outputField value="{!packageBundle.thePackage.Height__c}" styleClass="short-input" />                                                                                                                                                             
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                        			<apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Length__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>
+                                                   	<apex:outputField value="{!packageBundle.thePackage.Length__c}" styleClass="short-input" />                                                   
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                        			<apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Width__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>
+                                                   	<apex:outputField value="{!packageBundle.thePackage.Width__c}" styleClass="short-input" />
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                                	<apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Weight_kg__c.label}<span style="font-weight:normal;"><br/>300kg max</span></apex:facet>
+                                                   	<apex:outputField value="{!packageBundle.thePackage.Weight_kg__c}" styleClass="short-input"/>                                                   
+                                               </apex:column>
+                                               
+                                               <apex:column style="text-align:center;" headerClass="alignText"  headerValue="{!$ObjectType.Quote_Settings__c.fields.Action__c.label}" width="20%">                                                                                                      
+                                                   <apex:facet name="footer">
+                                                       <apex:outputPanel >
+                                                           <apex:commandButton value="Edit Details" styleClass="greyOrangeButton" action="{!editPackageDetails}" status="newPackageLoadingStatus" reRender="wrapper"/>
+                                                           
+                                                           <apex:actionStatus id="newPackageLoadingStatus">
+                                                               <apex:facet name="start">
+                                                                   <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                               </apex:facet>
+                                                           </apex:actionStatus>
+                                                       </apex:outputPanel>
+                                                   </apex:facet>
+                                               </apex:column>
+                                           </apex:dataTable>
+                                       </apex:outputPanel>	
+                                                   
+                                       <!-- End Of Section -->
+                                       <apex:outputPanel id="packagesButton" layout="block" styleClass="packagesButton">
+                                           <br/>
+                                           <!--<span class="grey-button"><span><apex:commandLink value="RE-QUOTE" action="{!reQuote}" status="reQuoteLoadingStatus" reRender="wrapper"/></span></span>-->
+                                           
+                                           <apex:actionStatus id="reQuoteLoadingStatus">
+                                               <apex:facet name="start">
+                                                   <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                               </apex:facet>
+                                               
+                                               <!--<apex:facet name="stop">
+                                                   <apex:messages id="requoteMessages"/>
+                                               </apex:facet>-->
+                                           </apex:actionStatus>
+                                           
+                                           <table id="standardTable" style="text-align:right;color:#FF6600;">
+                                               <!-- <tr>                                                
+                                                    <td style="font-size:12px;">{!$ObjectType.IR_Consignment__c.fields.Total_Chargeable_Weight__c.label}<span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Total_Chargeable_Weight__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                                    <td style="font-size:22px;">{!consignmentBundle.consignment.Total_Chargeable_Weight__c}kg</td>                                                  
+                                               </tr> -->
+                                               <tr>                                                 
+                                                    <td style="font-size:12px;">{!consignmentBundle.Total_Weight_Lbl}<span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Total_Chargeable_Weight__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                                    <td style="font-size:22px;">{!consignmentBundle.Total_Weight_Val}kg</td>                                                
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td style="font-size:12px;">Sub Total</td>
+                                                   <td style="font-size:22px;border-bottom:solid 2px #FF6600;"><apex:outputField id="currentQuote" value="{!thisOrder.Amount_Quoted__c}"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td style="font-size:12px;">Enhanced Liability</td>
+                                                   <td style="font-size:22px;border-bottom:solid 2px #FF6600;"><apex:outputField id="totalTransLiaCost" value="{!thisOrder.Consignment_Transit_Liability_Cost__c}"/></td>
+                                               </tr>
+                                               
+                                               <tr>
+                                                   <td style="font-size:12px;">Total (Excluding VAT)</td>
+                                                   <td style="font-size:22px;border-top:solid 2px #FF6600;"><apex:outputField id="totalCost" value="{!thisOrder.Total_Cost__c}"/></td>
+                                               </tr>
+                                           </table>
+                                       </apex:outputPanel>
+                                       
+                                       <apex:outputPanel layout="block" styleClass="clear">
+                                       </apex:outputPanel>
+                                   </apex:outputPanel>
+                                   
+                                   <apex:outputPanel layout="block" styleClass="clear">
+                                   </apex:outputPanel>
+                               </apex:outputPanel>
+                           </apex:outputPanel>
+                       </apex:outputPanel>
+                   </apex:outputPanel>
+                   <apex:outputPanel id="backButton" layout="block" styleClass="bottomButtons" rendered="false">
+                    <span class="white-button"><span><apex:commandLink value="Back" action="{!back}" immediate="true"/></span></span>
+                   </apex:outputPanel>
+                   <apex:outputPanel id="bottomButtons" layout="block" styleClass="bottomButtons" rendered="{!consignmentBundle.consignment.Show_Ship_Details__c}">                        
+                        <span class="white-button"><span><apex:commandLink value="Complete Booking" action="{!completeBooking}" rendered="{!allowComplete}"/></span></span>
+                        <span class="white-button"><span><apex:commandLink value="Re-Quote" action="{!reQuote}" status="reQuoteLoadingStatus" reRender="wrapper" rendered="{!!allowComplete}"/></span></span>
+                        <!--<span class="white-button-grey"><span><apex:commandLink value="Complete Booking" rendered="{!!allowComplete}"/></span></span>-->
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="block" styleClass="clear">
+                    </apex:outputPanel>
+                </apex:form>
+            </apex:repeat>
+        </apex:outputPanel>
+    </body>
+</apex:page>

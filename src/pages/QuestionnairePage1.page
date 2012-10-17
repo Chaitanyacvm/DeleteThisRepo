@@ -1,0 +1,33 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+    <apex:form style="text-align:left;color:blue;">
+    <apex:pageBlock >
+    <apex:pageMessages ></apex:pageMessages>
+      <apex:outputLabel value="Thank you for visiting TNT's leavers questionnaire site."/>
+      <br/><br/>
+      <apex:outputLabel value="We are sorry to hear you are leaving TNT. Before you leave we would value your "/>
+      <apex:outputLabel value="honest feedback from when you attended your"/>
+      <apex:outputLabel value="interview to the time you decided to leave."/>
+       <br/><br/>
+      <apex:outputLabel value="The questionnaire will take about 15 minutes to complete, please make "/>
+      <apex:outputLabel value="sure you are in a quiet environment so as not to be disturbed."/>
+      <br/><br/>  
+      <apex:outputLabel value="There are 24 questions in total. The majority require you to tick the box which  "/>    
+      <apex:outputLabel value="you feel is most relevant. You can also add any further comments if you wish to do so. "/>
+      <br/><br/>          
+      <apex:outputLabel value="If you wish not to answer any questions there is also a “No Comment” box provided,"/>          
+      <apex:outputLabel value="although in order for us to meet one of our promises at TNT"/>        
+      <apex:outputLabel value="“to listen and learn” your honest feedback is important to us."/> 
+       <br/><br/>            
+      <apex:outputLabel value="If you have any questions or would prefer to speak with someone face to face  "/>
+       <apex:outputLabel value="then please speak to your Line Manager in the first instance."/>
+       <br/><br/>             
+      <apex:outputLabel value="Please tick the box below if you would like your answers kept private until after your leaving date.  "/>
+   <br/><br/>
+   <apex:inputCheckbox value="{!Questionnaire__c.Private__c}"/>Keep this questionnaire private.
+      <br/><br/>
+              <apex:pageblockSection >
+              <apex:commandButton action="{!save}" value="Begin"/>
+            </apex:pageblockSection>
+             </apex:pageBlock>  
+  </apex:form>    
+</apex:page>

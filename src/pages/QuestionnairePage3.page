@@ -1,0 +1,89 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+
+  <apex:form >
+      <apex:pageBlock title="Recruitment and Selection">
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">
+      <font size="2"><b>1. How relevant and accurate was the job information given at interview?</b></font>
+        <apex:selectRadio id="q1" value="{!Questionnaire__c.Question1__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Extremely" itemValue="Extremely"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+          <b>Comments:</b>
+            <apex:inputTextarea id="q1comments" value="{!Questionnaire__c.Question1Comment__c}" cols="100" rows="4"/>
+                       
+<p/><p/>
+         <font size="2"><b>2. To what extent were the following explained at Interview?</b></font>
+         <p/>                       
+        <font size="2"><b>Working Hours</b></font> 
+        <apex:selectRadio id="q2wh" value="{!Questionnaire__c.Question2WorkingHours__c}" required="true" >
+            <apex:selectoption itemLabel="Well" itemValue="Well"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio> 
+                      
+             <p/>                       
+        <font size="2"><b>Job Content</b></font> 
+        <apex:selectRadio id="q2jc" value="{!Questionnaire__c.Question2JobContent__c}" required="true">
+            <apex:selectoption itemLabel="Well" itemValue="Well"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio> 
+        
+              <p/>                       
+        <font size="2"><b>Holiday Entitlement</b></font> 
+        <apex:selectRadio id="q2he" value="{!Questionnaire__c.Question2HolidayEntitlement__c}" required="true">
+            <apex:selectoption itemLabel="Well" itemValue="Well"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+                 
+               <p/>                       
+        <font size="2"><b>Benefits(ie pension)</b></font> 
+        <apex:selectRadio id="q2b" value="{!Questionnaire__c.Question2Benefits__c}" required="true">
+            <apex:selectoption itemLabel="Well" itemValue="Well"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            
+               <p/>                       
+        <font size="2"><b>Bonus and Commission</b></font> 
+        <apex:selectRadio id="q2bac" value="{!Questionnaire__c.Question2BonusandCommision__c}" required="true">
+            <apex:selectoption itemLabel="Well" itemValue="Well"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>             
+            <p/><p/>
+            <b>Comments:</b>
+             <apex:inputTextarea id="q2comments" value="{!Questionnaire__c.Question2Comment__c}" cols="100" rows="4"/>
+                                                       
+    <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page3}" value="Previous"/></td> 
+            </tr>
+            </table>
+            
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage3}" value="Next"/></td>
+            </tr>
+            </table>
+            
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

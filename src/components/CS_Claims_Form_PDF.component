@@ -1,0 +1,329 @@
+<apex:component access="global" controller="CS_Claims_Form_PDF_Controller" >
+<apex:attribute name="cid" assignTo="{!claimId}" type="Id" description="Id of the claims object"/>
+
+    <html>
+    <head>
+        <style>
+           body{
+               font-family:Arial;
+               font-size: 11px;
+               margin:auto;
+           }
+           h1{
+               font-size:14px;
+               color:#FF6B07;                
+           }
+           .lbl{
+               color: #4A4A56;
+               width:50%;
+               font-size: 91%;
+                   font-weight: bold;
+           }
+           #logo{
+               float: right;
+           }
+       </style>
+    </head>
+    <body>
+     <table>                  
+         
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	
+		<tr>
+			<td class="lbl" >{!$ObjectType.CS_Claims__c.Fields.Name.Label}</td>
+			<td colspan="2">{!claims.Name}</td>
+		</tr>
+		                 
+         <tr>
+             <td class="lbl" >{!$ObjectType.CS_Claims__c.Fields.Depot_no__c.Label}</td>
+             <td >{!claims.Depot_no__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl" >{!$ObjectType.CS_Claims__c.Fields.Reference_no__c.Label}</td>
+             <td>{!claims.Reference_no__c}</td>
+         </tr>
+                           
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.TNT_account_no__c.Label}</td>
+             <td>{!claims.TNT_account_no__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Consignment_no__c.Label}</td>
+             <td>{!claims.Consignment_no__c}</td>
+        </tr>
+          
+        <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Sender_Email_Address__c.Label}</td>
+             <td>{!claims.Sender_Email_Address__c}</td>
+        </tr>
+         
+        <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Date_of_dispatch__c.Label}</td>
+             <td><apex:outputText value="{0,date, EEE, dd/MM/yyyy  }"> <apex:param value="{!claims.Date_of_dispatch__c}"/></apex:outputText></td>
+        </tr>
+        
+       	<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+         
+         <tr>
+                <td colspan="2">
+                   <h1>{!Sender_section_title}</h1>
+                </td> 
+         </tr>         		
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Sender_company_name__c.Label}</td>
+             <td>{!claims.Sender_company_name__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Sender_Contact_Name__c.Label}</td>
+             <td>{!claims.Sender_Contact_Name__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">Address</td>
+             <td>{!claims.Sender_Address_1__c} {!claims.Sender_Address_2__c} {!claims.Sender_Address_3__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Sender_Postcode__c.Label}</td>
+             <td>{!claims.Sender_Postcode__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Sender_Telephone_no__c.Label}</td>
+             <td>{!claims.Sender_Telephone_no__c}</td>
+         </tr>
+         
+         <tr>
+				<td colspan="2">&nbsp;</td>
+		</tr>
+         
+         <tr>         	                 
+             <td colspan="2">
+                <h1>{!Recipient_section_title}</h1>
+             </td>
+         </tr>         	
+         
+         <tr>         
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Recipient_Contact_Name__c.Label}</td>
+             <td>{!claims.Recipient_Contact_Name__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">Address</td>
+             <td>{!claims.Recipient_Address_1__c} {!claims.Recipient_Address_2__c} {!claims.Recipient_Address_3__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Recipient_Postcode__c.Label}</td>
+             <td>{!claims.Recipient_Postcode__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Recipient_Telephone_no__c.Label}</td>
+             <td>{!claims.Recipient_Telephone_no__c}</td>
+         </tr>
+        
+         <tr>
+			 <td colspan="2">&nbsp;</td>
+		 </tr>         
+                  
+         <tr>
+             <td colspan="2">
+                <h1>{!Claims_type_fieldset_label}</h1>
+             </td>
+        </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Lost__c.Label}</td>
+             <td><apex:outputField value="{!claims.Lost__c}"/></td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Damaged__c.Label}</td>
+             <td><apex:outputField value="{!claims.Damaged__c}"/></td>
+         </tr>
+         
+        <tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+         
+        <tr>
+            <td colspan="2">
+              <h1>{!Claims_type_details_section_title}</h1>
+            </td>
+        </tr>
+                 
+         <tr>
+             <td colspan="2" class="lbl">
+                 {!Claims_type_details_section_content} please send a copy of a brochure or a photograph of the item(s) to <strong>{!emailId}</strong> or by post or fax to the address shown at the top of the claim form.
+             </td>
+         </tr>
+             
+         <tr>         
+             <td colspan="2">
+                 {!claims.Detail_description_of_items__c}
+             </td>
+         </tr>
+        
+       	<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+        <tr>
+			<td colspan="2">&nbsp;</td>
+		</tr> 		
+         
+         <tr>
+             <td class="lbl">{!Cost_value_of_consignment_label}</td>
+             <td>{!claims.Cost_of_consignment_exclcuding_VAT__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!Cost_value_of_items_label}</td>
+             <td>{!claims.Cost_of_items_exclcuding_VAT__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Weight_of_items__c.Label}</td>
+             <td>{!claims.Weight_of_items__c}</td>
+         </tr>
+         
+       	<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+         
+        <tr>
+            <td colspan="2">
+             <h1>{!Claims_damaged_section_title}</h1>
+            </td>
+        </tr>
+        
+         <tr>
+             <td class="lbl">what is the repair cost? *Please provide a copy of the repair estimate/invoice.</td>
+             <td>{!claims.Repair_cost__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Salvage_value__c.Label}</td>
+             <td>{!claims.Salvage_value__c}</td>
+         </tr>         
+         
+         <tr>
+             <td class="lbl">{!damaged_items_inspection_label}</td>
+             <td>{!claims.damaged_packing_inspection__c}</td>
+         </tr>
+         
+        <tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+
+        <tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+         
+         <tr>
+             <td colspan="2">
+                 All claims are subject to the terms stated in the TNT UK Limited Conditions of Carriage. This claim form does not constitute admission of liability by TNT UK Limited.
+             </td> 
+         </tr>
+          
+          <tr>                
+	         <td colspan="2">
+	             In order to ensure your claim is processed as quickly as possible and to avoid unnecessary delays, please ensure all the following items are submitted by e-mail to uk.claims.info@tnt.com  quoting the reference number shown at the top of the form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage.
+	         </td>
+      	</tr>
+      	
+         <tr>
+             <td class="lbl" colspan="2">{!check_list_opt_1}</td>
+             <!-- 
+             <td><apex:outputField value="{!claims.All_requested_information__c}"/></td>
+              -->
+         </tr>
+         
+         <tr>
+             <td class="lbl" colspan="2">{!check_list_opt_2}</td>
+             <!--
+             <td><apex:outputField value="{!claims.photographs_of_the_items__c}"/></td>
+              -->
+         </tr>
+         
+         <tr>
+             <td class="lbl" colspan="2">{!check_list_opt_3}</td>
+             <!--
+             <td><apex:outputField value="{!claims.Copy_of_repair_estimate__c}"/></td>
+              -->
+         </tr>
+         
+         <tr>
+             <td class="lbl" colspan="2">{!check_list_opt_4}</td>
+             <!--
+             <td><apex:outputField value="{!claims.Copy_of_relevant_commercial_invoice__c}"/></td>
+              -->
+         </tr>
+
+       	<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>         
+         
+         <tr>
+             <td colspan="2">
+                 Please ensure all attachments are returned by e-mail to <strong>uk.claims.info@tnt.com</strong> quoting the reference number shown at the top of the form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage.
+             </td>
+         </tr>
+         
+         	<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>         
+                      
+             <tr>
+                 <td colspan="2">
+                    <h1>{!payment_method_label}</h1>
+                 </td>
+             </tr>             
+             
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.cheque__c.Label}</td>
+             <td><apex:outputField value="{!claims.cheque__c}"/></td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Credit_your_TNT_account__c.Label}</td>
+             <td><apex:outputField value="{!claims.Credit_your_TNT_account__c}"/></td>
+         </tr>
+         
+         	<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>         
+         
+         
+         <tr>
+             <td colspan="2"><h1>{!Declaration_section_title}</h1></td>
+         </tr>
+         <tr>
+         	<td colspan="2">To the best of my knowledge I confirm that all the information contained in this form is accurate and true.</td>		
+         </tr>
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Declarant_Full_Name_of__c.Label}</td>
+             <td>{!claims.Declarant_Full_Name_of__c}</td>
+         </tr>
+         
+         <tr>
+             <td class="lbl">{!$ObjectType.CS_Claims__c.Fields.Declarant_Date__c.Label}</td>
+			 <td><apex:outputText value="{0,date, EEE, dd/MM/yyyy  }"> <apex:param value="{!claims.Declarant_Date__c}"/></apex:outputText></td>             
+         </tr>
+         
+         <tr>
+				<td colspan="2">&nbsp;</td>
+		</tr>                  
+     </table>          
+     </body>
+     </html>   
+
+</apex:component>

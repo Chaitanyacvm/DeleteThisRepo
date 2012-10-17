@@ -1,0 +1,86 @@
+<apex:page controller="CompletedFeedbackPortalController">
+
+<apex:form >
+    <apex:pageblock title="Your Completed Feedback Records">
+        <div style="overflow:auto; height:300px; ">
+        <apex:pageblocktable value="{!BusinessOwnerFeedback}" var="feedback">
+            <apex:column >
+                <apex:commandlink rendered="{!feedback.Status__c=='Completed'}" action="{!reopen}" value="Re-Open" >
+                    <apex:param assignto="{!id}" name="Id" value="{!feedback.id}"/>
+                    <apex:param assignto="{!status}" name="Status" value="{!feedback.Status__c}"/>
+                </apex:commandlink>
+                <apex:outputtext rendered="{!feedback.Status__c!='Completed'}" value="Awaiting Completion" />
+            </apex:column>
+
+         <apex:column value="{!feedback.Name}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Reference{!IF(sortExpression=='Name',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Name" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+
+
+        
+          <apex:column value="{!feedback.Customer_Entered_Account_Name__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Account_Name{!IF(sortExpression=='Customer_Entered_Account_Name__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Customer_Entered_Account_Name__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+        
+          <apex:column value="{!feedback.Consignment_Number__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Consignment_Number{!IF(sortExpression=='Consignment_Number__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Consignment_Number__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+        
+        
+
+        <apex:column value="{!feedback.First_Name__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="First_Name{!IF(sortExpression=='First_Name__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="First_Name__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+       
+         
+        <apex:column value="{!feedback.Last_Name__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Last_Name{!IF(sortExpression=='Last_Name__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Last_Name__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+       
+            
+  
+        <apex:column value="{!feedback.Subject__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Subject{!IF(sortExpression=='Subject__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Subject__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+
+            
+            
+            
+            <apex:column headervalue="Accept / Resolve By">
+                
+                <apex:outputText value="{0,date,dd'/'MM'/'yyyy hh:mm:ss}">
+                       <apex:param value="{!feedback.Next_Action_Due__c}" />
+                </apex:outputText>
+                
+            </apex:column>
+        </apex:pageblocktable>
+        </div>
+    </apex:pageblock>
+    
+</apex:form>
+
+</apex:page>

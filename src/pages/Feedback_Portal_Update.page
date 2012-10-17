@@ -1,0 +1,167 @@
+<apex:page StandardController="Feedback__c" extensions="FeedbackPortalUpdateController" standardStylesheets="true" >
+
+    <head>
+        <style type="text/css">
+            body { margin: 0; }
+            #shade, #modal { display: none; }
+            #shade { position: fixed; z-index: 100; top: 0; left: 0; width: 100%; height: 100%; }
+            #modal { position: fixed; z-index: 101; top: 33%; left: 25%; width: 50%; }
+            #shade { background: black; opacity: 0.5; filter: alpha(opacity=50); }
+        </style>
+    </head>
+
+    <style> 
+        table.detailList { *border-collapse:collapse; }
+        table.detailList td { empty-cells:show; }
+    </style>
+    <apex:form >
+    <apex:sectionHeader rendered="{!accepted='true'}" 
+        title="Customer Feedback" 
+        subtitle="{!Feedback__c.Name}"
+        description="Update your resolution details below" />
+
+    <apex:sectionHeader rendered="{!accepted='false'}" 
+        title="Customer Feedback" 
+        subtitle="{!Feedback__c.Name}"
+        description="You are required to accept this feedback for you to resolve with the customer." />
+    <apex:pagemessages />
+    <apex:pageblock title="Feedback Edit" tabstyle="feedback__c">
+        
+    <script> 
+      function validate(email) 
+          {
+              var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+              
+              if(!email.value.match(re))
+            {
+                alert('Invalid Email Address');
+                email.value = '';
+                return false;
+            } 
+          }                  
+    </script>
+        
+  <body>
+        <div id="shade"></div>
+        <div id="modal">
+        <table border ="0" width="400" height="70">
+        <div align="right">
+
+       <input type="image" width ="20" height ="20" src="https://emea.salesforce.com/resource/1305728024000/close" id="close"/>
+        </div>
+        <font size="4" color="ffffff"><b><u>Send an Email</u></b></font><p/><p/>
+        <font color="fffff">To:</font><apex:inputText value="{!Receiver}" onchange="validate(this)"/>
+        <font color="fffff">Subject:</font><apex:inputText value="{!Subject}" /><p/>
+        <font color="fffff">Message body:</font><p/>
+        <apex:inputTextarea value="{!Message}" cols="70" rows="12"/><p/>
+        <apex:commandButton value="Send" action="{!SendEmail}" />
+        </table><p/>
+        </div>
+<div align="right">
+
+<img src="https://emea.salesforce.com/resource/1305728024000/mail" width="20" height="20" id="start"/>
+  
+ </div>  
+     
+        <script type="text/javascript">
+            var modal= document.getElementById('modal');
+            var shade= document.getElementById('shade');            
+            document.getElementById('start').onclick= function() 
+            {
+                modal.style.display=shade.style.display= 'block';
+            };
+            document.getElementById('close').onclick= function()
+            {
+                modal.style.display=shade.style.display= 'none';
+            };
+            if (!('maxHeight' in document.body.style)) 
+            {
+                function modalsize() {
+                    var top= document.documentElement.scrollTop;
+                    var winsize= document.documentElement.offsetHeight;
+                    var docsize= document.documentElement.scrollHeight;
+                    shade.style.height= Math.max(winsize, docsize)+'px';
+                    modal.style.top= top+Math.floor(winsize/3)+'px';
+                };
+                modal.style.position=shade.style.position= 'absolute';
+                window.onscroll=window.onresize= modalsize;
+                modalsize();
+            }            
+        </script>     
+    </body> 
+        <apex:pageblockbuttons >   
+            <apex:commandbutton rendered="{!accepted='true'}" action="{!save}" value="Save Current" />
+            <apex:commandbutton rendered="{!accepted='true'}" action="{!resolve}" value="Resolve and Complete" />
+            <apex:commandbutton rendered="{!accepted='false'}" action="{!accept}" value="Accept" />
+            <apex:commandbutton action="{!cancel}" value="Cancel" />
+        </apex:pageblockbuttons>
+    
+        <apex:pageblocksection Title="Information" columns="2" collapsible="false">
+            <apex:facet name="header">
+                <span class="pbSubExtra">
+                    <span class="requiredLegend">
+                        <span class="requiredExampleOuter">
+                            <span class="requiredExample">&nbsp;</span>
+                        </span>
+                        <span class="requiredMark">*</span>
+                        <span class="requiredText"> = Required Information</span>
+                    </span>
+                </span>
+                <h3>Information</h3>
+            </apex:facet>         
+          
+            <apex:outputField value="{!Feedback.Subject__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Consignment_Number__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Customer_Entered_Account_Number__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Customer_Entered_Account_Name__c}" style="width: 90%" />
+            <apex:inputField value="{!Feedback.Issue_Location__c}" style="width: 90%" />
+            <apex:inputField value="{!Feedback.Originating_Depot__c}" style="width: 90%" />
+
+            <apex:outputField value="{!Feedback.Case_Owner__c}" style="width: 90%" />
+            
+        </apex:pageblocksection>
+        <apex:pageblocksection showheader="false" columns="1" collapsible="false">  
+            <apex:outputField value="{!Feedback.Customer_Comments__c}" style="width: 90%" />
+        </apex:pageblocksection>
+    
+        <apex:pageblocksection Title="Contact details" columns="2" collapsible="false">
+        
+            <apex:outputField value="{!Feedback.Title__c}" style="width: 90%" />
+            <apex:outputText value="" />
+            <apex:outputField value="{!Feedback.First_Name__c}"  style="width: 90%" />
+            <apex:outputField value="{!Feedback.Last_Name__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Postcode__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Country_of_Residence__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Phone__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Email__c}" style="width: 90%" />
+        </apex:pageblocksection>
+    
+        <apex:pageblocksection Title="Feedback details" columns="2" collapsible="false">
+            <apex:outputField value="{!Feedback__c.Issue_Location__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Source__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Nature_of_Feedback__c}" style="width: 90%" />
+            <apex:outputField value="{!Feedback.Type__c}" style="width: 90%" />
+            <apex:outputText value="" />
+            <apex:inputField value="{!Feedback.CSR_Name_Lookup__c}" style="width: 90%" />
+        </apex:pageblocksection>
+        
+        <apex:pageblocksection Title="Feedback resolution" columns="2" collapsible="false" rendered="{!accepted='true'}">
+            <apex:inputField required="{!causeRequired='true'}" value="{!Feedback.Cause__c}"  style="width: 90%" />
+            <apex:inputField value="{!Feedback.Estimated_Cost__c}"  style="width: 90%"/>
+           <apex:inputField required="{!causeRequired='true'}" value="{!Feedback.Action_new__c}"  />
+            <apex:inputField value="{!Feedback.Action_Other__c}"  style="width: 90%" />
+        </apex:pageblocksection>
+        
+        <apex:pageblocksection Title="Comments" columns="1" collapsible="false" >
+            <apex:inputField rendered="{!accepted='true'}" required="{!causeRequired = 'true'}" value="{!Feedback.Resolution_Comments__c}" style="width: 90%" />
+            <apex:inputField value="{!Feedback.Internal_Comments__c}" style="width: 90%" />
+        </apex:pageblocksection>
+    </apex:pageblock>
+    
+    </apex:form>
+    <apex:relatedlist list="NotesAndAttachments" subject="{!Feedback.id}" rendered="{!accepted='false'}" >
+        <apex:facet name="header">Notes and Attachments</apex:facet>
+    </apex:relatedlist> 
+    <apex:relatedlist list="NotesAndAttachments" subject="{!Feedback.id}" rendered="{!accepted='true'}" />
+    
+</apex:page>

@@ -1,0 +1,15 @@
+<apex:page showHeader="false" sidebar="false" standardController="FM_Job_Instance__c" extensions="FM_SystemAssetsJobInstancesController">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="save" action="{!save}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2">
+                <apex:repeat value="{!systemAssetJobs}" var="jobs">
+                    <apex:inputField value="{!jobs.Asset__c}"/>
+                    <apex:inputField value="{!jobs.Status__c}"/>
+                </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

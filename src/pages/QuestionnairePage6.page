@@ -1,0 +1,91 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+  <apex:form >
+      <apex:pageBlock title="Training and Development" >
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">      
+
+             <font size="2"><b>9. What training courses have you attended?</b></font><br/>    
+            <br/>
+            <b>Comments:</b>
+             <apex:inputTextarea id="q9comments" value="{!Questionnaire__c.Question9Comment__c}" cols="100" rows="4" required="true"  />
+       
+            
+<p/><p/>
+    <font size="2"><b>10. How often did you receive "on the job" coaching from your line manager?</b></font>                         
+        <apex:selectRadio id="q10" value="{!Questionnaire__c.Question10__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Daily" itemValue="Daily"></apex:selectoption>
+            <apex:selectoption itemLabel="Weekly" itemValue="Weekly"></apex:selectoption>
+            <apex:selectoption itemLabel="Monthly" itemValue="Monthly"></apex:selectoption>
+            <apex:selectoption itemLabel="Quaterly" itemValue="Quaterly"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q10comments" value="{!Questionnaire__c.Question10Comment__c}" cols="100" rows="4"/>
+                      
+<p/><p/>
+ <font size="2"><b>11. How relevant do you think this training/coaching was to your role?</b></font>                        
+        <apex:selectRadio id="q11" value="{!Questionnaire__c.Question11__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Extremely" itemValue="Extremely"></apex:selectoption>
+            <apex:selectoption itemLabel="Quite" itemValue="Quite"></apex:selectoption>
+            <apex:selectoption itemLabel="Fairly" itemValue="Fairly"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="No at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q11comments" value="{!Questionnaire__c.Question11Comment__c}" cols="100" rows="4"/>      
+<p/><p/>
+ <font size="2"><b>12. How regular were your appraisals conducted?</b></font>                          
+        <apex:selectRadio id="q12" value="{!Questionnaire__c.Question12__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="More than annually" itemValue="More than annually"></apex:selectoption>
+            <apex:selectoption itemLabel="Annually" itemValue="Annually"></apex:selectoption>
+            <apex:selectoption itemLabel="Less than annually" itemValue="Less than annually"></apex:selectoption>
+            <apex:selectoption itemLabel="Never" itemValue="Never"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q12comments" value="{!Questionnaire__c.Question12Comment__c}" cols="100" rows="4"/>
+<p/><p/>
+ <font size="2"><b>13. Were you given a personal development plan?</b></font>                        
+        <apex:selectRadio id="q13" value="{!Questionnaire__c.Question13__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q13comments" value="{!Questionnaire__c.Question13Comment__c}" cols="100" rows="4"/>
+<p/><p/>
+ <font size="2"><b>14. How often is your personal development plan reviewed?</b></font>                         
+        <apex:selectRadio id="q14" value="{!Questionnaire__c.Question14__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Daily" itemValue="Daily"></apex:selectoption>
+            <apex:selectoption itemLabel="Weekly" itemValue="Weekly"></apex:selectoption>
+            <apex:selectoption itemLabel="Monthly" itemValue="Monthly"></apex:selectoption>
+            <apex:selectoption itemLabel="Quarterly" itemValue="Quarterly"></apex:selectoption>
+            <apex:selectoption itemLabel="Less than Quarterly" itemValue="Less than Quarterly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not Applicable" itemValue="Not Applicable"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q14comments" value="{!Questionnaire__c.Question14Comment__c}" cols="100" rows="4"/>            
+            <br/><br/>
+<table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page6}" value="Previous"/></td> 
+            </tr>
+            </table>
+            
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage6}" value="Next"/></td>
+            </tr>
+            </table>
+
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

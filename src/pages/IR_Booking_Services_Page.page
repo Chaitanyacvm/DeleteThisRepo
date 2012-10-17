@@ -1,0 +1,75 @@
+<apex:page showHeader="false" standardStylesheets="false">
+	<head>
+		<style type="text/css">        
+        html {
+            font-size:80%;
+            font-family:Arial;            
+        }
+        body{
+            font-family:Arial;
+        }
+            
+        h2, h1, h3 {
+            color:#ff6600;
+        }
+
+        </style>
+	</head>
+    <p>
+        <h1>National time-definite delivery service options:</h1>
+    </p>
+    
+    <p>
+        <h3>9:00 Express</h3>
+        Guaranteed next morning delivery before 9am of the next working day.<br/>
+    </p>
+
+    <p>
+        <h3>10:00 Express</h3>
+        Guaranteed next morning delivery before 10am of the next working day.<br/>
+    </p>
+
+    <p>
+        <h3>12:00 Express</h3>
+        Guaranteed delivery for the morning of the next working day.<br/>
+    </p>
+
+    <p>
+        <h3>Express</h3>
+        Guaranteed delivery before close of business on the next or earliest possible working day.<br/>
+    </p>
+
+    <p>
+        <h1>International - day and time-definite delivery service options:</h1>
+    </p>
+
+    <p>
+        <h3>9:00 Express</h3>
+        Guaranteed next morning delivery before 9am to major cities in over 40 countries.<br/>
+    </p>
+
+    <p>
+        <h3>10:00 Express</h3>
+        Guaranteed next morning delivery before 10am to major cities in over 60 countries.<br/>
+    </p>
+
+    <p>
+        <h3>12:00 Express</h3>
+        Guaranteed next morning delivery to major cities in over 60 countries.<br/>
+    </p>
+
+    <p>
+        <h3>Express</h3>
+        Guaranteed next day delivery to most of Europe, and fastest possible services to the rest of the world.<br/>
+    </p>
+
+    <p>
+        <h3>12:00 Economy Express</h3>
+        Day-definite delivery before noon for less urgent shipments, offering economical delivery to EU countries (2-4 days depending on destination) and the rest of Europe (2-6 days).<br/>
+    </p>
+
+    <p>
+        <h3>Economy Express</h3>
+        Day-definite scheduled delivery to Europe and the rest of the world.<br/>
+    </p>
+</apex:page>

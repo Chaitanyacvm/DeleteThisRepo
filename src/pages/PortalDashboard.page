@@ -1,0 +1,14 @@
+<apex:page showHeader="false" sidebar="false">
+<apex:form >
+	<apex:pageblock title="Team Leader Dashboard">
+		<!-- 
+		<apex:pageblockbuttons location="top">
+			<apex:commandbutton action="{!create}" value="New Feedback" />
+		</apex:pageblockbuttons>
+		-->
+		<apex:pageBlockSection title="Sample Chart" columns="1">
+			<apex:image url="http://chart.apis.google.com/chart?chf=c,lg,0,FFFF88,0,FFCC33,1&chxs=0,000000,11.5,0,l,000000&chxt=y&chbh=a&chs=500x350&cht=bvg&chco=FF0000,008000&chd=t:10,50,60,80,40,60,30|50,60,100,40,20,40,30&chdl=Active|Complete&chtt=Sample+Bar+Chart&chts=000000,11.5" />
+		</apex:pageBlockSection>
+	</apex:pageblock>
+</apex:form>
+</apex:page>

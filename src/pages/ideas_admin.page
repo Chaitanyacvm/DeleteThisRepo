@@ -1,0 +1,229 @@
+<apex:page sidebar="false" tabStyle="Idea_Admin__tab" standardController="idea" extensions="idea_admin" >
+ <apex:form >
+
+<apex:selectList size="1" value="{!adminRole}" >
+    <apex:selectOption itemLabel="-- Select --" itemValue="select" />
+    <apex:selectOption itemLabel="1st Stage Evaluator" itemValue="1st Stage Evaluator" />
+    <apex:selectOption itemLabel="Site GM" itemValue="Site GM" />
+    <apex:selectOption itemLabel="Site GM - Owner Feedback" itemValue="Site GM - Owner Feedback" />
+    <apex:selectOption itemLabel="Sensibility Checker" itemValue="Sensibility Checker" />
+    <apex:selectOption itemLabel="Sensibility Checker - Owner Feedback" itemValue="Sensibility Checker - Owner Feedback" />
+    <apex:selectOption itemLabel="National Evaluator" itemValue="National Evaluator" />
+    <apex:actionSupport event="onchange" reRender="ideaAdminList"/>
+</apex:selectList>
+
+<apex:actionFunction name="assignIdeaId" action="{!assignIdea}" rerender="ideaDetailBlock">
+    <apex:param name="ideaId" value=""/>
+</apex:actionFunction>
+
+<!--
+
+<apex:outputPanel id="ideaDetailBlock">
+    <apex:pageBlock title="Idea">
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton action="{!updateAdmin}" value="Update Idea"/>
+        </apex:pageBlockButtons> 
+        <apex:pageBlockSection title="Idea Detail" >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Title" />
+                <apex:outputField value="{!ideaDetail.title}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Status" />
+                <apex:outputField value="{!ideaDetail.Status}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Body" />
+                <apex:outputText escape="false" value="{!ideaDetail.Body}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Information From Owner" />
+                <apex:outputField value="{!ideaDetail.Additional_Information__c}"/>
+            </apex:pageblockSectionItem>
+        </apex:pageblockSection>
+        
+        
+        
+        <apex:pageBlockSection title="Admin" >
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Move Idea To National Level" />
+                <apex:inputField value="{!ideaDetail.Move_Idea_To__c}"/>
+            </apex:pageblockSectionItem>
+               
+        </apex:pageblockSection>
+        
+        
+        <apex:pageBlockSection title="Admin" >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is There Enough Information?" />
+                <apex:inputField value="{!ideaDetail.Request_Additional_Information__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Question" />
+                
+                <apex:inputTextArea value="{!ideaDetail.Additional_Information_Question__c}" disabled="true"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Further investigation required?" />
+                <apex:inputField value="{!ideaDetail.Further_investigation_required__c}"/>
+            </apex:pageblockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Business Benefits" />
+                <apex:inputField value="{!ideaDetail.Business_Benefit__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Ease of Implementation" />
+                <apex:inputField value="{!ideaDetail.Ease_of_Implementation__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:inputField value="{!ideaDetail.Decision__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision Reason" />
+                <apex:inputField value="{!ideaDetail.Decision_Reason__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="When" />
+                <apex:inputField value="{!ideaDetail.When__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Idea Rewarded" />
+                <apex:inputField value="{!ideaDetail.Idea_Rewarded__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Reward" />
+                <apex:inputField value="{!ideaDetail.Reward__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Private Comment" />
+                <apex:inputField value="{!ideaDetail.Private_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Public Comment" />
+                <apex:inputField value="{!ideaDetail.Public_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            
+        </apex:pageblockSection>
+        
+        
+        <apex:pageBlockSection title="Admin" >
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is There Enough Information?" />
+                <apex:inputField value="{!ideaDetail.Request_Additional_Information__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Question" />
+                
+                <apex:inputTextArea value="{!ideaDetail.Additional_Information_Question__c}" disabled="true"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Assign to Evaluator" />
+                <apex:inputField value="{!ideaDetail.National_Evaluator__c}"/>
+            </apex:pageblockSectionItem>
+            
+            
+        </apex:pageblockSection>
+            
+        
+        
+        
+        <apex:pageBlockSection title="Admin" >
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Is There Enough Information?" />
+                <apex:inputField value="{!ideaDetail.Request_Additional_Information__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Question" />
+                
+                <apex:inputTextArea value="{!ideaDetail.Additional_Information_Question__c}" disabled="true"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Further investigation required?" />
+                <apex:inputField value="{!ideaDetail.Further_investigation_required__c}"/>
+            </apex:pageblockSectionItem>
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Business Benefits" />
+                <apex:inputField value="{!ideaDetail.Business_Benefit__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Ease of Implementation" />
+                <apex:inputField value="{!ideaDetail.Ease_of_Implementation__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:inputField value="{!ideaDetail.Decision__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision Reason" />
+                <apex:inputField value="{!ideaDetail.Decision_Reason__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="When" />
+                <apex:inputField value="{!ideaDetail.When__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Idea Rewarded" />
+                <apex:inputField value="{!ideaDetail.Idea_Rewarded__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Reward" />
+                <apex:inputField value="{!ideaDetail.Reward__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Private Comment" />
+                <apex:inputField value="{!ideaDetail.Private_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Public Comment" />
+                <apex:inputField value="{!ideaDetail.Public_Comment__c}"/>
+            </apex:pageblockSectionItem>
+        </apex:pageblockSection>
+        
+    </apex:pageBlock>
+</apex:outputPanel>
+-->
+<apex:outputPanel id="ideaAdminList">
+<apex:pageblock >
+    <apex:pageBlockTable value="{!ideas}" var="i">
+        
+        <!--
+        <apex:column >
+            <apex:outputPanel >
+            <apex:outputText style="cursor:pointer;text-decoration: underline;" value="{!i.title}"/>
+            <apex:actionSupport event="onclick" action="{!assignIdea}" reRender="ideaDetailBlock">
+                <apex:param name="ideaIdX" value="{!i.Id}" />
+            </apex:actionSupport>
+            </apex:outputPanel>
+        </apex:column>
+        -->
+        <apex:column headerValue="Title" >
+        <a href="{!$Page.ideas_admin_detail}?id={!i.Id}&f={!adminRole}">{!i.title}</a>
+        </apex:column>
+        <!-- <apex:column value="{!i.Status}"/> -->
+        <apex:column headerValue="Submitted By" value="{!i.CreatedBy.CommunityNickname}"/>
+        <apex:column headerValue="Vote Total" value="{!i.VoteTotal}"/>
+        <apex:column headerValue="Created Date" value="{!i.CreatedDate}"/>
+        <apex:column headerValue="Comments" value="{!i.NumComments}"/>
+    </apex:pageBlockTable>
+</apex:pageblock>
+</apex:outputPanel>
+</apex:form>
+</apex:page>

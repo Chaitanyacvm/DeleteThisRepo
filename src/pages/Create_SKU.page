@@ -1,0 +1,32 @@
+<apex:page standardController="SKU__c" extensions="SKU_Extension_Controller">
+    <apex:sectionHeader title="SKU" subtitle="SKU" />
+    <apex:form >
+        <!-- <apex:actionFunction name="getCustomerCompany" action="{!getCustomerCompany}" reRender="pageBlock"/> -->
+        <apex:pageBlock title="SKU Edit" id="pageBlock" >
+            <apex:pageBlockButtons rendered="{!IF(sku.Customer_Company__c!=null,true,false)}">
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!saveAndNew}" value="Save & New"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockSection collapsible="true" columns="1" title="SKU Information" rendered="{!IF(sku.Customer_Company__c!=null,true,false)}">
+                <apex:outputField value="{!sku.Customer_Company__c}"/>
+                
+                <apex:pageBlockSectionItem rendered="{!IF(sku.Customer_Company__c!=null,true,false)}">
+                    <apex:outputLabel for="customerCompanyName">{!$ObjectType.Account.Fields.Customer_Company_Name__c.Label}</apex:outputLabel>
+                    <apex:outputText value="{!customerCompanyName}" id="customerCompanyName" rendered="{!IF(sku.Customer_Company__c!=null,true,false)}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!sku.Style_Number__c}"/>
+                <apex:inputField value="{!sku.Style_Suffix__c}" rendered="{!IF(customer_company.Style_Suffix_Enterable__c==true,true,false)}" required="true"/>
+                <apex:inputField value="{!sku.Style__c}" rendered="{!IF(customer_company.Colour_No_Enterable__c==true,true,false)}" required="true"/>
+                <apex:inputField value="{!sku.Colour_Suffix__c}" rendered="{!IF(customer_company.Colour_Suffix_Enterable__c==true,true,false)}" required="true"/>
+                <apex:inputField value="{!sku.Size_Dimension__c}" rendered="{!IF(customer_company.Size_Dimension_Enterable__c==true,true,false)}" required="true"/>
+                <apex:inputField value="{!sku.Style_Description__c}"/>
+                <apex:inputField value="{!sku.Colour_Description__c}"/>
+                <apex:inputField value="{!sku.UPC_Barcode__c}" rendered="{!IF(customer_company.UPC_Barcode_enterable__c==true,true,false)}" required="true"/>
+                <apex:inputField value="{!sku.Packaging_Type__c}" required="true"/>       
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

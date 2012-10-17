@@ -1,0 +1,565 @@
+<apex:page showHeader="flase" sidebar="false" standardStyleSheets="true" StandardController="CS_Claims__c" extensions="CS_Claims_Form_Controller" cache="false" action="{!updateCounter}">
+<html>
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.CS_Jquery)}" id="jquery"/>
+        <title>TNT UK Claim Form</title>
+        
+        <style>
+            body{
+                font-family:Arial;
+                font-size: 11px;
+            }
+            h1{
+                font-size:20px;
+                color:#FF6B07;
+            }
+                 #outerDiv{
+                position:relative;
+                margin-top:80px;
+                margin:auto;
+                height: auto;                
+                width:960px;                                                       
+            }
+            .lbl{
+                color: #4A4A56;
+                font-size: 91%;
+                    font-weight: bold;
+            }
+            #logo{
+                float: right;
+            }
+        
+            .Sidetab{
+                poistion:absolute;
+                top:0px;
+                left:0px;
+                width:150px;                                  
+            }
+            #contentDiv{
+                position:absolute;              
+                top:0px;
+                left:150px;             
+                width:790px;                
+                height:inherit;                               
+            }       
+            #termsContentDiv{
+                position:absolute;                         
+                top:0px;
+                left:150px;             
+                width:790px;                
+                height:inherit;                
+            }     
+            .requiredBlk {
+                background-color: #C00;
+                /*position: absolute;*/
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+            
+            .band1{
+                position:absolute;
+                margin-left:40px;
+                padding-top:100px;                                       
+                width:110px;
+                background-image:url('{!URLFOR($Resource.CS_TAB_IMG)}');
+                background-repeat: repeat-y;
+                /*background-color:#F96B07;*/                                                            
+            }              
+            .tabTitle{
+                margin-left: 48px;
+                margin-top: -275px;
+               /* width:105px;
+                height:1024px;                             
+               background-image:url('{!$Resource.CS_TAB1_TITLE}');
+                background-repeat:no-repeat;
+                background-position:48px 0px;
+                margin-top:-1224px;
+                z-index:10px;*/
+            }
+            .tab{
+                width:auto;
+                height:280px;
+                background-image:url('{!$Resource.CS_TAB_1}');
+                background-repeat:no-repeat;                
+                background-position:-3px 0px;                   
+            }
+            .tab2{               
+                width:auto;
+                height:280px;
+                background-image:url('{!URLFOR($Resource.CS_TAB_2_SELECTED)}');
+                background-repeat:no-repeat;                
+                background-position:-1px 0px;
+                cursor:pointer;                                  
+            }
+        </style>
+        <script>            
+             var j$ = jQuery.noConflict();
+             j$(document).ready(function(){
+                j$('.tab').click(function()
+             		{            
+		                j$('.tab').css("background-image","url('{!URLFOR($Resource.CS_TAB_1)}')");                                                             
+		                
+		                j$('.tab2').css("background-image","url('{!URLFOR($Resource.CS_TAB_2_SELECTED)}')");		                
+		                
+		              	j$('.tab').css('background-position','-3px 0px'); 
+		                
+		                j$('.tab2').css('background-position','-1px 0px');
+		                
+		                j$('.tab2').css('cursor','pointer');
+		               	
+		               	j$('.tab').css('cursor','default');
+		                
+		                j$('.sideTabTitle').attr("src","{!URLFOR($Resource.CS_TAB1_TITLE)}");
+		                
+		                j$('.tabTitle').css('margin-top','-300px');
+		                
+		                j$('#contentDiv').css('display','block');
+		                
+		                j$('#termsContentDiv').css('display','none');
+		                
+		                
+		                var hgt = j$('#contentDiv').height();
+		                j$('.Sidetab').css('height',hgt);           
+			            var h = hgt -120;           
+			            j$('.band1').height(h);
+		                		                       
+             		});             	
+             	
+             j$('.tab2').click(function(){
+                         	                         
+             	j$('.tab').css("background-image","url('{!URLFOR($Resource.CS_TAB_1_SELECTED)}')");
+                
+                j$('.tab2').css("background-image","url('{!URLFOR($Resource.CS_TAB_2)}')");
+                
+                j$('.tab').css('background-position','-4px 0px');
+                 
+               	j$('.tab2').css('background-position','-4px 0px');
+               	
+               	j$('.tab2').css('cursor','default');
+               	
+               	j$('.tab').css('cursor','pointer');
+               	                
+                j$('.sideTabTitle').attr("src","{!URLFOR($Resource.CS_TAB2_TITLE)}");
+                
+                j$('.tabTitle').css('margin-top','-650px');
+                
+                j$('#contentDiv').css('display','none');
+                
+                j$('#termsContentDiv').css('display','block');
+                
+                var hgt = j$('#termsContentDiv').height();
+		        //        alert('termsContentDiv' + hgt);
+				j$('.Sidetab').css('height',hgt+100);
+				
+				var h = j$('.Sidetab').height();
+				j$('.band1').height(hgt+100); 		                	             	             
+				//alert('sideTab: '+ h);
+             });
+             
+             });
+             
+                    </script>
+    </head>
+    <body>
+    <apex:form >
+        <div id="outerDiv">                    
+            <div class="Sidetab">
+                <div class="band1">                    
+                    <div class="tab" ></div>
+                    <div class="tab2"></div>
+                    <div class="tabTitle"><img class="sideTabTitle" src="{!URLFOR($Resource.CS_TAB1_TITLE)}"/></div>                                                     
+                </div>               
+            </div>            
+            <div id="contentDiv">
+            	<apex:pageMessages ></apex:pageMessages>
+            <apex:outputPanel rendered="{!Editable}">                                        
+                            
+             <apex:pageBlock mode="edit" >
+             
+                <span id="logo"><apex:image value="{!$Resource.IR_tnt_sure_we_can}"/></span>
+                    <p style="padding:5px;">{!header}</p>
+                    
+                    <p style="padding:5px;">Alternatively please fax it to either <strong>{!fax1}</strong> or <strong>{!fax2}</strong> or send by post to <strong>{!address} Tel:{!Tele}</strong></p>
+                    
+                    <p>
+                        <apex:pageBlockSection columns="1" >
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.TNT_items_details_section}" var="i">                           
+                                <apex:inputField value="{!claim[i]}"/>                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+                                                
+                        <apex:pageBlockSection columns="1" title="{!Sender_section_title}">
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Sender_section}" var="s">                          
+                                <apex:inputField value="{!claim[s]}"/>                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection columns="1" title="{!Recipient_section_title}">                        
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Recipient_Section}" var="r">
+                                                                                                        
+                                <apex:inputField value="{!claim[r]}"/>                                                                                                                                 
+                        </apex:repeat>          
+                        
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection columns="2" title="{!Claims_type_fieldset_label}">
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Claim_Type}" var="t">                          
+                                <apex:inputField value="{!claim[t]}"/>                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+
+                        <apex:pageBlockSection columns="1" title="{!Claims_type_details_section_title}">
+                        	
+                        	<apex:pageBlockSectionItem LabelStyle="width:50%;" >
+                        		<apex:outputLabel value="{!replacement_consignement_no_label}" />
+                        		<apex:inputfield value="{!claim.Replacement_Consignment_No__c}"/>
+                        	</apex:pageBlockSectionItem>
+                        	
+                        	
+                            <p>{!Claims_type_details_section_content} please send a copy of a brochure or a photograph of the item(s) to <strong>{!emailId}</strong> or by post
+                            						or fax to the address shown at the top of the claim form.</p>
+                            <apex:pageBlockSectionItem >                                
+                                <apex:inputTextArea value="{!claim.Detail_description_of_items__c}" cols="100" rows="3"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem labelStyle="width:50%;">
+                                <apex:outputLabel value="{!Cost_value_of_consignment_label}"/>                                                       
+                                <apex:inputField value="{!claim.Cost_of_consignment_exclcuding_VAT__c}" />
+                            </apex:pageBlockSectionItem>
+                            
+                            
+
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!Cost_value_of_items_label}" />
+                            
+                                <apex:inputField value="{!claim.Cost_of_items_exclcuding_VAT__c}" />
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Weight_of_items__c.Label}" />
+                                                                                          
+                              <apex:inputField value="{!claim.Weight_of_items__c}"/>  
+                            </apex:pageBlockSectionItem>                                                                                   
+                        </apex:pageBlockSection>        
+                        
+                        <apex:pageBlockSection title="{!Claims_damaged_section_title}" collapsible="false" columns="1">
+                                
+                                <apex:pageblockSectionItem labelStyle="widt30%">
+                                    <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Repair_cost__c.Label}"/>
+                                    <apex:inputField value="{!claim.Repair_cost__c}" />                                                                                                                                          
+                                </apex:pageblockSectionItem>                                                                                                
+                                
+                                <apex:pageblockSectionItem >
+                                    <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Salvage_value__c.Label}" />
+                                    <apex:inputField value="{!claim.Salvage_value__c}"/>                                                                                                                                        
+                                </apex:pageblockSectionItem>
+                                
+                            <apex:pageBlockSectionItem >
+                                            <apex:outputText value="*Please provide a copy of the repair estimate/invoice."/>
+                                </apex:pageBlockSectionItem>                                
+                                <apex:pageBlockSectionItem labelStyle="width:70%;" >                                      
+                                      <apex:outputLabel value="{!damaged_items_inspection_label}" />                                  
+                                    <apex:inputTextArea value="{!claim.damaged_packing_inspection__c}" cols="100" rows="3" />                                                                                                                                         
+                                </apex:pageBlockSectionItem>
+                                                                                                     
+                        </apex:pageBlockSection>
+                                                                                                                                                                                      
+                        
+                        <apex:pageBlockSection columns="1" title="" collapsible="false">
+                            <apex:outputText value="All claims are subject to the terms stated in the TNT UK Limited Conditions of Carriage. This claim form does not constitute admission of liability by TNT UK Limited."/>
+                            
+                            <apex:outputText value="In order to ensure your claim is processed as quickly as possible and to avoid unnecessary delays, please ensure all the following items are submitted by e-mail to uk.claims.info@tnt.com  quoting the reference number shown at the top of the form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage."/>                           
+                               
+                             <apex:pageBlockSectionItem labelStyle="width:40%;" >
+                                    <apex:outputLabel value="{!check_list_opt_1}"/>
+                                   <!-- 
+                                   <apex:inputField value="{!claim.All_requested_information__c}"/>
+                                    --> 
+                             </apex:pageBlockSectionItem>
+                               
+                               
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_2}"/>
+                                    <!-- 
+                                    <apex:inputField value="{!claim.photographs_of_the_items__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                               
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_3}" style="width:70%;"/>
+                                    <!-- 
+                                    <apex:inputField value="{!claim.Copy_of_repair_estimate__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                             
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_4}"/>
+                                    <!-- 
+                                    <apex:inputField value="{!claim.Copy_of_relevant_commercial_invoice__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                             
+                             <apex:outputText value="Please ensure all attachments are returned by e-mail to {!emailId} quoting the reference number shown at the top of the
+                                    form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference
+                                    number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage."
+									style="font-style:italic;" />
+                                                        
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection title="{!payment_method_label}" >                        	                        
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Method_of_payment}" var="m">
+                                    <apex:inputField value="{!claim[m]}"/>
+                            </apex:repeat>                          
+                        </apex:pageBlockSection>
+
+                        <apex:pageBlockSection title="{!Declaration_section_title}" columns="1" >
+                        <apex:outputText value="To the best of my knowledge I confirm that all the information contained in this form is accurate and true." />
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Declaration_section}" var="dl">
+                                    <apex:inputField value="{!claim[dl]}"/>
+                            </apex:repeat>                          
+                        </apex:pageBlockSection>                        
+                    </p>                                       
+                    
+                    <apex:pageBlockButtons location="bottom" dir="RTL">
+                    		<apex:commandButton action="{!save}" value="Click to Submit"/>
+                         <apex:commandButton action="{!quickSave}" value="Save & Submit Later"  rendered="true" />                                                                                                             
+                    </apex:pageBlockButtons>
+                    
+            </apex:pageBlock>
+          </apex:outputPanel>
+            <!-- To be rendered if the claims has been submitted -->
+            <apex:outputPanel rendered="{!NOT(Editable)}">
+            	 <apex:pageBlock >
+            	
+					  <span id="logo"><apex:image value="{!$Resource.IR_tnt_sure_we_can}"/></span>
+                    <p>{!header}</p>
+                    
+                    <p>Alternatively please fax it to either <strong>{!fax1}</strong> or <strong>{!fax2}</strong> or send by post to <strong>{!address} Tel:{!Tele}</strong></p>
+                    
+                    <p>
+                        <apex:pageBlockSection columns="1" >
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.TNT_items_details_section}" var="i">                           
+                                <apex:outputField value="{!claim[i]}"/>                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+                                                
+                        <apex:pageBlockSection columns="1" title="{!Sender_section_title}">
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Sender_section}" var="s">                          
+                                <apex:outputField value="{!claim[s]}" />                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection columns="1" title="{!Recipient_section_title}">                        
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Recipient_Section}" var="r">
+                                                                                                        
+                                <apex:outputField value="{!claim[r]}"/>                                                                                                                                 
+                        </apex:repeat>          
+                        
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection columns="2" title="{!Claims_type_fieldset_label}">
+                        <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Claim_Type}" var="t">                          
+                                <apex:outputField value="{!claim[t]}"/>                          
+                        </apex:repeat>          
+                        </apex:pageBlockSection>
+
+                        <apex:pageBlockSection columns="1" title="{!Claims_type_details_section_title}">
+                                                                        	
+                        	<apex:pageBlockSectionItem LabelStyle="width:50%;" >
+                        		<apex:outputLabel value="{!replacement_consignement_no_label}" />
+                        		<apex:outputfield value="{!claim.Replacement_Consignment_No__c}"/>
+                        	</apex:pageBlockSectionItem>
+                        
+                            <p>{!Claims_type_details_section_content} please send a copy of a brochure or a photograph of the item(s) to <strong>{!emailId}</strong> or by post
+                            or fax to the address shown at the top of the claim form.</p>
+                            
+                            <apex:pageBlockSectionItem >                                
+                                <apex:outputField value="{!claim.Detail_description_of_items__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem labelStyle="width:50%;">
+                                <apex:outputLabel value="{!Cost_value_of_consignment_label}"/>                                                       
+                                <apex:outputField value="{!claim.Cost_of_consignment_exclcuding_VAT__c}" />
+                            </apex:pageBlockSectionItem>
+                            
+                            
+
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!Cost_value_of_items_label}" />
+                            
+                                <apex:outputField value="{!claim.Cost_of_items_exclcuding_VAT__c}" />
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Weight_of_items__c.Label}" />
+                                                            
+                                <apex:outputField value="{!claim.Weight_of_items__c}"/>
+                            </apex:pageBlockSectionItem>                                                                                   
+                        </apex:pageBlockSection>        
+                        
+                        <apex:pageBlockSection title="{!Claims_damaged_section_title}" collapsible="false" columns="1">
+                                
+                                <apex:pageblockSectionItem labelStyle="widt30%">
+                                    <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Repair_cost__c.Label}"/>
+                                    <apex:outputField value="{!claim.Repair_cost__c}" />                                                                                                                                          
+                                </apex:pageblockSectionItem>                                                                                                
+                                
+                                <apex:pageblockSectionItem >
+                                    <apex:outputLabel value="{!$ObjectType.CS_Claims__c.Fields.Salvage_value__c.Label}" />
+                                    <apex:outputField value="{!claim.Salvage_value__c}"/>                                                                                                                                        
+                                </apex:pageblockSectionItem>
+                                
+                            <apex:pageBlockSectionItem >
+                                            <apex:outputText value="Please provide a copy of the repair estimate/invoice." styleClass="lbl"/>
+                                </apex:pageBlockSectionItem>
+                                
+                            <apex:pageBlockSectionItem >                                            
+                                	<apex:outputLabel value="{!damaged_items_inspection_label}" />
+                                    <apex:outputField value="{!claim.damaged_packing_inspection__c}" />                                                                                                                                         
+                                </apex:pageBlockSectionItem>
+                                                                                                     
+                        </apex:pageBlockSection>
+                                                                                                                                                                                      
+                        
+                        <apex:pageBlockSection columns="1" title="" collapsible="false">
+                            <apex:outputText value="All claims are subject to the terms stated in the TNT UK Limited Conditions of Carriage. This claim form does not constitute admission of liability by TNT UK Limited."/>
+                            
+                            <apex:outputText value="In order to ensure your claim is processed as quickly as possible and to avoid unnecessary delays, please ensure all the following items are submitted by e-mail to uk.claims.info@tnt.com  quoting the reference number shown at the top of the form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage."/>                           
+                               
+                             <apex:pageBlockSectionItem labelStyle="width:40%;" >
+                                    <apex:outputLabel value="{!check_list_opt_1}"/>
+                                    <!-- 
+                                    <apex:outputField value="{!claim.All_requested_information__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                               
+                               
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_2}"/>
+                                    <!-- 
+                                    <apex:outputField value="{!claim.photographs_of_the_items__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                               
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_3}" style="width:70%;"/>
+                                    <!-- 
+                                    <apex:outputField value="{!claim.Copy_of_repair_estimate__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+                             
+                             <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="{!check_list_opt_4}"/>
+                                    <!-- 
+                                    <apex:outputField value="{!claim.Copy_of_relevant_commercial_invoice__c}"/>
+                                     -->
+                             </apex:pageBlockSectionItem>
+
+								<apex:outputText value="Please ensure all attachments are returned by e-mail to {!emailId} quoting the reference number shown at the top of the
+                                    form. Alternatively please send by post or fax to the address shown at the top of the form. It is important that you quote the reference
+                                    number when sending any attachments. The claim form must be returned within 21 days of the date of issue to comply with TNT UK Limited Conditions of Carriage."
+									style="font-style:italic;" />
+
+							</apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection title="{!payment_method_label}" >
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Method_of_payment}" var="m">
+                                    <apex:outputField value="{!claim[m]}"/>
+                            </apex:repeat>                          
+                        </apex:pageBlockSection>
+
+                        <apex:pageBlockSection title="{!Declaration_section_title}" columns="1" >
+                        	<apex:outputText value="To the best of my knowledge I confirm that all the information contained in this form is accurate and true." />
+                            <apex:repeat value="{!$ObjectType.CS_Claims__c.FieldSets.Declaration_section}" var="dl">
+                                    <apex:outputField value="{!claim[dl]}"/>
+                            </apex:repeat>                          
+                        </apex:pageBlockSection>                        
+                    </p>
+            	</apex:pageBlock>
+            </apex:outputPanel>
+            </div>
+            <div id="termsContentDiv" style="display:none;">
+                <apex:pageBlock mode="maindetail">
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <h1>How claims are processed</h1>
+                        </apex:facet>
+                    
+                        <apex:outputText value="At TNT we endeavour to handle all consignments with the utmost care. On rare occasions,
+                                                items can get misplaced or damaged in transit."/>
+                                                
+                        <apex:outputText value="Should this happen we will do everything we can to resolve the situation and will aim to
+                                                make the process as quick and easy as possible for you."/>
+                                                
+                        <apex:outputText value="If your consignment has been lost or damaged, please notify us in writing by completing the
+                                                enclosed claim form and returning it to the Central Claims Department (at the address
+                                                shown) within 21 days of the date of issue."/>
+                                                
+                        <apex:outputText value="To help us progress your claim quickly,we ask you to complete the form as fully as possible.
+                                                For example please ensure you detail the consignment note number, date of despatch and,
+                                                wherever possible, provide any supporting material such as invoices, photographs and brochures.
+                                                If insufficient information is provided we may write to you requesting more details. To avoid this
+                                                possible delay, please provide as much information as possible with your initial claim." />
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <h1>Lost items</h1>
+                        </apex:facet>
+                        <apex:outputText value="Upon receipt of your completed claim form,we will aim to investigate and process claims
+                                                with a limit of liability under £250 within ten working days."/>
+                        <apex:outputText value="For claims with a limit of liability over £250, please refer to the claims investigation process
+                                                (see below)."/>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <h1>Damaged items</h1>
+                        </apex:facet>
+                        <apex:outputText value="Upon receipt of your completed claim form,we will aim to process claims for damaged items
+                                                with a limit of liability under £250 within ten working days."/>
+                        <apex:outputText value="For claims with a limit of liability over £250, please refer to the claims investigation process
+                                                (see below)."/>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <h1>Claim investigation process</h1>
+                        </apex:facet>
+                        <apex:outputText value="Upon receipt of your completed claim form we will make every effort to assess and process
+                                                claims with a limit of liability over £250 within 15 working days."/>
+                        <apex:outputText value="Claims with a limit of liability over £1,000 or value of £2,500 will require further investigation
+                                                and may take approximately six weeks to be assessed, authorised and processed."/>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection columns="1" collapsible="false">
+                        <apex:facet name="header">
+                            <h1>For more information</h1>
+                        </apex:facet>
+                        <apex:outputText value="If you have any queries regarding our claims process please contact the Central Claims
+                                                Department on 01706 827 511."/>
+                        <apex:outputText value="We will make every effort to conclude all claim investigations within the above time frames.
+                                                However, there will be occasions when circumstances surrounding a claim may necessitate a
+                                                longer period of investigation."/>
+                        <apex:outputText value="Cheques may take up to 5 working days to process prior to posting."/>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </div>
+        </div>
+        </apex:form>        
+    </body>
+    <script>
+          var j$ = jQuery.noConflict();
+        
+        j$(document).ready(function(){
+            
+            var hgt = j$('#contentDiv').height();            
+            j$('.Sidetab').css('height',hgt);           
+            var h = hgt -120;           
+            j$('.band1').height(h);                                       
+        });
+    </script>
+</html>
+</apex:page>

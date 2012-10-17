@@ -1,0 +1,47 @@
+<apex:page sidebar="false" >
+
+<style>
+
+#content{
+    padding: 30px 250px 30px 250px;
+}
+
+.color{
+    color:#f26728;
+}
+
+</style>
+
+  
+  <div id="content">
+  <h3 class="color">Welcome to I'dea</h3>
+  
+  <a  target="_new" href="https://c.cs4.visual.force.com/apex/ideas_test_v2">
+  <apex:image style="float:right;" url="https://emea.salesforce.com/resource/1315221990000/idea_start"/>
+  </a>
+  
+  <p>
+  
+  Have you got an idea that will:
+  
+  
+  
+<li>Help us save money</li>
+<li>Improve the way we work</li>
+<li>Expand our services or products</li>
+<li>Make life easier for our customers</li>
+<p>If so, we'd love to hear it.  Just submit it to our I'dea suggestion scheme, and we'll keep you fully informed as your idea is shared, assessed, evaluated...and hopefully implemented!!</p>
+
+  
+  </p>
+  
+  <p>
+  
+  <a class="color"  target="_new" href="https://c.cs4.visual.force.com/apex/ideas_test_v2">Click</a> on the big apostrophe to find out how to submit your big ideas - or, for that matter, a little idea.  We want them all, and all will be properly assessed.
+  
+  </p>
+  
+  </div>
+  
+  
+</apex:page>

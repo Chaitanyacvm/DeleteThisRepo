@@ -1,0 +1,125 @@
+<apex:component controller="IR_User_Customer_PDF_Controller" access="global">
+<apex:attribute name="cid" assignTo="{!custId}" description="This is the Record Id of the Customer Object" type="Id"/>
+    
+    <head>
+ <style>
+      body{
+            font-family: Arial Unicode MS;
+              font-size: 11px;      
+      }
+      .band{
+        width: 700px;
+        height:7px;
+        background-color: #FF6600;
+        font-family: Arial Unicode MS;
+      }             
+          #table {
+              /*border: 1px solid #FF6600;*/
+              font-family: Arial Unicode MS;
+              font-size: 11px;
+          }
+          /*
+          #table td {
+              border: 1px solid #D8D8D8;
+          }*/
+          #outer {
+                /*border: 1px solid #CCCCCC;*/
+              height: 930px;          
+          }
+          .text {
+              font-family: Arial Unicode MS;
+              font-size: 11px;
+          }
+      </style>
+      </head>
+      <body> 
+      <!-- <div style="width:700px;background-color:#FF6600;height:10px;"></div> border: 1px solid #CCCCCC; padding: 0 2px;-->
+        <div style="font-family: Arial Unicode MS;font-size: 11px;">            
+            <p style="font-size:18px; color:#FF6600;"><strong>Welcome to TNT!</strong></p>
+            Thank you for joining the TNT online services community. In addition to the welcome email, this document provides you with all you need to get started using our on-line shipping and administration tools.
+            
+            <p><strong>Account and Billing Information:</strong></p>
+            <table>
+                <tr>
+                    <td>Company Name:</td>                    
+                    <td>{!customer.Company__c}</td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td>{!customer.Address_1__c}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{!customer.Address_2__c}</td>
+                </tr>
+				<tr>
+                    <td></td>
+                    <td>{!customer.Address_3__c}</td>
+                </tr>
+                <tr>
+                    <td>Town/City:</td>
+                    <td>{!customer.Town_City__c}</td>
+                </tr>
+                <tr>
+                    <td>Postcode:</td>
+                    <td>{!customer.Postcode__c}</td>
+                </tr>
+                <tr>
+                    <td>VAT Number:</td>
+                    <td>{!customer.VAT_Registration_Number__c}</td>
+                </tr>
+                <tr>
+                    <td>National ETL:</td>
+                    <td>{!customer.Extended_Transit_Liability_Setting__c}</td>
+                </tr>
+                <tr>
+                    <td>Contact Name:</td>
+                    <td>{!customer.Title__c} {!customer.First_Name__c} {!customer.Surname__c}</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td>{!customer.Email__c}</td>
+                </tr>
+                <tr>
+                    <td>Telephone:</td>
+                    <td>{!customer.Telephone__c}</td>
+                </tr>
+            </table>
+            <p>In order to send shipments both domestically within the UK and internationally, you need two separate account numbers:</p>
+            <table>
+                <tr>
+                    <td>Domestic Trading Account:</td>
+                    <td>{!customer.Domestic_Account_Number__c}</td>
+                </tr>
+                <tr>
+                    <td>International Trading Account:</td>
+                    <td>{!customer.International_Account_Number__c}</td>
+                </tr>                
+            </table>
+            <p>Online Services:</p>
+            Our records show that your company already has a user account for <a href="https://express.tnt.com/eInvoicing/login.aspx">eInvoicing</a>, so you will need to contact the person responsible for this in your business to arrange for you to have access if required as we are not permitted to do this for you for security reasons.Alternatively, please contact <a href="#">group.admin.stubbins@tnt.com.</a>
+            <p>We also see that you already have a user account for <a href="https://my.tnt.com/myTNT/login/LoginInitial.do?cmd=1&navigation=1#login">myTNT</a>. Your username for myTNT is {!customer.Email__c} and your original password has not been changed. However, if you have forgotten your password, you can get a reminder sent to your email from the login area.</p>
+            
+            To access the login area for myTNT and eInvoicing, please follow the links below:
+            <table>
+                <tr>
+                    <td>myTNT:</td>
+                    <td><a href="https://my.tnt.com/myTNT/login/LoginInitial.do?cmd=1&navigation=1#login">https://my.tnt.com/myTNT/login/LoginInitial</a></td>
+                </tr>
+                <tr>
+                    <td>eInvoicing:</td>
+                    <td><a href="https://express.tnt.com/eInvoicing/login.aspx">https://express.tnt.com/eInvoicing/login.aspx</a></td>
+                </tr>                
+            </table>      
+            <p><strong>Note:</strong> Your access to eInvoicing will normally be activated within 24 hours.</p>       
+            <p>Should you not be able to find the answers to any questions you may have about using these services online, please click <a href="http://www.tnt.com/express/en_gb/site/home/support/tnt_feedback.html">here</a> and a member of our team will get back to you within 1 hour*.</p>
+            <p>Yours sincerely,</p>
+            <p>TNT Internet Registrations Team</p>
+            <img src="https://c.eu0.content.force.com/servlet/servlet.ImageServer?id=01520000000hChp&oid=00D20000000OHuz" alt="logo"/>			
+            <p>* Online booking queries can only be dealt with during office hours of 9am and 5pm Monday to Friday.  We will get back to you by 10.00a.m the next working day with queries made outside of these hours.</p>
+              Can we help you save money on your express deliveries?  Sure we can.
+              <!-- <div style="width:700px;background-color:#FF6600;height:10px;"></div> -->                       
+        </div>          
+ </body>      
+
+</apex:component>

@@ -1,0 +1,73 @@
+<apex:page id="mypage4" standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+  
+     <script type="text/javascript">
+      function validate(question) 
+          {
+            if (question.value == "No")
+            {
+                alert('Please enter comments.');                
+            } 
+          }
+          
+      function other(a) 
+          {
+            if (a.value == "Yes")
+            {
+                alert('Please enter comments');
+            } 
+          }             
+    </script>
+    
+  <apex:form id="myForm">
+      <apex:pageBlock title="Job Description" id="mypageBlock">
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">      
+      <font size="2"><b>3. In your opinion was the job description a fair reflection on the role?</b></font>  
+        <apex:selectRadio id="q3" value="{!Questionnaire__c.Question3__c}" layout="pageDirection" required="true" onclick="validate(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment" id="nocomment"></apex:selectoption> 
+            </apex:selectradio>
+            <p/><p/> 
+            
+                    <b>Comments:</b>
+             <apex:inputTextarea id="q3comments" value="{!Questionnaire__c.Question3Comment__c}" cols="100" rows="4">
+             </apex:inputTextarea>
+            
+<p/><p/><font size="2"><b>4. Are they any duties in your job description you are no longer responsible for?</b></font>                         
+      <apex:selectRadio id="q4" value="{!Questionnaire__c.Question4__c}" layout="pageDirection" required="true" onclick="other(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No" onclick="validate(this)"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            
+                    <b>Comments:</b>
+             <apex:inputTextarea id="q4comments" value="{!Questionnaire__c.Question4Comment__c}" cols="100" rows="4"/>
+                      
+<p/><p/><font size="2"><b>5. Did you have any responsibilities that are not detailed in your job role?</b></font>                         
+        <apex:selectRadio id="q5" value="{!Questionnaire__c.Question5__c}" layout="pageDirection" required="true" onclick="other(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/>
+             
+                     <b>Comments:</b>
+             <apex:inputTextarea id="q5comments" value="{!Questionnaire__c.Question5Comment__c}" cols="100" rows="4"/>
+            <br/><br/>
+<table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page4}" value="Previous"/></td> 
+            </tr>
+            </table>
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage4}" value="Next"/></td>
+            </tr>
+            </table>
+
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

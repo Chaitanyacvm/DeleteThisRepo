@@ -1,0 +1,139 @@
+<apex:page standardController="Form_Schedule__c" extensions="Form_Schedule_Page_Controller">
+<script>
+  function toggle(PickList, DailySchedulePanel) {
+      if(PickList.value == 'Daily')
+      {
+          var documentElement = document.getElementById(DailySchedulePanel).style.display = "block";
+      }
+      else
+      {
+          var documentElement = document.getElementById(DailySchedulePanel).style.display = "none";
+      }
+  }  
+  </script>
+    <apex:sectionHeader title="{!$ObjectType.Form_Schedule__c.label}" subtitle="{!schedule.Name}"/>
+    <apex:pageMessages id="userMessages"></apex:pageMessages>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Schdule Details" columns="2" collapsible="false">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="reportTypeList">{!$ObjectType.Form_Schedule__c.fields.Form__c.label}</apex:outputLabel>
+                    <apex:outputPanel >
+                        <apex:selectList id="reportTypeList" value="{!schedule.Form__c}" rendered="{!!isEdit}" required="true" size="1">
+                            <apex:selectOptions value="{!formTypes}"/>
+                        </apex:selectList>
+                        <apex:outputField value="{!schedule.Form__c}" rendered="{!isEdit}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!schedule.Depot__c}" rendered="{!!isEdit}"/>
+                <apex:outputField value="{!schedule.Depot__c}" rendered="{!isEdit}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Schedule" columns="3" collapsible="false">
+                <apex:inputField value="{!schedule.Start_Date__c}" required="true"/>
+                
+                <apex:pageBlockSectionItem >
+                <apex:outputLabel for="ScheduleTypeList">{!$ObjectType.Form_Schedule__c.fields.Schedule_Type__c.label}</apex:outputLabel>
+                <apex:outputPanel >
+                <apex:selectList onchange="toggle(this,'{!$Component.DailySchedulePanel}')" id="selectScheduleType" value="{!schedule.Schedule_Type__c}" rendered="{!!isEdit}" required="true" size="1">
+                    <apex:selectOptions value="{!ScheduleTypes}"/>
+                </apex:selectList>
+                <apex:outputField value="{!schedule.Schedule_Type__c}" rendered="{!isEdit}"/>
+                </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>            
+            
+            <apex:panelGroup id="DailySchedulePanel" style="display:{!DisplayValue};">
+            <apex:pageBlockSection id="DailySchedule" title="Schedule" columns="1" collapsible="false">
+                <apex:dataTable value="{!schedule}" var="thisSchedule" columns="7" width="100%">
+                    <apex:column headerValue="Sunday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Sunday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Monday" width="14.2%" >
+                        <apex:inputField value="{!thisSchedule.Due_Monday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Tuesday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Tuesday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Wednesday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Wednesday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Thursday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Thursday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Friday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Friday__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Saturday" width="14.2%">
+                        <apex:inputField value="{!thisSchedule.Due_Saturday__c}"/>
+                    </apex:column>
+                </apex:dataTable>
+            </apex:pageBlockSection>
+            </apex:panelGroup>
+            
+            <apex:pageBlockSection title="Schedule" columns="1" collapsible="false">
+                <apex:dataTable value="{!schedule}" var="thisSchedule" columns="12" width="100%">
+                    <apex:column headerValue="January" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_January__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="February" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_February__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="March" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_March__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="April" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_April__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="May" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_May__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="June" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_June__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="July" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_July__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="August" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_August__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="September" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_September__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="October" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_October__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="November" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_November__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="December" width="8.3%">
+                        <apex:inputField value="{!thisSchedule.Due_December__c}"/>
+                    </apex:column>
+                </apex:dataTable>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

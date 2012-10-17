@@ -1,0 +1,40 @@
+<apex:page standardController="Order_Item__c" extensions="Order_Item_Extension" action="{!checkRecord}">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!addSKUtoOrderItem}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages id="pageErrors"></apex:pageMessages>
+            <apex:pageBlockSection collapsible="false" columns="4" title="SKU Information">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="StyleNumber">{!$ObjectType.SKU__c.Fields.Style_Number__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!StyleNumber}" id="StyleNumber"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(Order.Customer_Company__r.Style_Suffix_Enterable__c==true,true,false)}" >
+                    <apex:outputLabel for="StyleSuffix">{!$ObjectType.SKU__c.Fields.Style_Suffix__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!StyleSuffix}" id="StyleSuffix"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(Order.Customer_Company__r.Colour_No_Enterable__c==true,true,false)}">
+                    <apex:outputLabel for="ColourNumber">{!$ObjectType.SKU__c.Fields.Style__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!ColourNumber}" id="ColourNumber"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!IF(Order.Customer_Company__r.Colour_Suffix_Enterable__c==true,true,false)}">
+                    <apex:outputLabel for="ColourSuffix">{!$ObjectType.SKU__c.Fields.Colour_Suffix__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!ColourSuffix}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem rendered="{!IF(Order.Customer_Company__r.Size_Dimension_Enterable__c==true,true,false)}">
+                    <apex:outputLabel for="SizeDimension">{!$ObjectType.SKU__c.Fields.Size_Dimension__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!SizeDimension}" id="SizeDimension"/>
+                </apex:pageBlockSectionItem>
+                <!-- 
+                <apex:pageBlockSectionItem rendered="{!IF(Order.Customer_Company__r.UPC_Barcode_enterable__c==true,true,false)}">
+                    <apex:outputLabel for="UPCBarcode">{!$ObjectType.SKU__c.Fields.UPC_Barcode__c.Label}</apex:outputLabel>
+                    <apex:inputText value="{!UPCBarcode}" id="UPCBarcode"/>
+                </apex:pageBlockSectionItem>
+                 -->
+                <apex:inputField value="{!New_Order_Item.Quantity__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

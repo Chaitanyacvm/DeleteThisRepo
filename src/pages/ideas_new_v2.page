@@ -1,0 +1,339 @@
+<apex:page showHeader="false" standardStylesheets="false" standardController="Idea" extensions="ideas_new,ideas_test" >
+
+<!-- Action Functions For Voting -->
+
+<apex:form >
+    
+    <apex:actionFunction name="ideaVoatUp" action="{!voteUp}" rerender="ideaListRepeter">
+        <apex:param name="ideaIdForVoatUp" value=""/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="ideaVoatDown" action="{!voteDown}" rerender="ideaListRepeter">
+        <apex:param name="ideaIdForVoatDown" value=""/>
+    </apex:actionFunction>
+    
+</apex:form>
+
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>TNT SalesForce</title>
+  <link rel="stylesheet" href="{!URLFOR($Resource.IdeasTNT, 'css/stylesheet.css')}" type="text/css" />   
+  <script type="text/javascript" src="{!URLFOR($Resource.IdeasTNT, 'js/jquery-1.6.min.js')}"></script>
+  <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="{!URLFOR($Resource.IdeasTNT, 'css/facebox.css')}" media="screen" rel="stylesheet" type="text/css"/>
+    <script src="{!URLFOR($Resource.IdeasTNT, 'js/facebox.js')}" type="text/javascript"></script> 
+    
+    <style>
+    
+    
+    </style>
+    
+ </head>
+ <body>
+ <!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]--> 
+
+    <header id="mainHead">
+        <div class="wrapper">
+            <h2 class="idea">Ideas</h2>
+            <h1 class="logo">TNT Sure We Can</h1>
+        </div>
+    </header>
+
+    <!-- Heading -->
+    <div class="wrapper">
+        <div class="pageHeading" >         
+              <section class="leftCol" id="header1" >
+              <!-- Change Header here 1-5 -->
+                <img src="{!URLFOR($Resource.IdeasTNT, 'images/pageheader/page_header1.jpg')}" alt=""/>
+              </section>
+              <section class="rightCol">         
+                  <section id="userDetails">
+                      
+                       
+                  
+                       <h3 class="username">{!$User.FirstName}  {!$User.LastName}</h3>
+                       <a href="{!$Page.ideas_profilePage_v2}?c=09a200000000gmn" class="profile">Profile</a>
+                       <apex:outputLink styleClass="profile" value="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">{!$Label.site.logout}</apex:outputLink>
+                       
+                        
+                       <span class="currentlocation">Current Location: {!u.Idea_Location__c} </span>
+                         <form action="#" method="post">
+                         
+                        </form>
+                  </section> 
+              </section>
+       </div>
+    </div>
+
+    <!-- Content -->
+
+    <div class="wrapper pageContent">
+        
+        <section class="leftCol">
+               <nav id="mainNav">
+                <!-- For active tabs just add active class to the a tag -->
+                    <ul>
+                        <li class="first">
+                        
+                        <!-- <a class="active" href="#">Local Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(LocalNav)}" styleClass="" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        <ideas:listOutputLink rendered="{!LocalNav}" styleClass="active" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li>
+                        
+                        <!-- <a href="#">National Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(NationalNav)}"  styleClass="" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!NationalNav}"  styleClass="active" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li class="last">
+                        
+                        <!-- <a href="#">Campaign Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(CampaignNav)}" styleClass="" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!CampaignNav}" styleClass="active" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                    </ul>
+                </nav>
+                
+                <!--
+                 <nav id="subNav">
+                
+                    <ul>
+                        <li class="first">
+                        
+                       
+                        
+                        <ideas:listOutputLink rendered="{!NOT(RecentNav)}" styleClass="" sort="recent" page="ideas_test_v2">Recent Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!RecentNav}" styleClass="active" sort="recent" page="ideas_test_v2">Recent Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li>
+                        
+                        
+                        
+                        <ideas:listOutputLink rendered="{!NOT(TopNav)}" styleClass="" sort="top" page="ideas_test_v2">Top Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!TopNav}" styleClass="active" sort="top" page="ideas_test_v2">Top Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li>
+                        
+                        
+                        
+                        <ideas:listOutputLink rendered="{!NOT(PopularNav)}" styleClass=""  sort="popular" page="ideas_test_v2">Popular Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!PopularNav}" styleClass="active" sort="popular" page="ideas_test_v2">Popular Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li class="last">
+                        
+                        
+                        
+                        <ideas:listOutputLink rendered="{!NOT(CommentsNav)}" styleClass=""  sort="comments" page="ideas_test_v2">Comments
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!CommentsNav}" styleClass="active" sort="comments" page="ideas_test_v2">Comments
+                        </ideas:listOutputLink>
+                                
+                        </li>
+                    </ul>
+                </nav>
+                -->
+                <div style="height:20px;" id="searchBox">
+                    
+                </div>
+                
+                
+
+                <div id="ideaForm">
+                        
+                        <apex:form enctype="multipart/form-data">
+                        <apex:pageMessages escape="false" id="error"/>
+                        <apex:outputPanel rendered="{!IF(u.Idea_Admin_Role__c = 'Idea Champion',True,False)}">
+                            <label >On Behalf Of</label>
+                            <apex:inputtext styleClass="input" id="onBehalfOf" value="{!IdeaNew.On_Behalf__c}" />
+                        </apex:outputPanel>
+                        <label>Title</label>
+                        <apex:actionRegion >
+                            <apex:inputText styleClass="input inputTextBox" value="{!IdeaNew.Title}">
+                                <apex:actionSupport action="{!getDups}" event="onblur" reRender="dupIdList" />
+                            </apex:inputText>
+                            
+                            <apex:outputPanel id="dupIdList">
+                                <apex:repeat value="{!DupIdeas}" var="dIdeas">
+                                    <a href="/apex/ideas_detail_v2?id={!dIdeas.Id}" target="_BLANK">{!dIdeas.Title}</a> <span style="color:red;">{!CEILING(dIdeas.VoteTotal)}</span>
+                                    <br/>
+                                </apex:repeat>
+                            </apex:outputPanel>
+                        </apex:actionRegion>
+                        <!-- <input class="input" type="text" id="title"/> -->
+                        
+                        <label>Description</label>    
+                       
+                        
+                        <apex:inputTextarea styleClass="textarea inputTextBox2" id="Description" cols="20" value="{!IdeaNew.Body}" richText="true"/>
+                        
+                        <label style="color:black;font-size: 90%">Category</label><br/><br/><br/>
+                        <apex:inputField id="ideaCategory" value="{!IdeaNew.Idea_Category__c}"/><br/>
+                        
+                        <label style="color:black;font-size: 90%">Attach File</label><br/><br/><br/><br/>
+                        <apex:inputFile styleClass="" value="{!fileBody}" filename="{!fileName}"  id="file" /><br/>
+                        
+                        <label style="color:black;font-size: 90%">Mobile Number ( If you want to receive sms alerts, enter a mobile number )</label><br/><br/><br/>
+                        <apex:inputText id="number"  value="{!IdeaNew.Contact_Number__c}" /><br/>
+                        
+                        
+                        <label style="color:black;font-size: 90%">Please note that your idea will be shared on the I’dea website and comments invited.</label><br/>
+                        <label style="color:black;font-size: 90%">Please tick here if you wish your idea to be anonymous on the website:</label><br/>
+                        <br/><br/><apex:inputCheckbox id="anonymous" value="{!IdeaNew.Anonymous_Idea__c}" />
+                        <label style="color:black;font-size: 90%">Your name details will be retained with the system for administrative purposes.</label><br/>
+                        
+                    <div class="buttonGroup">
+                          
+                          <!-- <input id="Submit" class="btnframework clear" type="submit" value="Post" /> -->
+                          
+                          <!-- 
+                          
+                           <div class="contactNum">
+                            <label>Mobile Number</label>
+                            
+                            <apex:inputText id="number3"  value="{!IdeaNew.Contact_Number__c}" />
+             
+                            <label >Anonymous Idea</label>
+                            <apex:inputCheckbox id="anonymous3" value="{!IdeaNew.Anonymous_Idea__c}" />
+                            
+                          
+                            
+                          </div>
+                           --> 
+                          <apex:commandButton style="margin-top:15px;" id="Submit" styleClass="btnframework clear" value="Submit Idea" action="{!saveIdea}"/>
+                          
+                    </div>
+
+
+                    </apex:form> 
+                    
+
+
+                </div>
+
+                
+
+                   
+                   
+
+        </section>
+        <section class="rightCol">
+
+            <section id="newIdea">
+                <h2>New Idea</h2>
+               <p> Got a great new idea? <br />
+                Submit it here.</p>
+                <a class="btnframework orange" href="javascript:void(0);" >Submit Idea</a>
+            </section>
+
+            <section id="campaign">
+              <h1>Campaigns</h1>
+              
+              <apex:repeat value="{!ideaCampaign}" var="iCamp">
+                   <div class="item">
+                        <div class="image"><apex:image url="{!URLFOR($Action.Attachment.Download, iCamp.Attachment_Id__c)}"/></div>
+                        <h2><a href="{!$Page.ideas_camp_v2}?camp={!iCamp.Id}">{!iCamp.Name}</a></h2>
+                        <p>{!iCamp.info__c}</p>
+                        
+                        <!-- <a class="btnframework clear" href="{!$Page.ideas_new_v2}?camp={!iCamp.Id}" >Submit Idea</a> -->
+                   
+                   </div>
+              </apex:repeat>
+            
+            </section>
+
+            <section id="ideasInAction">
+                <div class="image"><img src="{!URLFOR($Resource.IdeasTNT, 'images/img_ideasinaction.jpg')}" alt="TNT Ideas in Action" /></div>
+                <nav id="ideaNav">
+                    <ul>
+                        <!-- <li><a href="#"><strong>Idea 1</strong> - Lorem ipsum delor sat urn</a></li> -->
+                        <apex:repeat value="{!ideasInAction}" var="idea">    
+                        <li><a href="{!$Page.ideas_detail_v2}?id={!idea.id}"><strong>{!idea.Title}</strong> - More</a></li>
+                        </apex:repeat>
+                    </ul>
+                </nav>
+
+
+            </section>
+
+
+
+        </section>
+        
+    </div>
+
+
+
+    
+
+</body>
+
+
+<script>
+
+$(document).ready(JTAC_init);
+
+function JTAC_init() {
+  //$("textarea[maxlength]").each(function(){
+  
+  //document.getElementById("{!$Component.textBox}");
+  
+  $('.inputTextBox').each(function(){
+  
+    //var max = this.getAttribute('maxlength');
+    var max = 50;
+    var html_counter = "<div class=\"charcount\">0/" + max +"</div>";
+    $(this).after(html_counter);
+    this.counterElement = $('div.charcount')[0];
+  });
+  // update counters
+  $(".inputTextBox").each(function(){JTAC_update(this)});
+  // add keyup observers
+  $(".inputTextBox").keyup(function(){JTAC_update(this)});
+  
+}
+
+function JTAC_update(ta){
+  //var maxLength = ta.getAttribute('maxlength');
+  var maxLength = 50;
+  var currentLength = ta.value.length;
+  if(currentLength >= maxLength) {
+    $(ta.counterElement).addClass('limit');
+    ta.value = ta.value.substring(0, maxLength);
+    $(ta.counterElement).html(maxLength + "/" + maxLength);
+  } else {
+    $(ta.counterElement).removeClass('limit');
+    $(ta.counterElement).html(currentLength + "/" + maxLength);
+  }
+}
+
+</script>
+
+
+</apex:page>

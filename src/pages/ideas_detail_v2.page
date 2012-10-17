@@ -1,0 +1,356 @@
+<apex:page showHeader="false" standardStylesheets="false" standardController="Idea" extensions="ideas_detail,ideas_test" >
+
+<!-- Action Functions For Voting -->
+
+<apex:form >
+    
+    <apex:actionFunction name="ideaVoatUp" action="{!voteUp}" rerender="voteShowAfter">
+        <apex:param name="ideaIdForVoatUp" value=""/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="ideaVoatDown" action="{!voteDown}" rerender="voteShowAfter">
+        <apex:param name="ideaIdForVoatDown" value=""/>
+    </apex:actionFunction>
+    
+</apex:form>
+
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>TNT SalesForce</title>
+  <link rel="stylesheet" href="{!URLFOR($Resource.IdeasTNT, 'css/stylesheet.css')}" type="text/css" />   
+  <script type="text/javascript" src="{!URLFOR($Resource.IdeasTNT, 'js/jquery-1.6.min.js')}"></script>
+  <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="{!URLFOR($Resource.IdeasTNT, 'css/facebox.css')}" media="screen" rel="stylesheet" type="text/css"/>
+    <script src="{!URLFOR($Resource.IdeasTNT, 'js/facebox.js')}" type="text/javascript"></script> 
+    
+    
+    <style>
+    
+    .noHover:hover{
+        
+        cursor:default;
+        
+        
+    }
+    
+    
+    
+    .dislike:hover{width:28px; height:31px; background:url("{!URLFOR($Resource.IdeasTNT, 'images/bg_btn_dislike.png')}"); text-indent:-9999px; line-height:37px;}
+    .dislike2:hover{width:28px; height:31px; background:url("{!URLFOR($Resource.IdeasTNT, 'images/bg_btn_dislike2.png')}"); text-indent:-9999px; line-height:37px;}
+    
+    
+    </style>
+ </head>
+ <body>
+ <!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]--> 
+
+    <header id="mainHead">
+        <div class="wrapper">
+            <h2 class="idea">Ideas</h2>
+            <h1 class="logo">TNT Sure We Can</h1>
+        </div>
+    </header>
+
+    <!-- Heading -->
+    <div class="wrapper">
+        <div class="pageHeading" >         
+              <section class="leftCol" id="header1" >
+              <!-- Change Header here 1-5 -->
+                <img src="{!URLFOR($Resource.IdeasTNT, 'images/pageheader/page_header1.jpg')}" alt=""/>
+              </section>
+              <section class="rightCol">         
+                  <section id="userDetails">
+                      
+                       
+                  
+                       <h3 class="username">{!$User.FirstName}  {!$User.LastName}</h3>
+                       <a href="{!$Page.ideas_profilePage_v2}?c=09a200000000gmn" class="profile">Profile</a>
+                       <apex:outputLink styleClass="profile" value="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">{!$Label.site.logout}</apex:outputLink>
+                       
+                        
+                       <span class="currentlocation">Current Location: {!u.Idea_Location__c} </span>
+                         <form action="#" method="post">
+                         
+                        </form>
+                  </section> 
+              </section>
+       </div>
+    </div>
+
+    <!-- Content -->
+
+    <div class="wrapper pageContent">
+        
+        <section class="leftCol">
+               <nav id="mainNav">
+                <!-- For active tabs just add active class to the a tag -->
+                    <ul>
+                        <li class="first">
+                        
+                        <!-- <a class="active" href="#">Local Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(LocalNav)}" styleClass="" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        <ideas:listOutputLink rendered="{!LocalNav}" styleClass="active" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li>
+                        
+                        <!-- <a href="#">National Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(NationalNav)}"  styleClass="" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!NationalNav}"  styleClass="active" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li class="last">
+                        
+                        <!-- <a href="#">Campaign Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(CampaignNav)}" styleClass="" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!CampaignNav}" styleClass="active" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                    </ul>
+                </nav>
+                 
+                <div style="height:20px;" id="searchBox">
+                    
+                </div>
+
+
+               
+
+                <div id="ideas">
+
+                    <div class="idea last">
+                        <div class="text">
+                           <h2><span>{!idea.Title}</span></h2>
+                            <p class="author"> By <strong>{!IF(idea.Anonymous_Idea__c,'Anonymous',IF(ISBLANK(Idea.On_Behalf__c),idea.CreatedBy.name,Idea.On_Behalf__c))}</strong> At <strong>{!idea.CreatedBy.Idea_Location__c}</strong> | {!dateFormated}</p>
+                            <p><apex:outputText value="{!idea.Body}" escape="false"/></p>
+                            <!-- Idea User Updates -->
+                            <apex:outputPanel rendered="{!IF(ISBLANK(idea.Idea_Description_Update__c),false,true)}" id="aditionalInformationUpdates">
+                                <p>
+                                    <br/>
+                                    <span style="color:red;"> Idea Updates From Submitter</span>
+                                    <br/>
+                                    <br/>
+                                    <apex:outputText value="{!idea.Idea_Description_Update__c}" escape="false"/>
+                                </p>
+                            </apex:outputPanel>
+                            
+                             <apex:outputPanel rendered="{!IF(AND(idea.CreatedById = $User.Id, showEdit),true,false)}" id="aditionalInformation2">
+                                <br/>
+                                <p><apex:form >
+                                    <span style="color:red;"> Idea Updates From Submitter</span>
+                                    <apex:inputTextarea value="{!ideaAddInfoValue2}" richText="true"/>
+                                    <apex:commandButton action="{!updateIdeaInformation}" value="save"/>
+                                    <!--<apex:commandButton reRender="aditionalInformation,aditionalInformationView" action="{!saveUpdates}" value="save"/>-->
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            <!-- Additional Infromation From SC -->
+                            
+                            <apex:outputPanel rendered="{!IF(AND((idea.Request_Additional_Information_SC__c = 'Yes'),ISBLANK(idea.Additional_Information_SC__c),idea.CreatedById = $User.Id),true,false)}" id="aditionalInformationSC">
+                                <br/>
+                                <p><apex:form >
+                                    <span style="color:red;"> {!idea.Additional_Information_Question_SC__c}</span>
+                                    <apex:inputTextarea value="{!ideaAddInfoValueSC}" richText="true"/>
+                                    <apex:commandButton action="{!saveUpdatesSC}" value="save" />
+                                    <!--<apex:commandButton reRender="aditionalInformation,aditionalInformationView" action="{!saveUpdates}" value="save"/>-->
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            
+                            
+                            <apex:outputPanel rendered="{!IF(NOT(ISBLANK(idea.Additional_Information_SC__c)),true,false)}" id="aditionalInformationSC2">
+                                <br/>
+                                <p><apex:form >
+                                    <!-- <span style="color:red;"> Additional Information</span> -->
+                                    <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),true,false)}"><span style="color:red;">Additional Information</span></apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),false,true)}"><span style="color:red;">{!idea.Additional_Information_Question_SC__c}</span></apex:outputPanel>
+                                    <br/>
+                                    <br/>
+                                    <apex:outputText value="{!idea.Additional_Information_SC__c}" escape="false"/>
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            
+                            <!-- Additional Infromation From Eval -->
+                            
+                            <apex:outputPanel rendered="{!IF(AND((idea.Request_Additional_Information__c = 'Yes'),ISBLANK(idea.Additional_Information__c),idea.CreatedById = $User.Id),true,false)}" id="aditionalInformation">
+                                <br/>
+                                <p><apex:form >
+                                    <span style="color:red;"> {!idea.Additional_Information_Question__c}</span>
+                                    <apex:inputTextarea value="{!ideaAddInfoValue}" richText="true"/>
+                                    <apex:commandButton action="{!saveUpdates}" value="save"/>
+                                    <!--<apex:commandButton reRender="aditionalInformation,aditionalInformationView" action="{!saveUpdates}" value="save"/>-->
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            
+                            
+                            <apex:outputPanel rendered="{!IF(NOT(ISBLANK(idea.Additional_Information__c)),true,false)}">
+                                <br/>
+                                <p><apex:form >
+                                    <!-- <span style="color:red;"> Additional Information</span> -->
+                                    <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),true,false)}"><span style="color:red;">Additional Information</span></apex:outputPanel>
+                                    <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),false,true)}"><span style="color:red;">{!idea.Additional_Information_Question__c}</span></apex:outputPanel>
+                                    <br/>
+                                    <br/>
+                                    <apex:outputText value="{!idea.Additional_Information__c}" escape="false"/>
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!IF(NOT(ISBLANK(idea.Public_Comment__c)),true,false)}" id="publicInformation">
+                                <br/>
+                                <p><apex:form >
+                                    <span style="color:red;"> Evaluator Comment</span>
+                                    <br/>
+                                    <br/>
+                                    <apex:outputText value="{!idea.Public_Comment__c}" escape="false"/>
+                                </apex:form></p>
+                            </apex:outputPanel>
+                            
+                            <!-- Display Attachment -->
+                            <!-- <apex:outputPanel rendered="{!IF(ISBLANK(attachmentId),false,true)}">
+                            <p><br/><apex:outputLink value="{!URLFOR($Action.Attachment.Download,attachmentId)}">Attachment</apex:outputLink></p>
+                            </apex:outputPanel> -->
+                            <apex:form ><p class="status">
+                                Status: <a style="text-decoration:none" class="noHover" href="javascript:void(0);">{!idea.Status__c}</a> | 
+                                Comments: <a style="text-decoration:none" class="noHover" href="javascript:void(0);">{!idea.NumComments}</a> 
+                                <apex:outputPanel rendered="{!IF(ISBLANK(attachmentId),false,true)}"> | 
+                                Attachment:  <apex:outputLink value="{!URLFOR($Action.Attachment.Download,attachmentId)}">{!attachmentName}</apex:outputLink>
+                                </apex:outputPanel>
+                                 |<!-- aaron commented original <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),true,false)}"> Flag:</apex:outputPanel> <apex:outputPanel rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),false,true)}"> Remove:</apex:outputPanel> <apex:commandLink action="{!updateAdminInappropriate}" rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),true,false)}" value="As Inappropriate"/><apex:commandLink action="{!updateAdminInappropriate}" rendered="{!IF(ISBLANK(u.Idea_Admin_Role__c),false,true)}" value="As Inappropriate"/>-->
+                                <!-- aaron additions  -->
+                                
+                            	<apex:outputPanel rendered="{!IF(AND(NOT(ISBLANK(u.Idea_Admin_Role__c)),NOT(ISBLANK(idea.Inappropriate_Flag_By_SC__c)),NOT(idea.Inappropriate_Flag_By_SC__c == 'No')),true,false)}"> Remove:</apex:outputPanel> 
+                            	<apex:outputPanel rendered="{!IF(OR(AND(ISBLANK(u.Idea_Admin_Role__c),NOT(ISBLANK(idea.Inappropriate_Flag_By_SC__c)),NOT(idea.Inappropriate_Flag_By_SC__c == 'No')),ISBLANK(idea.Inappropriate_Flag_By_SC__c),(idea.Inappropriate_Flag_By_SC__c == 'No')),true,false)}"> Flag:</apex:outputPanel>
+                            	<apex:commandLink action="{!updateAdminInappropriate}" rendered="{!IF(OR(ISBLANK(idea.Inappropriate_Flag_By_SC__c),(idea.Inappropriate_Flag_By_SC__c == 'No')),true,false)}" value="As Inappropriate"/>
+                            	<apex:commandLink action="{!updateAdminInappropriate}" rendered="{!IF(AND(NOT(ISBLANK(u.Idea_Admin_Role__c)),NOT(ISBLANK(idea.Inappropriate_Flag_By_SC__c)),NOT(idea.Inappropriate_Flag_By_SC__c == 'No')),true,false)}" value="Flagged as Inappropiate"/>
+                                <apex:commandLink rendered="{!IF(AND(ISBLANK(u.Idea_Admin_Role__c),NOT(ISBLANK(idea.Inappropriate_Flag_By_SC__c)),NOT(idea.Inappropriate_Flag_By_SC__c == 'No')),true,false)}" value="Flagged as Inappropiate"/>
+                                
+                                <!-- end of aaron additions -->
+                                </p></apex:form>
+                        </div>
+                        <div class="actions">
+                        <apex:outputPanel id="voteShowAfter">
+                            <a href="javascript:void(0);" class="commentCount noHover">{!CEILING(idea.VoteTotal)}</a>
+                            <!-- Vote Up -->
+                            <apex:outputPanel rendered="{!NOT(ideaDetail.Voted__c)}" onclick="ideaVoatUp('{!idea.id}')">
+                                <a class="btnframework like" href="javascript:void(0);" >Like this</a>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!ideaDetail.Voted__c}">
+                                <a class="btnframework dislike2 noHover" href="javascript:void(0);" >Like this</a>
+                            </apex:outputPanel>
+                            <!-- Vote Down -->
+                            <apex:outputPanel rendered="{!NOT(ideaDetail.Voted__c)}" onclick="ideaVoatDown('{!idea.id}')">
+                                <a class="btnframework like2" href="javascript:void(0);" >Dislike this</a>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!ideaDetail.Voted__c}" >
+                                <a class="btnframework dislike noHover" href="javascript:void(0);" >Dislike this</a>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        </div>
+                    </div>               
+
+
+                </div>
+
+
+                  <div id="comments">
+                        <h2>Comments</h2>
+                        <apex:repeat value="{!commentList}" var="com">
+                            <div class="comment">
+                                <p>
+                                    <apex:outputText value="{!com.commentBody}" escape="false" /> 
+                                </p>
+                                <p class="author">By <strong>{!com.createdBy.name}</strong>  |  {!LEFT(TEXT(com.createdDate),10)}</p>
+                            </div>
+                        </apex:repeat>
+                        
+                        <apex:form >
+                        
+                        <p><div style="border-bottom:none;" class="comment"></div></p>
+                        
+                        <p>
+                            <apex:inputTextarea cols="62"  value="{!commentBody}" richText="false"/>
+                        </p>
+                        
+                        <p><div style="border-bottom:none;" class="comment"></div></p>
+                        
+                        <p>
+                            <apex:commandButton value="Add Comment" action="{!saveComment}"/>
+                        </p>
+                        </apex:form>
+                    </div>
+
+
+                
+
+                   
+                   
+
+        </section>
+        <section class="rightCol">
+
+            <section id="newIdea">
+                <h2>New Idea</h2>
+               <p> Got a great new idea? <br />
+                Submit it here.</p>
+                <a class="btnframework orange" href="{!$Page.ideas_new_v2}" >Submit Idea</a>
+            </section>
+
+            <section id="campaign">
+              <h1>Campaigns</h1>
+              
+              <apex:repeat value="{!ideaCampaign}" var="iCamp">
+                   <div class="item">
+                        <div class="image"><apex:image url="{!URLFOR($Action.Attachment.Download, iCamp.Attachment_Id__c)}"/></div>
+                        <h2><a href="{!$Page.ideas_camp_v2}?camp={!iCamp.Id}">{!iCamp.Name}</a></h2>
+                        <p>{!iCamp.info__c}</p>
+                        <a class="btnframework clear" href="{!$Page.ideas_new_v2}?camp={!iCamp.Id}" >Submit Idea</a>
+                   </div>
+              </apex:repeat>
+            
+            </section>
+
+            <section id="ideasInAction">
+                <div class="image"><img src="{!URLFOR($Resource.IdeasTNT, 'images/img_ideasinaction.jpg')}" alt="TNT Ideas in Action" /></div>
+                <nav id="ideaNav">
+                    <ul>
+                        <!-- <li><a href="#"><strong>Idea 1</strong> - Lorem ipsum delor sat urn</a></li> -->
+                        <apex:repeat value="{!ideasInAction}" var="idea">    
+                        <li><a href="{!$Page.ideas_detail_v2}?id={!idea.id}"><strong>{!idea.Title}</strong> - More</a></li>
+                        </apex:repeat>
+                    </ul>
+                </nav>
+
+
+            </section>
+
+
+
+        </section>
+
+    </div>
+
+
+
+    
+
+</body>
+
+
+</apex:page>

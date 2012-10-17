@@ -1,0 +1,29 @@
+<apex:page standardController="SKU__c" extensions="SKU_Extension_Controller">
+    <apex:sectionHeader title="SKU Edit" subtitle="New SKU" />
+    <apex:form >
+        <apex:pageBlock title="SKU Edit" id="pageBlock" >
+            <apex:pageBlockButtons rendered="{!IF(SKU__c.Customer_Company__c!=null,true,false)}">
+                <apex:commandButton action="{!Edit}" value="Edit"/>
+                <apex:commandButton action="{!Delete}" value="Delete"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages id="pageErrors"></apex:pageMessages>
+            <apex:pageBlockSection collapsible="true" columns="1" title="SKU Information" rendered="{!IF(SKU__c.Customer_Company__c!=null,true,false)}">
+                <apex:outputField value="{!SKU__c.Customer_Company__c}"/>
+                <apex:outputField value="{!SKU__c.Name}"/> 
+                <apex:outputField value="{!SKU__c.Style_Number__c}"/>
+                <apex:outputField value="{!SKU__c.Style_Suffix__c}" rendered="{!IF(customer_company.Style_Suffix_Enterable__c==true,true,false)}"/>
+                <apex:outputField value="{!SKU__c.Style__c}" rendered="{!IF(customer_company.Colour_No_Enterable__c==true,true,false)}"/>
+                <apex:outputField value="{!SKU__c.Colour_Suffix__c}" rendered="{!IF(customer_company.Colour_Suffix_Enterable__c==true,true,false)}"/>
+                <apex:outputField value="{!SKU__c.Size_Dimension__c}" rendered="{!IF(customer_company.Size_Dimension_Enterable__c==true,true,false)}"/>
+                <apex:outputField value="{!SKU__c.Style_Description__c}"/>
+                <apex:outputField value="{!SKU__c.Colour_Description__c}"/>
+                <apex:outputField value="{!SKU__c.UPC_Barcode__c}"/>
+                <apex:outputField value="{!SKU__c.Packaging_Type__c}"/>       
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" showHeader="true" title="Status Information">
+                <apex:outputField value="{!SKU__c.Transfer_Status__c}"/>
+                <apex:outputField value="{!SKU__c.Change_Status__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

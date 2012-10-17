@@ -1,0 +1,35 @@
+<apex:page standardController="FM_Location__c" extensions="FM_CalendarView_Controller">
+    <apex:form >
+        <apex:actionFunction action="{!getLocations}" name="onSelectLocation"/>
+    
+        <apex:pageBlock title="Calendar View">
+            <apex:pageBlockButtons location="top">
+                <apex:variable value="pdf" var="pdf">
+                    <apex:commandLink target="_blank" rendered="{!showCalendar}" value="Export to PDF" action="{!exportCalendar}" styleClass="btn">
+                        <apex:param name="format" assignTo="{!format}" value="{!pdf}"/>
+                    </apex:commandLink>
+                </apex:variable>
+                <apex:variable value="xls" var="xls">
+                    <apex:commandLink target="_blank" rendered="{!showCalendar}" value="Export to XLS" action="{!exportCalendar}" styleClass="btn">
+                        <apex:param name="format" assignTo="{!format}" value="{!xls}"/>
+                    </apex:commandLink>
+                </apex:variable>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Please select the Location you want to see">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="timeframe_list" value="Timeframe"/>
+                    <apex:selectList value="{!selectedTimeFrame}" size="1" onchange="onSelectLocation(this.value);" id="timeframe_list">
+                        <apex:selectOptions value="{!soTimeFrame}"></apex:selectOptions>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="location_list" value="{!$ObjectType.FM_Location__c.Fields.Name.Label}"/>
+                    <apex:selectList value="{!selectedLocation}" size="1" onchange="onSelectLocation(this.value);" id="location_list">
+                        <apex:selectOptions value="{!soLocations}"></apex:selectOptions>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <c:FM_CalendarViewContent id="CalendarViewContent" selectedTimeFrame="{!selectedTimeFrame}" selectedLocation="{!selectedLocation}" rendered="{!showCalendar}"/>
+    </apex:form>
+</apex:page>

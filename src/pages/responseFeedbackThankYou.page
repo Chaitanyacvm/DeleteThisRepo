@@ -1,0 +1,7 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+  <h1>Thank you</h1>
+  <br/>
+  <p> Your response to the feedback has been received. </p>
+  
+  
+</apex:page>

@@ -1,0 +1,38 @@
+<apex:component controller="IR_User_Welcomepack_Rate_Card_Controller" access="global" >
+    <apex:attribute name="cid" assignTo="{!custId}" description="This is the Record Id of the Customer Object" type="Id"/>            
+     <head>
+        <title>Internet Rate Card</title>
+        
+        <style type="text/css"> 
+            html, body {
+                font-family:Tahoma, Arial;
+                background:#FFFFFF;
+            }
+            
+            #heading {
+                float: left;
+                width: 300px;
+                margin-top: 8px;
+                margin-left: 10px;
+                font-size: 17px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <table align="center" width="705">
+            <tr>
+                <td>
+                    <div id="heading" style="font-family:Tahoma,Arial;color:#FF6600">
+                        <strong>Express Rate Agreement</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <apex:image url="{!CASE(etlSetting,0,$Resource.IR_Rate_Agreement_ET0,4,$Resource.IR_Rate_Agreement_ET4,7,$Resource.IR_Rate_Agreement_ET7,10,$Resource.IR_Rate_Agreement_ET10,$Resource.IR_Rate_Card)}" width="705px" height="853px" style="border:0px;"/>
+                </td>
+            </tr>
+        </table>
+    </body>
+</apex:component>

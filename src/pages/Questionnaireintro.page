@@ -1,0 +1,18 @@
+<apex:page showHeader="false" standardController="Questionnaire__c"  >
+
+<div align="right">
+<apex:image id="theImage" value="{!$Resource.TNT_sure_we_can}" width="110" height="80"/>
+</div>
+<apex:outputText value="{!Today()}" /> <html><head>
+<style type="text/css">
+Body { Background: transparent; }
+</style>
+</head></html>
+
+<apex:pageBlock title="Leavers Questionnaire" tabStyle="Questionnaire__c" />
+<div align="center">
+<iframe align="middle" allowtransparency="true" frameborder="0" height="650" id="q" scrolling="auto" src="http://tntemea.force.com/LeaversQuestionnaire/questionnairepage1" width="55%">
+
+</iframe>
+</div>
+</apex:page>

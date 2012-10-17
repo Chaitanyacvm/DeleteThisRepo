@@ -1,0 +1,190 @@
+<apex:page id="myPage" standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+
+<script>
+function atload(question) 
+    {
+        if (question.value != "")
+        {
+           var ba = document.getElementById("myPage:myForm:mypageBlock:Central");
+           ba.disabled = true;
+           ba.value = "";  
+        }
+        else{
+           var ba = document.getElementById("myPage:myForm:mypageBlock:Central");
+           ba.disabled = false; 
+        } 
+      }
+      
+    function atload2(question) 
+    {
+        if (question.value != "")
+        {
+           var ba = document.getElementById("myPage:myForm:mypageBlock:Depot");
+           ba.disabled = true;
+           ba.value = "";  
+        }
+        else{
+           var ba = document.getElementById("myPage:myForm:mypageBlock:Depot");
+           ba.disabled = false; 
+        } 
+      }
+      
+
+    
+        function num(question) 
+    {
+    var re = /^[0-9]+$/;
+    
+        if (question.value != "" && !question.value.match(re))
+        {
+           var ba = document.getElementById("myPage:myForm:mypageBlock:emp");
+           alert("Please enter numbers in this box"); 
+           ba.value = ""; 
+        }
+      }     
+             
+</script>
+<apex:form id="myForm">
+<apex:pageBlock id="mypageBlock" title="Leavers Information">
+<apex:pageMessages ></apex:pageMessages>
+ <br/><br/>
+<table border="0" bordercolor="#FFFFFF"  width="300" cellpadding="7" cellspacing="2" align="left">
+    <tr>
+    <td><b>Name:</b></td>
+   <td><apex:inputField value="{!Questionnaire__c.Name__c}" required="true"/></td>
+    </tr>  
+     <tr>
+    <td><b>Employee Number:</b></td>
+   <td><apex:inputField id="emp" value="{!Questionnaire__c.Employee_Number__c}" required="true" onchange="num(this)"/></td>
+    </tr>
+    <tr>
+    <td><b>Line Manager:</b></td>
+   <td><apex:inputField value="{!Questionnaire__c.Line_Manager__c}" required="true"/></td>
+    </tr>
+     <tr>
+    <td><b>Start Date:</b></td>
+   <td><apex:inputField id="dt" value="{!Questionnaire__c.Start_Date__c}" required="true" onchange="Date(this)"/></td>
+    </tr>
+     <tr>
+    <td><b>Leave Date:</b></td>
+   <td><apex:inputField id="dt1" value="{!Questionnaire__c.Leave_Date__c}" required="true" onchange="Date2(this)"/></td>
+    </tr>
+    <tr>
+    <td><b>Email:</b></td>
+   <td><apex:inputField value="{!Questionnaire__c.Email_Address__c}" required="false" /></td>
+    </tr>    
+   </table>
+  <table border="0" bordercolor="#FFFFFF"  width="250" cellpadding="7" cellspacing="2" align="center">
+        <tr>
+       <td align="left"><b>Position:</b></td>
+       <td align="right"><apex:selectList id="Position" size="1"  value="{!Questionnaire__c.Position__c}" required="true"  >
+           <apex:selectoption itemLabel="" itemValue=""></apex:selectoption>  
+            <apex:selectoption itemLabel="Indoor Sales Executive" itemValue="Indoor Sales Executive"></apex:selectoption>
+            <apex:selectoption itemLabel="Field Sales Executive" itemValue="Field Sales Executive"></apex:selectoption>
+            <apex:selectoption itemLabel="Depot Sales Manager" itemValue="Depot Sales Manager"></apex:selectoption>
+            <apex:selectoption itemLabel="Sales Office Coordinator" itemValue="Sales Office Coordinato"></apex:selectoption>
+            <apex:selectoption itemLabel="Team Leader" itemValue="Team Leader"></apex:selectoption>
+            <apex:selectoption itemLabel="Sales Centre Manager" itemValue="Sales Centre Manager"></apex:selectoption>  
+         </apex:selectList>
+         </td>
+     </tr>
+     
+ <tr>
+     <td align="left"><b>Depot:</b></td>
+       <td align="right">    
+        <apex:selectList id="Depot" size="1"  value="{!Questionnaire__c.Depot__c}" onchange="atload(this)">
+            <apex:selectoption itemLabel="" itemValue=""></apex:selectoption>  
+            <apex:selectoption itemLabel="Alton" itemValue="Alton"></apex:selectoption>
+            <apex:selectoption itemLabel="Bradford" itemValue="Bradford"></apex:selectoption>
+            <apex:selectoption itemLabel="Belfast" itemValue="Belfast"></apex:selectoption>
+            <apex:selectoption itemLabel="Belfast Airport" itemValue="Belfast Airport"></apex:selectoption>
+            <apex:selectoption itemLabel="Barking" itemValue="Barking"></apex:selectoption>
+            <apex:selectoption itemLabel="Birmingham" itemValue="Birmingham"></apex:selectoption>     
+            <apex:selectoption itemLabel="Bodmin" itemValue="Bodmin"></apex:selectoption>
+            <apex:selectoption itemLabel="Bristol" itemValue="Bristol"></apex:selectoption>
+            <apex:selectoption itemLabel="Byfleet" itemValue="Byfleet"></apex:selectoption>
+            <apex:selectoption itemLabel="Basildon" itemValue="Basildon"></apex:selectoption>
+            <apex:selectoption itemLabel="Carlisle" itemValue="Carisle"></apex:selectoption>
+            <apex:selectoption itemLabel="Crawley" itemValue="Crawley"></apex:selectoption>
+            <apex:selectoption itemLabel="Donegal" itemValue="Donegal"></apex:selectoption>
+            <apex:selectoption itemLabel="Cannock" itemValue="Cannock"></apex:selectoption>
+            <apex:selectoption itemLabel="Nuneaton" itemValue="Nuneaton"></apex:selectoption>
+            <apex:selectoption itemLabel="Croydon" itemValue="Croydon"></apex:selectoption>
+            <apex:selectoption itemLabel="Deeside" itemValue="Deeside"></apex:selectoption>
+            <apex:selectoption itemLabel="Dublin" itemValue="Dublin"></apex:selectoption>
+            <apex:selectoption itemLabel="Edinburgh" itemValue="Edinburgh"></apex:selectoption>
+            <apex:selectoption itemLabel="Enfield" itemValue="Enfield"></apex:selectoption>
+            <apex:selectoption itemLabel="Exeter" itemValue="Exeter"></apex:selectoption>
+            <apex:selectoption itemLabel="Guernsey" itemValue="Guernsey"></apex:selectoption>
+            <apex:selectoption itemLabel="Glasgow - Paisley" itemValue="Glasgow - Paisley"></apex:selectoption>
+            <apex:selectoption itemLabel="Glasgow - Bellshill" itemValue="Glasgow - Bellshill"></apex:selectoption>
+            <apex:selectoption itemLabel="Horncastle" itemValue="Horncastle"></apex:selectoption>
+            <apex:selectoption itemLabel="Inverness" itemValue="Inverness"></apex:selectoption>
+            <apex:selectoption itemLabel="Isle of man" itemValue="Isle of man"></apex:selectoption>
+            <apex:selectoption itemLabel="Isle of wight" itemValue="Isle of wight"></apex:selectoption>
+            <apex:selectoption itemLabel="Jersey" itemValue="Jersey"></apex:selectoption>
+            <apex:selectoption itemLabel="Staplehurst" itemValue="Staplehurst"></apex:selectoption>
+            <apex:selectoption itemLabel="Leeds" itemValue="Leeds"></apex:selectoption>
+            <apex:selectoption itemLabel="Leicester" itemValue="Leicester"></apex:selectoption>
+            <apex:selectoption itemLabel="London City / Bermondsey" itemValue="London City / Bermondsey"></apex:selectoption>
+            <apex:selectoption itemLabel="Llantrisant" itemValue="Llantrisant"></apex:selectoption>
+            <apex:selectoption itemLabel="London Heathrow" itemValue="London Heathrow"></apex:selectoption>
+            <apex:selectoption itemLabel="Liverpool" itemValue="Liverpool"></apex:selectoption>
+            <apex:selectoption itemLabel="Manchester - Trafford Park" itemValue="Manchester - Trafford Park"></apex:selectoption>
+            <apex:selectoption itemLabel="Manchester - Trafford Park" itemValue="Manchester - Trafford Park"></apex:selectoption>
+            <apex:selectoption itemLabel="Milton Keynes" itemValue="Milton Keynes"></apex:selectoption>
+            <apex:selectoption itemLabel="Maidstone" itemValue="Maidstone"></apex:selectoption>
+            <apex:selectoption itemLabel="Milton" itemValue="Milton"></apex:selectoption>
+            <apex:selectoption itemLabel="Durham" itemValue="Durham"></apex:selectoption>
+            <apex:selectoption itemLabel="Nottingham" itemValue="Nottingham"></apex:selectoption>
+            <apex:selectoption itemLabel="Stanstead" itemValue="Stanstead"></apex:selectoption>
+            <apex:selectoption itemLabel="Cork" itemValue="Cork"></apex:selectoption>
+            <apex:selectoption itemLabel="Park Royal" itemValue="Park Royal"></apex:selectoption>
+            <apex:selectoption itemLabel="Preston" itemValue="Preston"></apex:selectoption>
+            <apex:selectoption itemLabel="Ramsbottom" itemValue="Ramsbottom"></apex:selectoption>
+            <apex:selectoption itemLabel="Reading" itemValue="Reading"></apex:selectoption>
+            <apex:selectoption itemLabel="Rotherham" itemValue="Rotherham"></apex:selectoption>
+            <apex:selectoption itemLabel="Slough" itemValue="Slough"></apex:selectoption>
+            <apex:selectoption itemLabel="Shannon" itemValue="Shannon"></apex:selectoption>
+            <apex:selectoption itemLabel="Southampton" itemValue="Southampton"></apex:selectoption>
+            <apex:selectoption itemLabel="Swansea" itemValue="Swansea"></apex:selectoption>
+            <apex:selectoption itemLabel="Sligo" itemValue="Sligo"></apex:selectoption>
+            <apex:selectoption itemLabel="Teeside" itemValue="Teeside"></apex:selectoption>
+            <apex:selectoption itemLabel="Thetford" itemValue="Thetford"></apex:selectoption>
+            <apex:selectoption itemLabel="Vauxhall" itemValue="Vauxhall"></apex:selectoption>
+            <apex:selectoption itemLabel="Wellingborough" itemValue="Wellingborough"></apex:selectoption>
+            <apex:selectoption itemLabel="Worcester" itemValue="Worcester"></apex:selectoption>
+     </apex:selectList>    
+     </td>
+     </tr>
+     
+     <tr>
+     <td align="left"><b>Central:</b></td>
+      <td align="right">  
+    <apex:selectList id="Central" size="1"  value="{!Questionnaire__c.Central__c}" onchange="atload2(this)">
+            <apex:selectoption itemLabel="" itemValue=""></apex:selectoption>  
+            <apex:selectoption itemLabel="Atherstone" itemValue="Atherstone"></apex:selectoption>
+            <apex:selectoption itemLabel="Lount" itemValue="Lount"></apex:selectoption>
+            <apex:selectoption itemLabel="East Midlands" itemValue="East Midlands"></apex:selectoption>
+            <apex:selectoption itemLabel="Nuneaton" itemValue="Nuneaton"></apex:selectoption>
+            <apex:selectoption itemLabel="Paisley" itemValue="Paisley"></apex:selectoption>
+     </apex:selectList>
+       </td>
+        </tr>
+     </table>        
+     
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>            
+               <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page2}" value="Previous"/></td> 
+            </tr>
+            </table>
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage2}" value="Next"/></td>
+            </tr>
+            </table>
+ <br/><br/>       
+        </apex:pageBlock>
+      </apex:form>    
+</apex:page>

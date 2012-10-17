@@ -1,0 +1,17 @@
+<apex:page >
+  <script type="text/javascript">
+    function myPopup2() {
+    window.open( "https://c.eu0.visual.force.com/apex/ideas_test_v2", "_tab", 
+    "status = 1, height = 850, width = 1200, resizable = 0, scrollbars = 1" )
+    window.location = "https://emea.salesforce.com/home/home.jsp";
+    }
+    
+    myPopup2();
+    
+    //popUp();
+    
+</script>
+<apex:form >
+    <!-- <apex:actionFunction name="popUp" action="{!goHome}"/> -->
+</apex:form>
+</apex:page>

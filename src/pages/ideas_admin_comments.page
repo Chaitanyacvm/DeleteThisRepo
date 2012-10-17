@@ -1,0 +1,45 @@
+<apex:page sidebar="false" showHeader="false" standardController="idea" tabStyle="TNT_I_dea2__tab" extensions="idea_admin">
+
+<style>
+
+.bPageBlock{
+    border:none;
+}
+
+body{
+    background-color:#F8F8F8;
+    padding-top:5px;
+}
+
+</style>
+
+<apex:form >
+<apex:pageBlock >
+ <apex:outputPanel id="showFeedbackListCont2">
+            <apex:outputPanel id="showFeedbackList"> 
+        <apex:pageBlockSection >
+            
+            <apex:pageBlockSectionItem >
+                <apex:inputTextarea value="{!commentValue}" cols="50" rows="3"/>
+            </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockTable value="{!IdCom}" var="r">
+                    <apex:column headerValue="Creator" value="{!r.CreatedBy.Name}"/>
+                    <apex:column headerValue="Comment" value="{!r.Comment__c}"/>
+                    <apex:column headerValue="Created Date" value="{!r.CreatedDate}"/>
+                </apex:pageBlockTable>
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:commandButton action="{!addComment}" value="Add Comment" reRender="showFeedbackListCont2" />
+                   
+                   
+                    
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageblockSection>
+        </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:pageBlock>
+</apex:form> 
+</apex:page>

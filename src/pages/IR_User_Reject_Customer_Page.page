@@ -1,0 +1,22 @@
+<apex:page standardController="IR_Customer__c" extensions="IR_User_Reject_Customer_Extension">
+    <apex:sectionHeader title="Customer Rejection"/>    
+    <apex:form >
+        <apex:commandLink value="Back to Customer: {!customer.Name}" action="{!back}"/><br/>
+        
+        <apex:outputPanel rendered="{!!confirmed}">
+            <p>
+                <h2>
+                    <apex:outputText >Please confirm that you wish to reject this Customer</apex:outputText><br/>
+                </h2>
+                
+                <apex:commandButton value="Confirm" action="{!rejectCustomer}"/>
+            </p>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!confirmed}">
+            <p>
+                <apex:pageMessages id="userMessages"/>
+            </p>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

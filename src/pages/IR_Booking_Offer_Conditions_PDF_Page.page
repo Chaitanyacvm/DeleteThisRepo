@@ -1,0 +1,65 @@
+<apex:page showHeader="false" cache="false" standardStylesheets="false" renderAs="PDF">
+    <head>
+        <title>Enhanced Transit Liability Setting - PDF</title>
+        
+        <style type="text/css"> 
+         body {
+         font-size:80%;
+         font-family: Arial Unicode MS;
+         color:#666;
+     }                   
+     h2 {
+         color:#ff6600;
+     }
+         
+         #heading {
+             float: left;
+             width: 300px;
+             margin-top: 8px;
+             margin-left: 10px;
+             font-size: 17px;
+         }
+         .mainList li{
+            padding: 10px;
+            list-style-type: decimal;
+         }
+         .mainList li ul li{
+         padding:0px;               
+            margin-left: 40px;
+            list-style-type: square;
+         }
+         ul li a{           
+          color: #FF6600;
+          font-size: 11px;
+          font-family: Arial Unicode MS;
+       }            
+     </style>
+    </head>    
+    <body> 
+         <center><h2><strong>TNT UK Limited (“TNT”)<br/>Online Rate Agreement Terms of Offer<br />for TNT Express National and International Network Shipments</strong></h2></center>         
+       <ul class="mainList">
+          <li>This TNT online rate agreement offer is only available to companies that have either not used any TNT Express service for the last 13 weeks (the 13 week period of non trade commences from the week following the <u>last</u> week of trade) or have not used the TNT Express service before.</li>
+          <li>In the event of non trade for any 13 week period, this TNT online rate agreement will be withdrawn without prior notification.</li>
+         <!-- <li>The £10 National discount and £20 International discount applies to all shipments sent between 26th September and the 15th October. All online prices quoted and invoiced within this period will be shown net of the discounted offer. Your standard online agreement rates will be applied for shipments made after 16th October.</li>    -->                      
+          <li>The TNT  online rate agreement is only available to companies using our online services, additional charges (as detailed on the Express online rate agreement) will be applied where the following services are not used:
+                <ul>
+                    <li>Online collection booking via www.tnt.co.uk/mytnt</li>
+                    <li>Online shipment consignment note completion via www.tnt.co.uk/mytnt</li>
+                    <li>Online parcel tracking / proof of delivery confirmation via www.tnt.co.uk/mytnt</li>
+                    <li>Receipt of electronic statements and invoices via www.tnt.co.uk/e-invoicing</li>
+                </ul></li>
+                
+          <li>The TNT Express online rate agreement is only available to companies and not individuals.</li>
+        
+        
+          <li>Dangerous goods shipments may only be accepted following registration of your account against the online rate agreement and is subject in particular to Condition 5 of the TNT Terms and Conditions of Carriage and Other Services a copy of which may be obtained as indicated at clause 7 below.  For more information regarding our policy and approval process, please <a href="http://www.tnt.com/express/en_gb/site/terms_and_conditions.html" target='blank'>click here</a></li>
+        
+        
+          <li>TNT reserves the right at its sole discretion to withdraw the rates available here under at any time and to reject any application.</li>
+        
+        
+          <li>All shipments are carried subject to TNT UK Limited’s Terms and Conditions of Carriage and other Services. Please <a href="http://www.tnt.com/express/en_gb/site/terms_and_conditions.html" target='blank'>click here</a> for details.</li>
+          <li>Rates are not available for collections from Northern Ireland.</li>
+        </ul>
+    </body>
+</apex:page>

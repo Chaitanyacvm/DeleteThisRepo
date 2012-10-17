@@ -1,0 +1,259 @@
+<apex:component > 
+
+    <apex:attribute name="start" description="start address of route" type="string" required="true" />
+    <apex:attribute name="end" description="end address of route" type="string" required="true" />    
+    <apex:attribute name="getRoute" description="if true get route else show plain map" type="Boolean" required="true"/>
+    <apex:attribute name="waypoints" description="waypoints for route" type="String" required="false"/>
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+    
+    <apex:outputPanel >
+        <script type="text/javascript">  
+
+            $(document).ready(function() 
+            { 
+                var icon = ["{!$Resource.G}",   "{!$Resource.G1}",  "{!$Resource.G2}",  "{!$Resource.G3}", 
+                            "{!$Resource.G4}",  "{!$Resource.G5}",  "{!$Resource.G6}",  "{!$Resource.G7}",  
+                            "{!$Resource.G8}",  "{!$Resource.G9}",  "{!$Resource.G10}", "{!$Resource.G11}",
+                            "{!$Resource.G12}", "{!$Resource.G13}", "{!$Resource.G14}", "{!$Resource.G15}", 
+                            "{!$Resource.G16}", "{!$Resource.G17}", "{!$Resource.G18}", "{!$Resource.G19}",  
+                            "{!$Resource.G20}", "{!$Resource.G21}", "{!$Resource.G22}", "{!$Resource.G23}",
+                            "{!$Resource.G24}", "{!$Resource.G25}", "{!$Resource.G26}", "{!$Resource.G27}", 
+                            "{!$Resource.G28}", "{!$Resource.G29}", "{!$Resource.G30}", "{!$Resource.G31}",  
+                            "{!$Resource.G32}", "{!$Resource.G33}", "{!$Resource.G34}", "{!$Resource.G35}", 
+                            "{!$Resource.G36}", "{!$Resource.G37}", "{!$Resource.G38}", "{!$Resource.G39}",  
+                            "{!$Resource.G40}", "{!$Resource.G41}", "{!$Resource.G42}", "{!$Resource.G43}",
+                            "{!$Resource.G44}", "{!$Resource.G45}", "{!$Resource.G46}", "{!$Resource.G47}", 
+                            "{!$Resource.G48}", "{!$Resource.G49}", "{!$Resource.G50}", "{!$Resource.G51}",  
+                            "{!$Resource.G52}", "{!$Resource.G53}", "{!$Resource.G54}", "{!$Resource.G55}",
+                            "{!$Resource.G56}", "{!$Resource.G57}", "{!$Resource.G58}", "{!$Resource.G59}", 
+                            "{!$Resource.G60}", "{!$Resource.G61}", "{!$Resource.G62}", "{!$Resource.G63}",
+                            "{!$Resource.G64}", "{!$Resource.G65}", "{!$Resource.G66}", "{!$Resource.G67}", 
+                            "{!$Resource.G68}", "{!$Resource.G69}", "{!$Resource.G70}", "{!$Resource.G71}",  
+                            "{!$Resource.G72}", "{!$Resource.G73}", "{!$Resource.G74}", "{!$Resource.G75}",
+                            "{!$Resource.G76}", "{!$Resource.G77}", "{!$Resource.G78}", "{!$Resource.G79}", 
+                            "{!$Resource.G80}", "{!$Resource.G81}", "{!$Resource.G82}", "{!$Resource.G83}",  
+                            "{!$Resource.G84}", "{!$Resource.G85}", "{!$Resource.G86}", "{!$Resource.G87}",
+                            "{!$Resource.G88}", "{!$Resource.G89}", "{!$Resource.G90}", "{!$Resource.G91}", 
+                            "{!$Resource.G92}", "{!$Resource.G93}", "{!$Resource.G94}", "{!$Resource.G95}",
+                            "{!$Resource.G96}", "{!$Resource.G97}", "{!$Resource.G98}", "{!$Resource.G99}"];
+                                
+                var map;
+                var infowindow;
+                var myRendererOptions =
+                {
+                    suppressInfoWindows: true,
+                    suppressMarkers: true
+                }
+                
+                infowindow = new google.maps.InfoWindow();
+                
+                var location = new google.maps.LatLng(52.243274,-0.979614);
+                var myOptions = 
+                {
+                  zoom: 6,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP,
+                  center: location,
+                  mapTypeControl: false,
+                  navigationControl: true,
+                  scaleControl: true,
+                  scaleControlOptions: 
+                  {
+                      position: google.maps.ControlPosition.BOTTOM_LEFT
+                  }
+                }
+                
+                map = new google.maps.Map(document.getElementById("map"), myOptions);
+                
+                if ({!getRoute})
+                {
+                    var directionDisplay = [];
+                    var directionsService;
+                    directionsService = new google.maps.DirectionsService();   
+                    
+                    var j = 0;
+                    //var k = 0;
+                    
+                    var start = "{!start}";
+                    var end;
+                    var w = "{!waypoints}";
+                    var wp = [];
+                    
+                    var wp_array = w.split("--");
+                    
+                    // check postcodes
+                    //var geocoder = new google.maps.Geocoder();   
+                    //var address;
+                    //
+                    //for (var x = 0; x < wp_array.length; x++)
+                    //{
+                    //    wp_array[x] = reformat(wp_array[x])
+                    //    address = wp_array[x];
+                    //    checkPostcode(address, x);
+                    //    console.log(checkPostcode(address, x))
+                    //}
+                    
+                    
+                    // go on as usual
+                    var t = wp_array.length / 8;
+                    //var k = 0;
+                    
+                    
+                    //while ( k <= t )
+                    for (var k = 0; k <= t; k++)
+                    {
+                        wp = [];
+                        if (end != null)
+                        {
+                            start = end;
+                        }
+                    
+                        var m = k * 7;
+                        //k += 1;
+                                             
+                        directionDisplay[k] = new google.maps.DirectionsRenderer(myRendererOptions);
+                        directionDisplay[k].setMap(map);
+                        
+                        var length = 7;
+                        if (wp_array.length <= 7 + m)
+                        {
+                            length = wp_array.length - m - 1;
+                        }
+                        
+                        for ( var i = 0; i < length; i++ )
+                        {
+                            wp.push
+                            ({ 
+                                location: wp_array[m+i], 
+                                stopover: true 
+                            });
+                            
+                            if (t < k)
+                            {
+                                end = "{!end}";
+                            }
+                            else
+                            {
+                                end = wp_array[m+i];
+                            }
+                            //alert ( m+i + '  ' + wp_array[m+i] + ' start: ' + start + ' end: ' + end + '  ' +
+                            //        'k = ' + k + ' and t = ' + t + ' m = ' + m);
+                        }
+                        
+                        var request = 
+                        {
+                            origin: start, 
+                            destination: end,
+                            waypoints: wp,
+                            travelMode: google.maps.DirectionsTravelMode.DRIVING,
+                            optimizeWaypoints: false,
+                            region: "uk"
+                        };
+                        //console.log(request)
+                        
+                        //k = parseInt(k);
+                        
+                        
+                        
+                        drawRoute(request, k, m, directionDisplay);
+                        
+                    }
+                }
+                
+                function drawRoute(request, position, number, directionDisplay) {
+                    directionsService.route(request, function(response, status)
+                    {
+                    //console.log(response)
+                    //console.log(status)
+                        if (status == google.maps.DirectionsStatus.OK) 
+                        {
+                            directionDisplay[position].setDirections(response);
+                            showLegs(response, number);
+                            //console.log(request);
+                        }
+                        else 
+                        {
+                            //console.log(directionDisplay);
+                            //alert (status + 'No ' + number + 'Pos ' + position);
+                            //console.log(response);
+                            map = new google.maps.Map(document.getElementById("map"), myOptions);
+                            directionDisplay[position].setMap(map);
+                        }
+                    });
+                }
+                
+                function checkPostcode(address, x)
+                {
+                     geocoder.geocode( { address: address}, function(results, status) 
+                     {
+                         //console.log('Position: ' + x + ' - Address: ' + address + ' - Status: ' + status);
+                     });
+                 }
+
+                function resizeIframe()
+                {
+                    var me = window.name;
+                    if (me)
+                    {
+                        var iframes = parent.document.getElementsByName(me);
+                        if (iframes && iframes.length == 1) 
+                        {
+                            height = document.body.offsetHeight;
+                            iframes[0].style.height = height + "px";
+                        }
+                    }
+                }
+    
+                function showLegs(directionResult, number) 
+                {
+                    var myRoute = directionResult.routes[0];
+                    var show;
+                    for (var i = 0; i < myRoute.legs.length; i++) 
+                    {
+                        var marker = new google.maps.Marker
+                        ({
+                            position: myRoute.legs[i].steps[0].start_point, 
+                            map: map,
+                            icon: icon[i + number]
+                        });
+                        
+                        show = i + number;
+                        //console.log(show);
+                        attachInstructionText(marker, "Stop No  : " + show + "<br />" + 
+                                                      "Duration : " + myRoute.legs[i].duration.text + "<br />" +
+                                                      "Distance : " + myRoute.legs[i].distance.text );
+                    }
+                }
+    
+                function attachInstructionText(marker, text) 
+                {
+                    google.maps.event.addListener(marker, 'click', function() 
+                    {
+                        infowindow.setContent(text);
+                        infowindow.open(map, marker);
+                    });
+                }
+                
+                function reformat(pc) {
+                    var end = pc.slice(pc.length-3);
+                    return pc.replace(end, " " + end);
+                }
+
+            });
+        </script>
+
+        <style>
+        #map 
+        {
+            font-family: Arial;
+            font-size:12px;
+            line-height:normal !important;
+            height:350px;
+            background:transparent;
+        }
+        </style>
+
+        <div id="map"></div> 
+    </apex:outputPanel>
+</apex:component>

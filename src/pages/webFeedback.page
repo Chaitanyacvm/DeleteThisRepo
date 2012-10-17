@@ -1,0 +1,107 @@
+<apex:page showHeader="false" id="FeedbackEntryPage" sidebar="false" standardController="Feedback__c" action="{!defaultValues}" extensions="FeedbackReturnPageExt" standardStylesheets="false">
+
+<!--
+    <apex:stylesheet value="http://www.tnt.com/_css/print.css"/>
+    <apex:stylesheet value="http://www.tnt.com/_css/screen.css"/>
+    <apex:stylesheet value="http://www.tnt.com/_css/tooltip.css"/>
+    <apex:stylesheet value="http://www.tnt.com/_css/applications.css"/>
+    <apex:stylesheet value="http://www.tnt.com/_css/application_buttons.css"/>
+-->
+
+<apex:stylesheet value="{!$Resource.tntStyle}"/> 
+
+<apex:panelGrid bgcolor="white">  
+    <apex:outputPanel layout="none">
+        <apex:pageBlock mode="detail" id="contactBlock">
+            <apex:panelGrid columns="2">
+                <apex:outputLabel styleclass="tnt_required">Telephone</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text">0800 100 600</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_required">Fax</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text">0845 6000 439</apex:outputLabel>
+            </apex:panelGrid>
+
+            <!--
+            <apex:panelGrid columns="1">
+                <apex:outputLabel styleclass="tnt_text_indented_bold">We are currently experiencing technical issues with the</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text_indented_bold">telephony in our Contact Centres.</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text_indented_bold">We may not be able to respond to your feedback until</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text_indented_bold">Thursday, 3rd June 2010.</apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text_indented_bold"></apex:outputLabel>
+                <apex:outputLabel styleclass="tnt_text_indented_bold">We apologise for any inconvenience caused.</apex:outputLabel>
+            </apex:panelGrid>
+            -->
+            
+         </apex:pageBlock>
+    </apex:outputPanel>
+</apex:panelGrid>
+
+<hr />  
+<apex:panelGrid bgcolor="white">  
+<apex:outputPanel layout="none">
+    <apex:form id="EnterFeedbackForm">
+        <apex:pageBlock mode="edit" id="mainBlock">
+            
+            <apex:panelGrid rendered="true" styleClass="tnt_text" columns="1">
+                <apex:pageMessages showDetail="false" id="errorMessages"></apex:pageMessages>
+            </apex:panelGrid>
+            
+            <apex:panelGrid columns="2">
+                    
+                    <apex:outputLabel styleclass="tnt_required">* = required field</apex:outputLabel>
+                    <apex:outputLabel ></apex:outputLabel>
+
+                    <apex:outputLabel styleclass="tnt_text" for="Stationary" rendered="false" >Do you have a stationary request?</apex:outputLabel>
+                    <apex:inputCheckbox id="Stationary" value="{!Feedback__c.Stationary_Request__c}" rendered="false" />
+
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:outputLabel ></apex:outputLabel>
+
+                    <apex:outputLabel styleclass="tnt_text" for="title">Title</apex:outputLabel>
+                    <apex:inputField id="title" value="{!Feedback__c.Title__c}" />
+                    
+                    <apex:outputLabel styleclass="tnt_required" for="firstName">Firstname *</apex:outputLabel>
+                    <apex:inputField id="firstName" required="true" value="{!Feedback__c.First_Name__c}" />
+
+                    <apex:outputLabel styleclass="tnt_required" for="lastName">Lastname *</apex:outputLabel>
+                    <apex:inputField id="lastName" required="true" value="{!Feedback__c.Last_Name__c}" />
+
+                    <apex:outputLabel styleclass="tnt_required" for="postcode">Postcode/ZIP Code *</apex:outputLabel>
+                    <apex:inputField id="postcode" required="true" value="{!Feedback__c.Postcode__c}" />
+
+                    <apex:outputLabel styleclass="tnt_required" for="cor">Country of Residence *</apex:outputLabel>
+                    <apex:inputField id="cor" required="true" value="{!Feedback__c.Country_of_Residence__c}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="email">Email</apex:outputLabel>
+                    <apex:inputText id="email" value="{!Feedback__c.Email__c}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="emailToCheck">Email verification</apex:outputLabel>
+                    <apex:inputText id="emailToCheck" value="{!EmailToCheck}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="phone">Telephone</apex:outputLabel>
+                    <apex:inputText id="phone" value="{!Feedback__c.Phone__c}" />
+
+                    <apex:outputLabel styleclass="tnt_required" for="subject">Subject *</apex:outputLabel>
+                    <apex:inputField id="subject" required="true" value="{!Feedback__c.Subject__c}" />
+
+                    <apex:outputLabel styleclass="tnt_required" for="comments">Comments *</apex:outputLabel>
+                    <apex:inputField id="comments" required="true" value="{!Feedback__c.Customer_Comments__c}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="AccountNumber">Account Number</apex:outputLabel>
+                    <apex:inputField id="AccountNumber" value="{!Feedback__c.Customer_Entered_Account_Number__c}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="AccountName">Account Name</apex:outputLabel>
+                    <apex:inputField id="AccountName" value="{!Feedback__c.Customer_Entered_Account_Name__c}" />
+
+                    <apex:outputLabel styleclass="tnt_text" for="consignmentNumber">Consignment Number</apex:outputLabel>
+                    <apex:inputField id="consignmentNumber" value="{!Feedback__c.Consignment_Number__c}" />
+                                                 
+                    <apex:outputText value="" />
+                    <apex:commandButton image="{!$Resource.ContinueButton}" action="{!save}" value="Send" />
+            </apex:panelGrid>
+
+             
+        </apex:pageBlock>
+    </apex:form>
+</apex:outputPanel>    
+</apex:panelGrid>      
+</apex:page>

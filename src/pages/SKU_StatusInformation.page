@@ -1,0 +1,10 @@
+<apex:page standardController="SKU__c">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1" showHeader="false" title="Status Information">
+                <apex:outputField value="{!SKU__c.Transfer_Status__c}"/>
+                <apex:outputField value="{!SKU__c.Change_Status__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,376 @@
+<apex:page controller="IR_Booking_Get_Quote_Controller" showHeader="false" standardStylesheets="false" title="{!$ObjectType.Quote_Settings__c.fields.Get_Quote__c.label}">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <apex:stylesheet value="{!$Resource.IR_Style}"/>
+        <apex:includeScript value="{!$Resource.IR_jquery_min}"/>
+        
+        <style type="text/css">
+           .requiredInput {
+               background-image: url({!URLFOR($Resource.IR_Required)});
+               background-repeat:no-repeat;
+               background-position:left center;
+           }
+           
+           .colDelDetails {
+               position:relative;
+               float:left;
+               width:270px;
+           }
+           
+           .packageInfo {
+               position:relative;
+               float:right;
+               width:645px;
+               padding:0px;
+           }
+           
+           .packageInfoBottom {
+               float:left;
+               width:645px;
+           }
+           
+           .getQuoteButton {
+               position:relative;
+               float:left;
+               left:50px;
+               width:auto;
+           }
+           
+           .quoteList {
+               position:relative;
+               float:left;
+               left:100px;
+               width:300px;
+           }
+           
+           .bottomButtons {
+               position:relative;
+               float:right;
+               width:650px;
+               text-align:right;
+           }
+   
+           .greyOrangeButton {
+               background-image: url({!URLFOR($Resource.IR_Package_Button_BG)});
+           }
+           
+           .grey-button {
+               padding: 15px 0px;
+               background:transparent url({!URLFOR($Resource.IR_grey_left)}) no-repeat left center;
+           }
+           
+           .grey-button span {
+               background:transparent url({!URLFOR($Resource.IR_grey_right)}) no-repeat right center;
+           }
+           
+           .white-button {
+               background:transparent url({!URLFOR($Resource.IR_white_left)}) no-repeat left center;
+           }
+           
+           .white-button span {
+               background:transparent url({!URLFOR($Resource.IR_white_right)}) no-repeat right center;
+           }
+           
+           .white-button-grey {
+               background:transparent url({!URLFOR($Resource.IR_white_left_grey)}) no-repeat left center;
+           }
+           
+           .white-button-grey span {
+               background:transparent url({!URLFOR($Resource.IR_white_right_grey)}) no-repeat right center;
+           }
+           .alignText{            
+               text-align:center;            
+           }                      
+       </style>
+       
+       <script>
+          var selectedChkbox;
+          var tableIdCount = 0;
+          function deSelectOthers(chkBox) {
+               if (chkBox.checked) {
+                   if ((chkBox != selectedChkbox) && (selectedChkbox != null)) {
+                       selectedChkbox.checked = false;
+                   }
+                   selectedChkbox = chkBox;
+               }
+           }
+       </script>
+       
+       <!--START HELP TEXT-->
+       <apex:includeScript value="{!$Resource.IR_jquery_tooltip_js}"/>
+       <apex:stylesheet value="{!$Resource.IR_tooltip_css}"/>
+       <!--END HELP TEXT-->
+       
+       <!--START FANCYBOX-->
+       <apex:includeScript value="{!$Resource.IR_jquery_fancybox_js}"/>
+       <apex:stylesheet value="{!$Resource.IR_jquery_fancybox_css}"/>
+       <style>
+       #fancybox-loading div {
+           background-image: url({!URLFOR($Resource.IR_fancybox)});
+       }
+       
+       #fancybox-close {
+           background-image: url({!URLFOR($Resource.IR_fancybox)});
+       }
+       </style>
+       <!--END FANCYBOX-->
+   </head>
+   
+   <body>
+       <apex:form >
+           <apex:outputPanel id="wrapper" layout="block" styleClass="wrapper">
+               <!--START HELP TEXT-->
+               <script type="text/javascript"> 
+                   $(function() {
+                   $('.helpHover *').tooltip();
+                   });
+               </script>
+               <!--END HELP TEXT-->
+               
+               <!--START FANCYBOX-->
+               <script type="text/javascript">
+                   $(document).ready(function() {
+           
+                       $(".fancybox").fancybox({
+                           'autoScale'         : false,
+                           'transitionIn'      : 'none',
+                           'transitionOut'     : 'none',
+                           'type'              : 'iframe',
+                           'width'             : '85%',
+                           'height'            : '90%'
+                       });
+                   });
+               </script>
+               <!--END FANCYBOX-->
+               
+               <apex:outputPanel layout="block" styleClass="header">
+                   <apex:outputPanel style="float:left;">
+                       <h2>Get a quote</h2>
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel style="float:right;">
+                       <apex:outputPanel styleClass="white-button"><apex:outputPanel ><apex:commandLink value="Open Account for Future Shipments" action="{!justRegister}" immediate="true"/></apex:outputPanel></apex:outputPanel>
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel layout="block" styleClass="clear"/>                   			
+               </apex:outputPanel>
+               
+               <apex:pagemessages id="userMessages"/>
+               
+               <apex:repeat value="{!consignmentBundles}" var="consignmentBundle">
+                   <apex:outputPanel id="colDelDetails" layout="block" styleClass="colDelDetails">
+                       <apex:outputPanel layout="block" styleClass="sectionMain">
+                           <apex:outputPanel layout="block" styleClass="sectionHeader">
+                               <apex:outputPanel style="text-align:left;position:relative;float:left;">Ship From/To Details</apex:outputPanel>
+                               <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                               <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                           </apex:outputPanel>
+                           
+                           <apex:outputPanel layout="block" styleClass="sectionBody">
+                               <apex:outputLabel for="fromCountry">Ship From Location:</apex:outputLabel><br />
+                               <apex:selectList id="fromCountry" value="{!consignmentBundle.consignment.From_Country__c}" style="width:90%" size="1" disabled="true">
+                                   <apex:selectOptions value="{!consignmentBundle.fromCountries}"/>
+                               </apex:selectList><br />
+                               
+                               <apex:outputLabel for="fromPostcode">Ship From Postcode:</apex:outputLabel><br />
+                               <apex:outputPanel rendered="{!!order.Customer__r.Has_Multiple_Orders__c}">
+                                   <apex:inputField id="fromPostcode" value="{!consignmentBundle.consignment.From_Postcode__c}" style="width:90%"/>
+                               </apex:outputPanel>
+                               <apex:outputPanel rendered="{!order.Customer__r.Has_Multiple_Orders__c}">
+                                   &nbsp;&nbsp;&nbsp;&nbsp;<apex:outputField value="{!consignmentBundle.consignment.From_Postcode__c}" style="width:90%"/><br />
+                               </apex:outputPanel>
+                               
+                               <apex:outputLabel for="toCountry">Ship To Location:</apex:outputLabel><br />
+                               <apex:selectList id="toCountry" value="{!consignmentBundle.consignment.To_Country__c}" style="width:90%" size="1">
+                                   <apex:selectOptions value="{!consignmentBundle.toCountries}"/>
+                                   
+                                   <apex:actionSupport event="onchange" status="changeCountryStatus" reRender="wrapper, usermessages">
+                                   </apex:actionSupport>
+                               </apex:selectList><br />
+                               
+                               <apex:outputPanel rendered="{!consignmentBundle.to_requiresPostcode}">
+                               <apex:outputLabel for="toPostcode">Ship To Postcode:</apex:outputLabel><br />                               
+                                   <div class="requiredInput"><div class="requiredBlock"></div><apex:inputField id="toPostcode" value="{!consignmentBundle.consignment.To_Postcode__c}" style="width:90%"/></div>
+                               </apex:outputPanel>
+                               <!-- <apex:outputPanel rendered="{!!consignmentBundle.to_requiresPostcode}">
+                                   <apex:inputField value="{!consignmentBundle.consignment.To_Postcode__c}" style="width:90%"/><br />
+                               </apex:outputPanel> -->
+                               
+                               
+                               <apex:actionStatus id="changeCountryStatus">
+                                   <apex:facet name="start">
+                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                   </apex:facet>
+                               </apex:actionStatus>
+                               
+                               <apex:outputLabel for="fromPostcode">Pick Up/Ship From Date:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Consignment__c.fields.Pickup_Collection_Date__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span><br />
+                               <apex:selectList value="{!consignmentBundle.selectedDate}" size="1">
+                                   <apex:selectOptions value="{!consignmentBundle.availableDates}"/>
+                               </apex:selectList><br/>                                                             
+                                <apex:outputLabel for="fromPostcode">Email Address:</apex:outputLabel>
+                               <div class="requiredInput"><div class="requiredBlock"></div><apex:inputText value="{!consignmentBundle.consignment.Customer_Email_Address__c}" style="width:90%"/></div>
+                           </apex:outputPanel>                           	                           
+                       </apex:outputPanel>
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel layout="block" styleClass="packageInfo">
+                       <apex:outputPanel layout="block" styleClass="sectionMain">
+                           <apex:outputPanel layout="block" styleClass="sectionHeader">
+                               <apex:outputPanel style="text-align:left;position:relative;float:left;">Package Information</apex:outputPanel>
+                               <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                               <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                           </apex:outputPanel>
+                           
+                           <apex:outputPanel layout="block" styleClass="sectionBody">
+                               <!--<apex:outputLabel for="unitList">Units:</apex:outputLabel>&nbsp;
+                               <apex:selectList id="unitList" value="{!unit}" size="1">
+                                   <apex:selectOptions value="{!units}"/>
+                                   
+                                   <apex:actionSupport event="onchange" action="{!changeUnits}" reRender="wrapper, usermessages" status="changeUnitsLoadingStatus" immediate="true"/>
+                               </apex:selectList>
+                               
+                               <apex:actionStatus id="changeUnitsLoadingStatus">
+                                   <apex:facet name="start">
+                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                   </apex:facet>
+                               </apex:actionStatus>
+                               &nbsp;&nbsp;&nbsp;-->
+                               
+                               <apex:outputLabel for="conType">Type:</apex:outputLabel>&nbsp;
+                               <apex:selectList id="conType" value="{!consignmentBundle.consignment.Type__c}" size="1">
+                                   <apex:selectOptions value="{!consignmentTypes}"/>
+                               </apex:selectList>
+                               &nbsp;&nbsp;&nbsp;
+                               
+                               <apex:outputLabel value="{!$ObjectType.IR_Consignment__c.fields.Number_of_Packages__c.label}"/>:&nbsp;
+                               <b><apex:outputText id="quantityOutput" value="{!consignmentBundle.quantity}"/></b>
+                               <br/>
+                               
+                               <apex:dataTable id="packagesTable" value="{!consignmentBundle.orderedPackageBundles}" var="packageBundle" styleClass="table-keyline packagesCell" headerClass="packagesTableHeader" rules="COLS" frame="VSIDES" width="99%">
+                               <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                       <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Height__c.label}<span style="font-weight:normal;"><br/>150cm max</span></apex:facet>
+                                       <apex:inputField value="{!packageBundle.thePackage.Height__c}" styleClass="short-input"/>
+                                   </apex:column>
+                                   
+                                    <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                       <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Length__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>
+                                       <apex:inputField value="{!packageBundle.thePackage.Length__c}" styleClass="short-input"/>
+                                   </apex:column>
+                                   
+                                   <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                       <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Width__c.label}<span style="font-weight:normal;"><br/>120cm max</span></apex:facet>                                        
+                                       <apex:inputField value="{!packageBundle.thePackage.Width__c}" styleClass="short-input"/>
+                                   </apex:column>
+                                   
+                                   <apex:column style="text-align:center;" headerClass="alignText"  width="15%">
+                                       <apex:facet name="header">{!$ObjectType.IR_Package__c.fields.Weight_kg__c.label}<span style="font-weight:normal;"><br/>300kg max</span></apex:facet>
+                                       <apex:inputField value="{!packageBundle.thePackage.Weight_kg__c}" styleClass="short-input"/>
+                                   </apex:column>
+                                   
+                                   <apex:column style="text-align:center;" headerClass="alignText" headerValue="{!$ObjectType.Quote_Settings__c.fields.Action__c.label}" width="20%">
+                                       <apex:commandButton value="Remove Package" styleClass="greyOrangeButton" action="{!removePackage}" status="removePackageLoadingStatus" immediate="true" reRender="wrapper, usermessages">
+                                           <apex:param name="selectedIndex" assignTo="{!consignmentBundle.selectedIndex}" value="{!packageBundle.index}"/>
+                                       </apex:commandButton>
+                                       
+                                       <apex:actionStatus id="removePackageLoadingStatus">
+                                           <apex:facet name="start">
+                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                           </apex:facet>
+                                       </apex:actionStatus>
+                                       
+                                       <apex:facet name="footer">
+                                           <apex:outputPanel >
+                                               <apex:commandButton value="Add Package" styleClass="greyOrangeButton" action="{!addPackage}" status="newPackageLoadingStatus" reRender="wrapper, usermessages"/>
+                                               
+                                               <apex:actionStatus id="newPackageLoadingStatus">
+                                                   <apex:facet name="start">
+                                                       <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                   </apex:facet>
+                                               </apex:actionStatus>
+                                           </apex:outputPanel>
+                                       </apex:facet>
+                                   </apex:column>
+                               </apex:dataTable>
+                               <br />
+                               
+                               <apex:outputPanel layout="block" styleClass="packageInfoBottom">
+                                   <apex:outputPanel layout="block" styleClass="getQuoteButton">
+                                       <span class="grey-button"><span><apex:commandLink value="GET QUOTE" status="getQuoteLoadingStatus" action="{!getQuote}" reRender="wrapper, usermessages"/></span></span>
+                                   </apex:outputPanel>
+                                   
+                                   <apex:outputPanel id="quoteList" layout="block" styleClass="quoteList">
+                                       <apex:actionStatus id="getQuoteLoadingStatus">
+                                           <apex:facet name="start">
+                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                           </apex:facet>
+                                           
+                                           <apex:facet name="stop">
+                                               <apex:outputPanel rendered="{!gotQuote}">
+                                                   <apex:outputPanel rendered="{!!hasResults}">
+                                                       <apex:pagemessages ></apex:pagemessages>
+                                                   </apex:outputPanel>
+                                                   
+                                                   <apex:outputPanel rendered="{!hasResults}">
+                                                       <b><a class="fancybox" style="font-size:12px;" href="{!URLFOR($Page.IR_Booking_Services_Page)}">Services</a></b>
+                                                       <!--<b><apex:outputLabel >Services</apex:outputLabel></b><span class="helpHover"><span title="{!serviceDescription}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span><br />-->
+                                       
+                                                       <table id="ratesTable" width="270px">
+                                                           <apex:repeat value="{!serviceOptions}" var="serviceOption">
+                                                               <tr>
+                                                                   <td width="30px">
+                                                                       <apex:inputCheckbox value="{!serviceOption.selected}">
+                                                                           <apex:actionSupport event="onclick" action="{!serviceCheckAction}" status="enableShippingStatus" reRender="wrapper, usermessages" oncomplete="deSelectOthers(this)">
+                                                                               <apex:param name="selectedOptionId" assignTo="{!selectedOptionId}" value="{!serviceOption.optionId}"/>
+                                                                           </apex:actionSupport>
+                                                                       </apex:inputCheckbox>
+                                                                       
+                                                                       <apex:actionStatus id="enableShippingStatus">
+                                                                           <apex:facet name="start">
+                                                                               <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                                           </apex:facet>
+                                                                       </apex:actionStatus>
+                                                                   </td>
+                                                                   <td width="250px">{!serviceOption.service}</td>
+                                                                   <td width="90px">£{!serviceOption.rateString}</td>
+                                                               </tr>
+                                                           </apex:repeat>
+                                                       </table>
+                                                       
+                                                       <table id="ratesTable" width="270px">
+                                                           <tr>
+                                                               <td width="270px"><a class="fancybox" style="font-size:12px;color:#FF6600;" href="{!URLFOR($Page.IR_Booking_Rate_Card_Page)}?df=1">Display full rate card</a></td>
+                                                           </tr>
+                                                       </table>
+                                                   </apex:outputPanel>
+                                               </apex:outputPanel>
+                                           </apex:facet>
+                                       </apex:actionStatus>
+                                   </apex:outputPanel>
+                                   
+                                   <apex:outputPanel layout="block" styleClass="clear">
+                                   </apex:outputPanel>
+                               </apex:outputPanel>
+                               
+                               <apex:outputPanel layout="block" styleClass="clear">
+                               </apex:outputPanel>
+                           </apex:outputPanel>
+                       </apex:outputPanel>
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel layout="block" styleClass="legalAgreementSection">
+                   </apex:outputPanel>
+                   
+                   <apex:outputPanel layout="block" styleClass="bottomButtons">
+                       <br/>
+                       <!--<apex:outputpanel styleClass="white-button-grey"><apex:outputpanel><apex:commandLink value="Register and Ship Now" rendered="{!!allowShipping}"/></apex:outputpanel></apex:outputpanel>-->
+                        <apex:outputpanel styleClass="white-button-grey"><apex:outputpanel styleClass="disabledLink" rendered="{!!allowShipping}">Register and Ship Now</apex:outputpanel></apex:outputpanel>
+                        <apex:outputpanel styleClass="white-button"><apex:outputpanel ><apex:commandLink value="Register and Ship Now" action="{!registerAndShip}" rendered="{!allowShipping}"/></apex:outputpanel></apex:outputpanel>
+                        <apex:outputpanel styleClass="white-button"><apex:outputpanel ><apex:commandLink value="Open Account for Future Shipments" action="{!justRegister}" immediate="true"/></apex:outputpanel></apex:outputpanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="block" styleClass="clear"/>
+                </apex:repeat>
+            </apex:outputPanel>
+        </apex:form>
+    </body>
+</apex:page>

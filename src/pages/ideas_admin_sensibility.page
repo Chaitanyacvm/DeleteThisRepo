@@ -1,0 +1,60 @@
+<apex:page sidebar="false" tabStyle="Idea_Sensibility__tab" standardController="idea" extensions="idea_admin">
+
+<apex:form >
+    <apex:actionFunction name="adminValue" action="{!setPageAdmin}" reRender="form" >
+        <apex:param name="admin" value="" />
+    </apex:actionFunction>
+</apex:form>
+    
+<script>
+
+    adminValue('Sensibility Check Queue');
+
+</script>
+
+<apex:form id="form" >
+    <apex:pageblock >
+        <apex:pageblocksection >
+            <apex:pageBlockSectionItem >
+                <h2> Ideas To Check </h2>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <h2> Ideas User Feedback </h2>
+            </apex:pageBlockSectionItem>
+            <!-- Ideas List For Evaluation -->
+            <apex:pageBlockSectionItem >
+                <apex:pageBlockTable value="{!ideas}" var="i">
+                    <apex:column headerValue="Title" >
+                    <a href="{!$Page.ideas_admin_detail}?id={!i.Id}&f={!i.Workflow_Status__c}">{!i.title}</a>
+                    </apex:column>
+                    <!-- <apex:column value="{!i.Status}"/> -->
+                    <apex:column headerValue="Submitted By" value="{!i.CreatedBy.Name}"/>
+                    <apex:column headerValue="Location" value="{!i.Location__c}"/>
+                    <apex:column headerValue="Vote Total" value="{!i.VoteTotal}"/>
+                    <apex:column headerValue="Created Date" value="{!i.CreatedDate}"/>
+                    <apex:column headerValue="Days To SLA" >
+                        {!(i.Days_to_SLA__c+10)}
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSectionItem>
+            <!-- Ideas List For Evaluation + User feedback -->
+            <apex:pageBlockSectionItem >
+                <apex:pageBlockTable value="{!ideasUFeedback}" var="i">
+                    <apex:column headerValue="Title" >
+                    <a href="{!$Page.ideas_admin_detail}?id={!i.Id}&f={!i.Workflow_Status__c}">{!i.title}</a>
+                    </apex:column>
+                    <!-- <apex:column value="{!i.Status}"/> -->
+                    <apex:column headerValue="Submitted By" value="{!i.CreatedBy.Name}"/>
+                    <apex:column headerValue="Location" value="{!i.Location__c}"/>
+                    <apex:column headerValue="Vote Total" value="{!i.VoteTotal}"/>
+                    <apex:column headerValue="Created Date" value="{!i.CreatedDate}"/>
+                    <apex:column headerValue="Feedback">
+                        {!IF(ISBLANK(i.Additional_Information_SC__c),'Not Received','Received')}
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageblocksection>
+    </apex:pageblock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,177 @@
+<apex:page showHeader="false" standardStylesheets="false" cache="true">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <apex:stylesheet value="{!$Resource.IR_Commercial_Invoice_CSS}"/>
+    <link rel="stylesheet" type="text/css" href="master.css" />
+  </head>
+  <body>
+    <div id="content">
+      <div class="banner Single">
+        <div class="header" onclick="goURL('#')">
+          <div class="bg"
+          style="background-image:url({!$Resource.IR_paperwork_packaging});"
+          title="">
+            <div class="float">
+              <span class="png"></span>
+              <h1>Commercial invoice</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="parsys contentArea">
+          <div class="text parbase section">
+            <div class="text">
+              <h3>For customs purposes a commercial invoice must be
+              provided to accompany any international shipment that
+              is not a document.</h3>
+              <h4>
+                <font color="#ff6600">How to prepare an
+                invoice</font>
+              </h4>
+              <p>For an example of a commercial invoice, 
+              <a class="contentText"
+              id="http://www.tnt.com/content/dam/tnt_express_media/global_media_library/downloadable_documents/commercial_invoice_form.pdf"
+              href="http://www.tnt.com/content/dam/tnt_express_media/global_media_library/downloadable_documents/commercial_invoice_form.pdf">
+              click here</a>.</p>
+              <p>Simply complete all relevant fields and print out.
+              You should then sign and date the invoice.</p>
+              <h4>
+                <font color="#ff6600">Guidelines for preparing
+                commercial invoices</font>
+              </h4>
+              <p>Following these simple guidelines will help you
+              ensure the trouble-free and timely delivery of your
+              shipments.</p>
+              <p>An invoice accompanying your international
+              consignment serves as the commercial statement or
+              declaration of the contents, value and a number of
+              other elements relevant to the transaction. This
+              information will be used for both security and can
+              ultimately be used as evidence should any
+              infringement occur.</p>
+              <h4>Who should prepare the invoice?</h4>
+              <p>Whoever provides the information in the invoice is
+              responsible for its accuracy. For this reason and the
+              possible legal consequences, a TNT member of staff
+              should never produce an invoice, even on your behalf.
+              It is advisable that a designated officer of your
+              company prepares the invoice.</p>
+              <h4>Using your company's letterhead is a good
+              idea</h4>
+              <p>It is not mandatory for invoices to be produced on
+              company stationery, but invoices on letterhead paper
+              are generally considered more credible than those on
+              plain white paper.</p>
+              <h4>A correct and appropriate title is important</h4>
+              <p>A number of commonly used titles are not accepted
+              by many authorities, who expect to see the genuine or
+              legitimate invoice. Terms like 'Pro Forma' or 'For
+              Customs Purposes Only' should be avoided at all
+              times. Customs authorities reserve the right to
+              reject such invoices as not fulfilling the criteria
+              for declaration/entry purposes. For shipments without
+              a financial transaction, such as samples, the
+              document could be titled 'value declaration'.</p>
+              <h4>Don't forget the details</h4>
+              <p>Full address details for both the exporter
+              (shipper) and importer (recipient) should contain in
+              addition to the correct name and address, as much
+              relevant detail as possible. This would at least
+              include phone and fax numbers (including country
+              codes). tax ID number (such as VAT/GST number),
+              registration number with Customs if any, and so
+              on.</p>
+              <h4>Clearly describe all the content of your
+              shipment</h4>
+              <p>The description of the goods you are shipping must
+              be clear, meaningful, complete and accurate. That
+              means more than just brand names and /or catalogue
+              number, and must cover the entire contents of the
+              shipment. If the HS Code - Harmonised Tariff Code
+              used by Customs to categorise goods - is known, it
+              should be mentioned here.&#160;This will ensure a
+              correct declaration is made to Customs, both at
+              export and import. You can make a formal application
+              to the Customs authorities to obtain a binding notice
+              classification for your goods.</p>
+              <h4>Where were the goods made?</h4>
+              <p>The origin of the goods, defined as where the
+              goods were produced or manufactured, is a required
+              piece of information and should be mentioned at all
+              times.</p>
+              <h4>What are 'INCO' terms?</h4>
+              <p>The 'INCO' terms or International Commercial
+              Terms, refer to different conditions under which a
+              shipment is shipped to the receiver. They not only
+              govern exactly when the ownership of the goods
+              changes and under what conditions, but who will pay
+              for duties, taxes, transportation costs, etc. They
+              are typically expressed as a three-letter acronym
+              based on a short description, such as FOB&#160; (Free
+              On Board) and CIF (Cost, Insurance and Freight).</p>
+              <h4>&#160;Refer to the TNT consignment number</h4>
+              <p>Reference to the physical shipment by mentioning
+              the specific TNT consignment note number is always
+              helpful and provides additional proof as to what
+              goods are covered by the invoice.</p>
+              <h4>True values are vital</h4>
+              <p>The value on the invoice must be realistic and
+              reflect the true market value of the goods being
+              shipped. Even when sending unsolicited samples to
+              potential customers, the value must reflect the value
+              of that shipment as if it was being sold to them. For
+              shipments with multiple content types, the values and
+              the number of units of each must be broken down. In
+              some cases, Customs may ask for proof of payment of
+              the invoice to provide additional evidence that the
+              invoice values shown are accurate.</p>
+              <h4>Shipping cost</h4>
+              <p>Stating the amount of the shipping cost and
+              detailing whether or not it is charged to the
+              recipient is not only mandatory in a number of
+              countries, it contributes to a correct and compliant
+              declaration to Customs.</p>
+              <h4>Sign and date it</h4>
+              <p>A date and signature complete the invoice. Signing
+              states the information contained in the invoice is
+              correct. The signature can also be accompanied by a
+              phrase such as "I hereby certify the above
+              information to be truthful and correct." Invoices are
+              generally signed and dated by a designated officer of
+              the company.</p>
+              <h4>Last but not least</h4>
+              <p>If you think there may be a special customs
+              clearance requirement for the country you are sending
+              your shipment to, please call Customer Service who
+              will provide appropriate advice. And if anything else
+              is unclear, please call us - we're at your service
+              and will be glad to help!</p>
+              <p>&#160;</p>
+              <p>&#160;</p>
+            </div>
+          </div>
+          <div class="infoBox section">
+            <div class="alsoInterested">
+              <p>
+                <strong>Tips</strong>
+                <p>These guidelines are based on the majority of
+                worlwide customs regulations, but these can vary
+                depending on the country and can also change
+                without notice.</p>
+                <p>If you think there may be a special customs
+                clearance requirement for the country you are
+                sending your shipment to, please call Customer
+                Service and we will provide suitable advice. And if
+                anything else is unclear, please call us - we're at
+                your service and glad to help.</p>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="hide" />
+    </div>
+  </body>
+</apex:page>

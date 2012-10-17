@@ -1,0 +1,52 @@
+<apex:page sidebar="false" showHeader="false" standardController="idea" tabStyle="TNT_I_dea2__tab" extensions="idea_admin">
+
+<style>
+
+.bPageBlock{
+    border:none;
+}
+
+body{
+    background-color:#F8F8F8;
+    padding-top:5px;
+}
+
+</style>
+
+<apex:form >
+<apex:pageBlock >
+ <apex:outputPanel id="showFeedbackListCont">
+            <apex:outputPanel id="showFeedbackList"> 
+        <apex:pageBlockSection >
+            
+            <apex:pageBlockSectionItem >
+            <!--
+                <apex:selectList size="1" >
+                    <apex:selectOptions value="{!delegateList}"/>
+                </apex:selectList>
+            -->
+                <apex:inputField value="{!ideaDetail.Feedback_Required_From__c}"/> 
+            </apex:pageBlockSectionItem>
+            
+                <apex:pageBlockTable value="{!IdReq}" var="r">
+                    <apex:column headerValue="Recipient" value="{!r.Delegate__c}"/>
+                    <apex:column headerValue="Feedback" value="{!r.Feedback__c}"/>
+                    <apex:column headerValue="Created Date" value="{!r.CreatedDate}"/>
+                </apex:pageBlockTable>
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:commandButton action="{!assigneDelegate}" value="Request Other Evaluator Feedback" reRender="showFeedbackListCont">
+                      <!-- <apex:actionSupport event="onclick" reRender="showFeedbackListCont"/> -->
+                </apex:commandButton>    
+                   
+                   
+                    
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageblockSection>
+        </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:pageBlock>
+</apex:form> 
+</apex:page>

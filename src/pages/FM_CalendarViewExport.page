@@ -1,0 +1,29 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false" contentType="application/vnd.ms-excel#CalendarView.xls" renderAs="{!IF($CurrentPage.Parameters.format == 'pdf', 'PDF', null)}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <style type="text/css">
+            @page{
+                /* Landscape orientation */
+                size:landscape;
+               	 
+                /* Put page numbers in the bottom right corner of each
+                page in the pdf document. */
+                @bottom-right {
+                    content: "Page " counter(page);
+                }
+            }
+            html, body {
+				  margin: 0px;
+				  padding: 0px;
+				}
+            
+            .test{
+                font-size: 67%;
+
+            }
+        </style>
+    </head>
+    <body>
+        <c:FM_CalendarViewContent selectedTimeFrame="{!$CurrentPage.Parameters.selectedTimeFrame}" selectedLocation="{!$CurrentPage.Parameters.selectedLocation}" />
+    </body>
+</apex:page>

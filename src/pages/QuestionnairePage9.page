@@ -1,0 +1,58 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">   
+    
+    <script> 
+      function validate(question) 
+          {
+           if (question.value == "Other")
+            {
+                alert('Please enter comments');           
+            } 
+          }
+    </script>
+    
+   <apex:form >
+      <apex:pageBlock title="Reason for Leaving">
+      <apex:selectRadio layout="pagedirection"  id="q25" value="{!Questionnaire__c.Question25__c}" required="true" onclick="validate(this)">
+<apex:selectoption itemLabel="Colleague relationships" itemValue="Colleague relationships"></apex:selectoption>                      
+<apex:selectoption itemLabel="Supervisor / Manager Relationships" itemValue="Supervisor / Manager Relationships"></apex:selectoption>
+            <apex:selectoption itemLabel="Working Hours" itemValue="Working Hours"></apex:selectoption>
+            <apex:selectoption itemLabel="Working Condition" itemValue="Working Condition"></apex:selectoption>
+            <apex:selectoption itemLabel="Job Content" itemValue="Job Content"></apex:selectoption>
+            <apex:selectoption itemLabel="Lack of Promotional Opportunities" itemValue="Lack of Promotional Opportunities"></apex:selectoption>
+            <apex:selectoption itemLabel="Lack of Development" itemValue="Lack of Development"></apex:selectoption>
+            <apex:selectoption itemLabel="Pay / Package" itemValue="Pay / Package"></apex:selectoption>
+            <apex:selectoption itemLabel="Resigned due to been performanced managed" itemValue="Resigned due to been performanced managed"></apex:selectoption>
+            <apex:selectoption itemLabel="Promoted / New position Within TNT" itemValue="Promoted / New position Within TNT"></apex:selectoption>
+            <apex:selectoption itemLabel="Domestic / Personal Circumstances" itemValue="Domestic / Personal Circumstances"></apex:selectoption>
+            <apex:selectoption itemLabel="Moving Out of Area" itemValue="Moving Out of Area"></apex:selectoption>
+            <apex:selectoption itemLabel="Travel Problems - Work Related / Personal" itemValue="Travel Problems - Work Related / Personal"></apex:selectoption>
+            <apex:selectoption itemLabel="Establish Own Business" itemValue="Establish Own Business"></apex:selectoption>
+            <apex:selectoption itemLabel="Further Education / Training" itemValue="Further Education / Training"></apex:selectoption>
+            <apex:selectoption itemLabel="Ill Health" itemValue="Ill Health"></apex:selectoption>
+            <apex:selectoption itemLabel="Career Change" itemValue="Career Change"></apex:selectoption>
+            <apex:selectoption itemLabel="Worldwide Travel" itemValue="Worldwide Travel"></apex:selectoption>
+            <apex:selectoption itemLabel="Maternity" itemValue="Maternity"></apex:selectoption>
+            <apex:selectoption itemLabel="Job Role Changed" itemValue="Job Role Changed"></apex:selectoption>
+            <apex:selectoption itemLabel="Unsatisfactory Probation Period" itemValue="Unsatisfactory Probation Period"></apex:selectoption>
+            <apex:selectoption itemLabel="Other" itemValue="Other"></apex:selectoption>
+             </apex:selectRadio>
+             <p/><p/>
+             
+              <b>General Comments:</b>
+             <p/><p/>
+                               
+             <apex:inputTextarea id="q25comments" value="{!Questionnaire__c.GeneralComment__c}" cols="100" rows="4"/> 
+                <p/><p/><p/>          
+   <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page9}" value="Previous"/></td> 
+            </tr>
+            </table>
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage9}" value="Submit"/></td>
+            </tr>
+            </table>
+               </apex:pageBlock>
+         </apex:form> 
+</apex:page>

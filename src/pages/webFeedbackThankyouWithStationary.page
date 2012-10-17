@@ -1,0 +1,51 @@
+<apex:page showHeader="false" standardController="Feedback__c" standardStylesheets="false" sidebar="false" extensions="FeedbackReturnPageExt" >
+    <apex:form >
+    <apex:stylesheet value="{!$Resource.tntStyle}"/> 
+
+        
+
+    <apex:panelGrid columns="1" width="400">
+    <apex:outputpanel >
+    
+    <apex:panelGrid columns="1" width="400">
+
+    <apex:outputText styleclass="tnt_header" Value="Thank You" />
+
+    <apex:outputText styleclass="tnt_text" Value="Your feedback has been received." />
+    <apex:outputText styleclass="tnt_text" Value="" />  
+    <apex:outputText styleclass="tnt_text" Value="Thank you very much for sending us your comments which" />  
+    <apex:outputText styleclass="tnt_text" Value="will be forwarded to a TNT Representative" />  
+
+    </apex:panelGrid>
+    </apex:outputpanel>
+
+    <apex:outputpanel >
+    <apex:panelGrid columns="2" width="400">
+    <apex:outputText styleclass="tnt_text" rendered="{!NOT(ISNULL(Feedback__c.Email__c))}" value="An email was sent to:"/> 
+    <apex:outputText styleclass="tnt_text_highlighted" rendered="{!NOT(ISNULL(Feedback__c.Email__c))}" value="{!Feedback__c.Email__c}"/> 
+  
+    <apex:outputText styleclass="tnt_text" value="Feedback reference:" />
+    <apex:outputText styleclass="tnt_text_highlighted" value="{!Feedback__c.name}" />
+  
+    <apex:outputText styleclass="tnt_text" rendered="{!(ISNULL(Feedback__c.Email__c))}" value="You can contact us on:"/> 
+    <apex:outputText styleclass="tnt_text_highlighted" rendered="{!(ISNULL(Feedback__c.Email__c))}" value="0800 100 600"/> 
+    </apex:panelGrid>
+	
+    <apex:panelGrid columns="1" width="400">
+
+    <apex:outputText styleclass="tnt_text" Value="" />  
+
+    <apex:outputText styleclass="tnt_text" Value="However, we note that you have made a request" />  
+    <apex:outputText styleclass="tnt_text" Value="for stationary. May we take the opportunity" />  
+    <apex:outputText styleclass="tnt_text" Value="to make you aware of our Stationary Orfering Site." />  
+    <apex:outputText styleclass="tnt_text" Value="In order to access the site please visit:" />
+    
+    <apex:commandLink styleclass="tnt_text" target="_new" action="{!onStationaryClick}" Value="www.tnt.co.uk/stationery"/>
+    
+    </apex:panelGrid>
+    
+    </apex:outputpanel>
+    
+    </apex:panelGrid>
+</apex:form>    
+</apex:page>

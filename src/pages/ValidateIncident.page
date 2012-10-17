@@ -1,0 +1,10 @@
+<apex:page standardController="FM_Incident__c" extensions="FM_ValidateIncident" tabStyle="FM_Incident__c" action="{!validateIncident}">
+    <apex:form > 
+        <apex:pageBlock title="Validate Incident">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="back" action="{!back}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

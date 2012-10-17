@@ -1,0 +1,222 @@
+<apex:page standardController="Order__c" extensions="Create_Order_Controller" tabStyle="Create_Order__tab" action="{!start}">
+    <apex:includeScript value="{!$Resource.pageBlockSection_collapse}"/>
+    <!-- <script>function onSelect(value){alert(value);}</script> -->
+    <apex:sectionHeader title="Order" subtitle="Order" />
+    <apex:form id="formCreateOrder">
+        <apex:actionFunction action="{!populateSoldToAddress}" name="onSelect"/>
+        <apex:actionFunction action="{!populateShipToAddress}" name="onSelect2"/>
+        
+        <apex:actionFunction action="{!disableSoldto}" name="onChangeSoldTo"/>
+        <apex:actionFunction action="{!disableShipto}" name="onChangeShipTo"/>
+        <apex:actionFunction action="{!sameAsSoldDisable}" name="onChangeSameAs"/>
+        
+        <apex:pageblock id="pageBlock" title="Order">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+            <apex:message />
+            <apex:pageMessages id="pageErrors" showDetail="false"></apex:pageMessages>
+            
+            <apex:pageBlockSection collapsible="true" columns="1" title="Order Information">
+                <apex:inputField id="customerCompanyName" value="{!Order__c.Customer_Company__c}" rendered="{!IF(Order__c.Customer_Company__c!=null,false,true)}"/>
+                <apex:outputField value="{!Order__c.Customer_Company__c}" rendered="{!IF(Order__c.Customer_Company__c!=null,true,false)}"/>
+                <!--<apex:outputField value="{!Order__c.Customer_Company__c}" rendered="{!IF($User.ContactId!=null,true,false)}"/>-->
+                
+                <apex:pageBlockSectionItem rendered="{!IF(Order__c.Customer_Company__c!=null,true,false)}">
+                    <apex:outputLabel for="customerCompanyName">{!$ObjectType.Account.Fields.Customer_Company_Name__c.Label}</apex:outputLabel>
+                    <apex:outputText value="{!customerCompanyName}" id="customerCompanyName" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!Order__c.Name}" required="true"/>
+                <apex:inputField value="{!Order__c.Start_Ship_Date__c}"/>
+                <apex:outputField value="{!Order__c.Number_Order_Items__c}" rendered="false"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection collapsible="true" title="Addresses" columns="2">
+                <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Same as Sold Address</apex:outputLabel>
+                    <apex:inputCheckbox tabindex="11" value="{!sameAsSoldAddress}" onclick="onChangeSameAs();" />
+                </apex:pageBlockSectionItem>
+                 
+                <apex:inputField value="{!Order__c.Sold_to__c}" onchange="onChangeSoldTo();"/>
+                <apex:inputField value="{!Order__c.Ship_to__c}" onchange="onChangeShipTo();" rendered="{!IF(sameAsSoldAddress,false,true)}"/>
+                <apex:outputField value="{!Order__c.Ship_to__c}" rendered="{!IF(sameAsSoldAddress,true,false)}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection collapsible="true" title="New Addresses" columns="2" id="new">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Name">{!$ObjectType.Address__c.Fields.Name.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="12" id="soldTo_Name" value="{!soldto.Name}" disabled="{!soldtoDisabled}" maxlength="8"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Name">{!$ObjectType.Address__c.Fields.Name.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="1" id="shipTo_Name" value="{!shipto.Name}" disabled="{!shiptoDisabled}" maxlength="8"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldToCompany_Name__c">{!$ObjectType.Address__c.Fields.Company_Name__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="13" id="soldToCompany_Name__c" value="{!soldto.Company_Name__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipToCompany_Name__c">{!$ObjectType.Address__c.Fields.Company_Name__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="2" id="shipToCompany_Name__c" value="{!shipto.Company_Name__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Post_Code__c">{!$ObjectType.Address__c.Fields.Post_Code__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="14" id="soldTo_Post_Code__c" value="{!soldToPostcode}" disabled="{!soldtoDisabled}"/> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Post_Code__c">{!$ObjectType.Address__c.Fields.Post_Code__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="3" id="shipTo_Post_Code__c" value="{!shipToPostcode}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem > 
+                    <apex:outputLabel ></apex:outputLabel>
+                    
+                    <apex:commandButton value="Check Postcode" action="{!findSoldToAddress}" reRender="pageBlock, soldTo_Post_Code__c" status="addressDetailsLoading" disabled="{!soldtoDisabled}">
+                        <apex:param name="Pc" value="{!soldToPostcode}"/>
+                    </apex:commandButton>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem > 
+                    <apex:outputLabel ></apex:outputLabel>
+                    
+                    <apex:commandButton value="Check Postcode" action="{!findShipToAddress}" reRender="pageBlock, shipTo_Post_Code__c" status="addressDetailsLoading2" disabled="{!shiptoDisabled}">
+                        <apex:param name="Pc" value="{!shipto.Post_Code__c}"/>
+                    </apex:commandButton>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    
+                    <apex:outputPanel >
+                        <apex:actionStatus id="addressDetailsLoading">
+                            <apex:facet name="start">  
+                                <apex:outputPanel id="addressDetailsLoadingImage" style="position:center">
+                                    <p>Loading</p>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            
+                            <apex:facet name="stop">
+                                <apex:selectList value="{!selectedSoldToAddress}" size="1" onchange="onSelect(this.value);" rendered="{!findPCSoldto}" style="width:150px;">
+                                    <apex:selectOptions value="{!soldToAddressList}"></apex:selectOptions>
+                                </apex:selectList>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    
+                    <apex:outputPanel >
+                        <apex:actionStatus id="addressDetailsLoading2">
+                            <apex:facet name="start">
+                                <apex:outputPanel id="addressDetailsLoadingImage" style="position:center">
+                                    <p>Loading</p>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            
+                            <apex:facet name="stop">
+                                <apex:selectList value="{!selectedShipToAddress}" size="1" onchange="onSelect2(this.value);" rendered="{!findPCShipto}" style="width:150px;">
+                                    <apex:selectOptions value="{!shipToAddressList}"></apex:selectOptions>
+                                </apex:selectList>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+ 
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Address_1__c">{!$ObjectType.Address__c.Fields.Address_1__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="15" id="soldTo_Address_1__c" value="{!soldto.Address_1__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>               
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Address_1__c">{!$ObjectType.Address__c.Fields.Address_1__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="4" id="shipTo_Address_1__c" value="{!shipto.Address_1__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Address_2__c">{!$ObjectType.Address__c.Fields.Address_2__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="16" id="soldTo_Address_2__c" value="{!soldto.Address_2__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Address_2__c">{!$ObjectType.Address__c.Fields.Address_2__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="5" id="shipTo_Address_2__c" value="{!shipto.Address_2__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Address_3__c">{!$ObjectType.Address__c.Fields.Address_3__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="17" id="soldTo_Address_3__c" value="{!soldto.Address_3__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Address_3__c">{!$ObjectType.Address__c.Fields.Address_3__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="6" id="shipTo_Address_3__c" value="{!shipto.Address_3__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Town__c">{!$ObjectType.Address__c.Fields.Town__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="18" id="soldTo_Town__c" value="{!soldto.Town__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Town__c">{!$ObjectType.Address__c.Fields.Town__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="7" id="shipTo_Town__c" value="{!shipto.Town__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+
+                <!--<apex:pageBlockSectionItem >-->
+                    <!--<apex:outputLabel for="soldTo_Country__c">{!$ObjectType.Address__c.Fields.Country_de__c.Label}</apex:outputLabel>-->
+                    <!--<apex:inputText tabindex="19" id="soldTo_Country__c" value="{!soldto.Country_de__c}"/>-->
+                    <apex:inputField value="{!soldto.Country__c}" style="width:41%;" rendered="{!IF(soldtoDisabled,false,true)}"/>
+                    <apex:outputField value="{!soldto.Country__c}" style="width:41%;" rendered="{!IF(soldtoDisabled,true,false)}"/>
+                <!--</apex:pageBlockSectionItem>-->                
+                <!--<apex:pageBlockSectionItem >-->
+                    <!--<apex:outputLabel for="shipTo_Country__c">{!$ObjectType.Address__c.Fields.Country_de__c.Label}</apex:outputLabel>-->
+                    <!--<apex:inputText tabindex="8" id="shipTo_Country__c" value="{!shipto.Country_de__c}"/>-->
+                    <apex:inputField value="{!shipto.Country__c}" style="width:41%;" rendered="{!IF(shiptoDisabled,false,true)}"/>
+                    <apex:outputField value="{!shipto.Country__c}" style="width:41%;" rendered="{!IF(shiptoDisabled,true,false)}"/>
+                <!--</apex:pageBlockSectionItem>-->
+
+                <apex:inputField value="{!soldto.State__c}" style="width:41%;" rendered="{!IF(soldtoDisabled,false,true)}"/>
+                <apex:outputField value="{!soldto.State__c}" style="width:41%;" rendered="{!IF(soldtoDisabled,true,false)}"/>
+                
+                <apex:inputField value="{!shipto.State__c}" style="width:41%;" rendered="{!IF(shiptoDisabled,false,true)}"/>
+                <apex:outputField value="{!shipto.State__c}" style="width:41%;" rendered="{!IF(shiptoDisabled,true,false)}"/>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Tel_No__c">{!$ObjectType.Address__c.Fields.Tel_No__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="20" id="soldTo_Tel_No__c" value="{!soldto.Tel_No__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Tel_No__c">{!$ObjectType.Address__c.Fields.Tel_No__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="9" id="shipTo_Tel_No__c" value="{!shipto.Tel_No__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="soldTo_Contact_Name__c">{!$ObjectType.Address__c.Fields.Contact_Name__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="21" id="soldTo_Contact_Name__c" value="{!soldto.Contact_Name__c}" disabled="{!soldtoDisabled}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="shipTo_Contact_Name__c">{!$ObjectType.Address__c.Fields.Contact_Name__c.Label}</apex:outputLabel>
+                    <apex:inputText tabindex="10" id="shipTo_Contact_Name__c" value="{!shipto.Contact_Name__c}" disabled="{!shiptoDisabled}"/>
+                </apex:pageBlockSectionItem>
+                
+                <script>PageBlockSectionCollapse('{!$Component.instr}');</script>              
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection collapsible="true" title="Special Instructions" id="instr" columns="1">
+                <apex:inputField value="{!Order__c.Special_Instructions__c}" style="width:50%;"/>
+                <script>PageBlockSectionCollapse('{!$Component.instr}');</script>
+            </apex:pageBlockSection>
+        </apex:pageblock>
+        
+        <apex:pageBlock >
+            <apex:pageBlockSection collapsible="true" title="Status Information" columns="1" rendered="false">
+                <apex:outputField value="{!Order__c.Transfer_Status__c}" />
+                <apex:outputField value="{!Order__c.Change_Status__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

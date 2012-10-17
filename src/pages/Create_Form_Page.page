@@ -1,0 +1,162 @@
+<apex:page standardController="Form__c" extensions="Create_Form_Page_Controller">
+    <apex:sectionHeader title="New {!$ObjectType.Form__c.Label}" subtitle="{!formName} {!$ObjectType.Form__c.Label}"/>
+    <apex:outputPanel id="entirePage">
+    <apex:pageMessages id="userMessages"/>
+    
+    <apex:form >
+        <apex:pageblock rendered="{!renderSelection}">
+            <apex:pageBlockSection title="{!$ObjectType.Form__c.Label} Details" columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Form__c.fields.Form_Name__c.label}</apex:outputLabel>
+                    
+                    <apex:outputPanel >
+                        <apex:selectList value="{!formName}" size="1">
+                            <apex:selectOptions value="{!formTypes}"/>
+                        </apex:selectList>
+                        <apex:commandButton value="Select" action="{!selectFormType}" reRender="entirePage" status="selectFormLoadingStatus"/>
+                        
+                        <apex:actionStatus id="selectFormLoadingStatus">
+                            <apex:facet name="start">
+                                <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageblock>
+        
+        <apex:pageBlock rendered="{!reportDue}">
+            <apex:pageBlockSection title="{!$ObjectType.Form__c.Label} Details" columns="2">
+                <apex:outputField value="{!form.Depot__c }"/>
+                <apex:outputField value="{!form.Date__c}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="{!$ObjectType.Form__c.Label} Items" columns="1" rendered="{!extinguisherForm}">
+                <apex:dataTable id="extinguisherAnswerTable" value="{!extinguisherAnswers}" var="extinguisherAnswer" width="100%">
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Number__c.label}">
+                        <apex:outputField value="{!extinguisherAnswer.Extinguisher_Number__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Type__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.Extinguisher_Type__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Location__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.Extinguisher_Location__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_free_from_Defect__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.Extinguisher_free_from_Defect__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Action_Required__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.Action_Required__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.By_Whom__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.By_Whom__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Date_Completed__c.label}">
+                        <apex:inputField value="{!extinguisherAnswer.Date_Completed__c}"/>
+                    </apex:column>
+                </apex:dataTable>
+                
+                <apex:commandLink value="Add {!RowsToAdd} Rows" action="{!addRows}" reRender="extinguisherAnswerTable" immediate="true" status="extinguisherAddingRows"/>
+                
+                <apex:actionStatus id="extinguisherAddingRows">
+                    <apex:facet name="start">  
+                        <apex:image url="{!$Resource.loaderImage}"/> 
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="{!$ObjectType.Form__c.Label} Items" columns="1" rendered="{!emergLightForm}">
+                <apex:dataTable id="emergLightAnswerTable" value="{!emergLightAnswers}" var="emergLightAnswer" width="100%">
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Unit_Light_Number__c.label}">
+                        <apex:outputField value="{!emergLightAnswer.Unit_Light_Number__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Unit_Location__c.label}">
+                        <apex:inputField value="{!emergLightAnswer.Unit_Location__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Light_free_from_Defect__c.label}">
+                        <apex:inputField value="{!emergLightAnswer.Light_free_from_Defect__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Action_Required__c.label}">
+                        <apex:inputField value="{!emergLightAnswer.Action_Required__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.By_Whom__c.label}">
+                        <apex:inputField value="{!emergLightAnswer.By_Whom__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Date_Completed__c.label}">
+                        <apex:inputField value="{!emergLightAnswer.Date_Completed__c}"/>
+                    </apex:column>
+                </apex:dataTable>
+                
+                <apex:commandLink value="Add {!RowsToAdd} Rows" action="{!addRows}" reRender="emergLightAnswerTable" immediate="true" status="emergLightAddingRows"/>
+                
+                <apex:actionStatus id="emergLightAddingRows">
+                    <apex:facet name="start">  
+                        <apex:image url="{!$Resource.loaderImage}"/> 
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            
+            <apex:repeat value="{!inspectionAnswerGroups}" var="answerGroup" rendered="{!inspectionForm}">
+                <apex:pageBlockSection title="{!answerGroup.GroupName}" columns="1">
+                    <apex:dataTable id="inspectionAnswerTable" value="{!answerGroup.answers}" var="answer" width="100%">
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Question__c.label}" width="50%">
+                            <apex:outputText >{!answer.thisAnswer.Question__c}</apex:outputText>
+                        </apex:column>
+                        
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Answer__c.label}">
+                            <apex:outputPanel style="display:{!answer.PicklistAnswerTypePanel}">
+                                <apex:outputPanel styleClass="requiredInput" layout="block">
+                                <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                                    <apex:selectList value="{!answer.AnswerPickListVal}" size="1">
+                                        <apex:selectOptions value="{!answer.AnswerValueList}"/>
+                                    </apex:selectList>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel style="display:{!answer.FreeFormTextAnswerTypePanel}">
+                                <apex:outputPanel styleClass="requiredInput" layout="block">
+                                <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                                    <apex:inputText value="{!answer.AnswerVal}"/>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                            <!--<apex:inputField value="{!answer.thisAnswer.Yes_No_N_A__c}" required="true"/>-->
+                        </apex:column>
+                        <!--
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Yes_No_N_A__c.label}">
+                            <apex:inputField value="{!answer.thisAnswer.Yes_No_N_A__c}" required="true"/>
+                        </apex:column>
+                        -->
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Action_Required__c.label}">
+                            <apex:inputField value="{!answer.thisAnswer.Action_Required__c}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.By_Whom__c.label}">
+                            <apex:inputField value="{!answer.thisAnswer.By_Whom__c}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Date_Completed__c.label}">
+                            <apex:inputField value="{!answer.thisAnswer.Date_Completed__c}"/>
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:pageBlockSection>
+            </apex:repeat>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                <apex:commandButton value="Save" action="{!Save}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    </apex:outputPanel>
+</apex:page>

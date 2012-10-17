@@ -1,0 +1,48 @@
+<apex:page id="myPage1to2" standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+
+<script type="text/javascript">
+function atload(question) 
+    {
+        if ((question.value != "") && (question.value == "Yes"))
+        {
+           var ba = document.getElementById("myPage1to2:myForm:mypageBlock:completed_by");
+           ba.value = "Not Required"; 
+        }        
+        else
+        {
+           var ba = document.getElementById("myPage1to2:myForm:mypageBlock:completed_by");
+           ba.value = ""; 
+        } 
+    }               
+</script>
+<apex:form id="myForm">
+<apex:pageBlock id="mypageBlock">
+<apex:pageMessages ></apex:pageMessages>
+<b><apex:outputLabel value="Please can you confirm you are completing this questionnaire on behalf of yourself."/></b>         
+ <br/><br/>
+<table border="0" bordercolor="#FFFFFF"  width="300" cellpadding="7" cellspacing="2" align="left">    
+<apex:selectRadio id="on_behalf_of" value="{!Questionnaire__c.On_behalf__c}" layout="pageDirection" required="true" onclick="atload(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No - Please enter your own name in the space provided." itemValue="No"></apex:selectoption>     
+           </apex:selectradio>
+   <br/><br/>
+     <tr>
+   <td><apex:inputField id="completed_by" value="{!Questionnaire__c.Completed_by__c}" required="true"/></td>
+    <br/> 
+    </tr>
+   </table>   
+<br/><br/>     
+             <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page1to2}" value="Previous"/></td> 
+            </tr>
+            </table>
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savepage1to2}" value="Next"/></td>
+            </tr>
+            </table>
+ <br/><br/>       
+        </apex:pageBlock>
+      </apex:form>    
+</apex:page>

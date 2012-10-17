@@ -1,0 +1,57 @@
+<apex:page id="page" showHeader="false" standardController="Feedback__c" sidebar="false" extensions="FeedbackResponsePageExt" standardStylesheets="false">
+
+<apex:stylesheet value="{!$Resource.tntStyle}"/>
+
+
+<apex:panelGrid bgcolor="white">
+
+    <apex:outputPanel >
+
+        <apex:form id="form">
+        
+            <apex:pageBlock mode="maindetail" rendered="{!RecordDeleted}">
+            
+                <apex:panelGrid columns="1">
+                    <apex:outputText styleClass="tnt_text_indented" value="The record with Id={!Id} cannot be found."/>
+                    <apex:outputText styleClass="tnt_text_indented" value="Please contact support."/>
+                </apex:panelGrid>
+            
+            </apex:pageBlock>
+
+            <apex:pageBlock mode="maindetail" rendered="{!NOT(RecordDeleted)}">
+            
+                <apex:panelGrid columns="2">
+                
+                    <apex:outputLabel styleclass="tnt_required" for="comments">Resolution Comments</apex:outputLabel>
+                    <apex:inputField id="comments" required="true" value="{!Feedback__c.Resolution_Comments__c}"/>
+                
+                    <apex:outputLabel styleclass="tnt_required" for="cause">Cause</apex:outputLabel>
+                    <apex:inputfield id="cause" required="true" value="{!Feedback__c.Cause__c}"/>
+                
+                    <apex:outputLabel styleclass="tnt_text_indented" for="othercause">Other Cause</apex:outputLabel>
+                    <apex:inputfield id="othercause" value="{!Feedback__c.Cause_Other__c}"/>
+
+                    <apex:outputLabel styleclass="tnt_required" for="action">Action</apex:outputLabel>
+                    <apex:inputfield id="action" required="true" value="{!Feedback__c.Action_new__c}"/>
+                
+                    <apex:outputLabel styleclass="tnt_text_indented" for="otheraction">Other Action</apex:outputLabel>
+                    <apex:inputfield id="otheraction" value="{!Feedback__c.Action_Other__c}"/>
+               
+                    <apex:outputLabel styleclass="tnt_text" for="estimatedcost">Estimated Cost (£)</apex:outputLabel>
+                    <apex:inputfield id="estimatedcost" value="{!Feedback__c.Estimated_Cost__c}"/>
+                    
+                    <apex:outputText value=""/>
+                    <apex:commandButton action="{!save}" value="Submit"/>
+               
+                </apex:panelGrid>
+            
+            </apex:pageBlock>
+        
+        </apex:form>
+    
+
+    </apex:outputPanel>
+
+</apex:panelGrid>
+
+</apex:page>

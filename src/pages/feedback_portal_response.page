@@ -1,0 +1,29 @@
+<!-- 
+<apex:page id="response_page" tabstyle="Feedback__c" controller="FeedbackPortalResponsePageExt" standardStylesheets="true" sidebar="true" showheader="true">
+<apex:stylesheet value="{!$Resource.tntStyle}"/>
+    <apex:form id="form">
+        <apex:pageBlock title="{!Feedback.Name}" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Submit"/>
+                <apex:commandButton action="{!cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Please enter the resolution details" columns="2">
+                <apex:inputField required="true" value="{!Feedback.Resolution_Comments__c}"/>
+                <apex:outputText value=""/>
+                <apex:inputfield required="true" value="{!Feedback.Cause__c}"/>
+                <apex:inputfield value="{!Feedback.Cause_Other__c}"/>
+                <apex:inputfield required="true" value="{!Feedback.Action__c}"/>
+                <apex:inputfield value="{!Feedback.Action_Other__c}"/>
+                <apex:inputfield value="{!Feedback.Estimated_Cost__c}"/>
+            </apex:pageBlockSection>
+            
+            <apex:relatedlist id="noteslist" list="NotesAndAttachments" subject="{!Feedback.id}" />
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
+ -->
+ 
+ 
+<apex:page standardController="Feedback__c" extensions="FeedbackPortalResponsePageExt">
+   <apex:detail subject="{!feedback.id}" relatedList="true" title="true"/> 
+</apex:page>

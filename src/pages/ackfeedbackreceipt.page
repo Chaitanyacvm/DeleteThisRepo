@@ -1,0 +1,5 @@
+<apex:page standardController="Feedback__c" action="{!changeFBStatusToDeptAck}" extensions="FeedbackReceiptAck" sidebar="false" showHeader="false">
+  <apex:messages />
+  <apex:outputText value="You have acknowledged receipt of feedback: {!Feedback__c.name}" rendered="{!Acknowledged}"/>
+  <apex:outputText value="You are not the current business owner of feedback: {!Feedback__c.name}.  Please ignore." rendered="{!NOT(Acknowledged)}"/>
+</apex:page>

@@ -1,0 +1,5 @@
+<apex:page standardController="Order__c" extensions="Order_Status_Check_Controller">
+    <apex:pageMessages id="userMessages"></apex:pageMessages>
+    
+    <apex:detail subject="{!Order__c}" relatedList="true" relatedListHover="true" rendered="{!hasPermission}"/>
+</apex:page>

@@ -1,0 +1,4 @@
+<apex:page contentType="application/xml" cache="false" controller="IR_Display_Document_Controller" showHeader="false" standardStylesheets="false">{!XML_Header}
+{!XSL_Header_Start}{!IF(docType=='manifest',URLFOR($Resource.IR_Manifest_XSL),IF(docType=='label',URLFOR($Resource.IR_Label_XSL),IF(docType=='invoice',URLFOR($Resource.IR_Invoice_XSL),IF(docType=='connote',URLFOR($Resource.IR_Con_Note_XSL),null))))}{!XSL_Header_End}
+{!XML_Body}
+</apex:page>

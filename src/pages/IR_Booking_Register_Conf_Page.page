@@ -1,0 +1,223 @@
+<apex:page controller="IR_Booking_Register_Conf_Controller" showHeader="false" standardStylesheets="true" title="{!$ObjectType.Quote_Settings__c.fields.Get_Quote__c.label}" cache="true">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <apex:stylesheet value="{!$Resource.IR_Style}"/>
+        
+        <style type="text/css">
+            .requiredInput {
+                background-image: url({!URLFOR($Resource.IR_Required)});
+                background-repeat:no-repeat;
+                background-position:left center;
+            }
+            
+            .custInfo {
+                position:relative;
+                width:auto;
+            }
+            
+            .custInfoLeft {
+                position:relative;
+                float:left;
+                width:350px;
+                word-wrap:break-word;
+            }
+            
+            .custInfoRight {
+                position:relative;
+                float:right;
+                width:570px;
+            }
+    
+            .greyOrangeButton {
+                background-image: url({!URLFOR($Resource.IR_Package_Button_BG)});
+            }
+            
+            .grey-button {
+                 background:transparent url({!URLFOR($Resource.IR_grey_left)}) no-repeat left center;
+            }
+            
+            .grey-button span {
+                 background:transparent url({!URLFOR($Resource.IR_grey_right)}) no-repeat right center;
+            }
+            
+            .white-button {
+                 background:transparent url({!URLFOR($Resource.IR_white_left)}) no-repeat left center;
+            }
+            
+            .white-button span {
+                 background:transparent url({!URLFOR($Resource.IR_white_right)}) no-repeat right center;
+            }
+        </style>
+        
+        <apex:includeScript value="{!$Resource.IR_jquery_min}"/>
+        
+        <!--START HELP TEXT-->
+        <apex:includeScript value="{!$Resource.IR_jquery_tooltip_js}"/>
+        <apex:stylesheet value="{!$Resource.IR_tooltip_css}"/>
+        <!--END HELP TEXT-->
+        
+        <!--START FANCYBOX-->
+        <apex:includeScript value="{!$Resource.IR_jquery_fancybox_js}"/>
+        <apex:stylesheet value="{!$Resource.IR_jquery_fancybox_css}"/>
+        <style>
+        #fancybox-loading div {
+            background-image: url({!URLFOR($Resource.IR_fancybox)});
+        }
+        
+        #fancybox-close {
+            background-image: url({!URLFOR($Resource.IR_fancybox)});
+        }
+        </style>
+        <!--END FANCYBOX-->
+    </head>
+    
+    <body>
+        <apex:form >
+            <apex:outputPanel id="wrapper" layout="block" styleClass="wrapper">
+                <!--START HELP TEXT-->
+                <script type="text/javascript"> 
+                    $(function() {
+                    $('.helpHover *').tooltip();
+                    });
+                </script>
+                <!--END HELP TEXT-->
+                
+                <!--START FANCYBOX-->
+                <script type="text/javascript">
+                    $(document).ready(function() {
+            
+                        $(".fancybox").fancybox({
+                            'autoScale'         : false,
+                            'transitionIn'      : 'none',
+                            'transitionOut'     : 'none',
+                            'type'              : 'iframe',
+                            'width'             : '85%',
+                            'height'            : '90%'
+                        });
+                    });
+                </script>
+                <!--END FANCYBOX-->
+                
+                <apex:outputPanel layout="block" styleClass="header">
+                    <br />
+                    <h2>Registration</h2>
+                </apex:outputPanel>
+                
+                <apex:pagemessages id="userMessages"/>
+                <br />
+                <apex:outputPanel layout="block" styleClass="sectionMain">
+                    <apex:outputPanel layout="block" styleClass="sectionBody" style="white-space:normal;font-size:12px;">
+                        <apex:outputPanel >
+                            Thank you for registering, we are processing your application. Your unique reference number is {!customer.Name}. 
+                            <br/><br/>
+                            We have sent you an email confirming receipt of your registration details. You must verify your email address by clicking on the link within this email in order for us to complete your account registration.
+                            <br/><br/>
+                            We endeavour to confirm all account applications within 30 minutes – between the hours of 9am and 5pm Monday to Friday. If you have registered outside of these hours you will receive confirmation by 10.00am the next working day. 
+                            <br/><br/>
+                            Can we help you to save money on your express deliveries? Sure we can
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <br />
+                
+                <apex:outputPanel id="custInfoLeft" layout="block" styleClass="custInfoLeft">
+                    <apex:outputPanel layout="block" styleClass="sectionMain">
+                        <apex:outputPanel layout="block" styleClass="sectionHeader">
+                            <apex:outputPanel style="text-align:left;position:relative;float:left;">Your Details</apex:outputPanel>
+                            <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel layout="block" styleClass="sectionBody">
+                            <table columns="2" width="100%" id="standardTable">
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Company__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Company__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Title__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Title__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.First_Name__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.First_Name__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Initial__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Initial__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Surname__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Surname__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Job_Title__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Job_Title__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Telephone__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Telephone__c}"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Mobile_Phone__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Mobile_Phone__c}"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Fax__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Fax__c}"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Email__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Email__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.VAT_Registration_Number__c}" styleClass="fullInput"/></td>
+                                </tr>
+                                
+                                <tr>
+                                    <td width="30%"><apex:outputLabel >{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.label}:</apex:outputLabel></td>
+                                    <td width="70%"><apex:outputField value="{!customer.Extended_Transit_Liability_Setting__c}" styleClass="fullInput"/></td>
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <apex:outputPanel layout="block" styleClass="custInfoRight">
+                </apex:outputPanel>
+                <apex:outputPanel id="custInfoRight" layout="block" styleClass="custInfoRight">
+                    <apex:outputPanel layout="block" styleClass="sectionMain">
+                        <apex:outputPanel layout="block" styleClass="sectionHeader">
+                            <apex:outputPanel style="text-align:left;position:relative;float:left;">Address Details</apex:outputPanel>
+                            <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel layout="block" styleClass="sectionBody">
+                            <table columns="4" width="95%" id="standardTable">
+                                <tr>
+                                    <td width="100%"><apex:outputText value="{!fullCustAddress}"/></td>
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                
+                <apex:outputPanel layout="block" styleClass="bottomButtons" style="text-align:right;">
+                </apex:outputPanel>
+                
+                <apex:outputPanel layout="block" styleClass="clear">
+                </apex:outputPanel>
+            </apex:outputPanel>
+        </apex:form>
+    </body>
+</apex:page>

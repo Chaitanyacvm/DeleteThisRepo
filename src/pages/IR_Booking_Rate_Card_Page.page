@@ -1,0 +1,63 @@
+<apex:page showHeader="false" controller="IR_Booking_Rate_Card_Controller" standardStylesheets="false" cache="false">
+    <head>
+        <meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <title>Internet Rate Card</title>
+        
+        <style type="text/css"> 
+            html, body {
+                font-family:Tahoma, Arial;
+                background:#FFFFFF;
+            }            
+            #pdf-version a {
+                font-weight: bold;
+                color: #FF6600;
+                font-size: 11px;
+                font-family: tahoma, verdana, arial;
+            }
+            
+            #pdf-version {
+                float: right;
+                width: 300px;
+                height: 35px;
+                margin-right: 18px;
+                text-align: right;
+            }
+            
+            #heading {
+                float: left;
+                width: 300px;
+                margin-top: 8px;
+                margin-left: 10px;
+                font-size: 17px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <table align="center" width="705">
+            <tr>
+                <td>
+                    <div id="heading">
+                        <strong><font color="#FF6600">Express Rate Agreement</font></strong>
+                    </div>
+                    
+                    <div id="pdf-version">
+                        <a href="{!URLFOR($Resource.IR_Rate_Agreement_PDF_ET)}{!etlSetting}" target="_blank">
+                            <apex:image url="{!$Resource.IR_PDF_Icon}" width="25" height="25" style="margin-right:5px;border:0px;text-decoration:none;" title="Download a pdf version of the Express Rate Agreement here"/>Download  pdf version here</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <apex:image url="{!CASE(etlSetting,0,$Resource.IR_Rate_Agreement_ET0,4,$Resource.IR_Rate_Agreement_ET4,7,$Resource.IR_Rate_Agreement_ET7,10,$Resource.IR_Rate_Agreement_ET10,$Resource.IR_Rate_Card)}" width="705px" height="853px" style="border:0px;"/>
+                </td>
+            </tr>
+        </table><!--
+            <p>&nbsp;</p>
+            <tr>
+            <td></td>
+            </tr>
+        </table>-->
+    </body>
+</apex:page>

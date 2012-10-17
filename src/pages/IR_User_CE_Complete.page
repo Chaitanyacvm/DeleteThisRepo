@@ -1,0 +1,8 @@
+<apex:page standardController="IR_Customer__c" extensions="IR_User_CE_Complete_Extension" action="{!complete}">
+    <apex:sectionHeader title="Complete and Save"/>
+    
+    <apex:form >
+        <apex:commandLink value="Back to Customer: {!thisCustomer.Name}" action="{!back}"/>
+    </apex:form>
+    <apex:pageMessages id="userMessages"/>
+</apex:page>

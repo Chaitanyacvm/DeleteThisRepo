@@ -1,0 +1,207 @@
+<apex:page showHeader="false" standardStylesheets="false" controller="SiteLoginAndRegController_TNT_Idea">
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>TNT SalesForce</title>
+  <link rel="stylesheet" href="{!URLFOR($Resource.IdeasTNT, 'css/stylesheet.css')}" type="text/css" />   
+  <script type="text/javascript" src="{!URLFOR($Resource.IdeasTNT, 'js/jquery-1.6.min.js')}"></script>
+  
+  <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="{!URLFOR($Resource.IdeasTNT, 'css/facebox.css')}" media="screen" rel="stylesheet" type="text/css"/>
+    <script src="{!URLFOR($Resource.IdeasTNT, 'js/facebox.js')}" type="text/javascript"></script> 
+    <style>
+        #terms {
+            float:left; font-size:11px;
+            height:100px;
+            width:260px; overflow:scroll;
+        }
+    </style>
+ </head>
+<!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]--> 
+<body id="homepage">
+    <header id="mainHead">
+        <div class="wrapper">
+            <h2 class="idea">Ideas</h2>
+            <h1 class="logo">TNT Sure We Can</h1>
+        </div>
+    </header>
+
+    <section id="flipBook">
+        <div class="wrapper">
+          <div id="lrgImg" class="person1">
+          
+              <img src="{!URLFOR($Resource.IdeasTNT, 'images/people/large/person_1.png')}" />
+          </div>
+            <div id="smlImg" class="person2">
+            
+                <img src="{!URLFOR($Resource.IdeasTNT, 'images/people/small/person_1.png')}" />
+            </div>
+        </div>
+    </section>
+
+    <section id="homeContent">
+
+        <div class="wrapper">
+
+            <div class="column" id="first">
+                 <h2> Welcome to I’dea – the new TNT employee suggestion scheme. </h2>    
+                 <p>This new scheme heralds an exciting new era of innovation in encouraging all of our employees to take an active part in shaping the company’s future.
+
+                 </p>
+                 
+                <p>&nbsp;</p>
+                <p>I’dea is a fantastic one-stop shop within which you can all help drive improvements. Not only are you able to submit your own ideas, the new system enables you to access the ideas and suggestions of your colleagues so that, through collaboration, we can build even stronger proposals. It makes it easier to submit ideas and offer feedback. I’dea will collect and collate all ideas from everyone across the business.
+                </p>
+                
+                <p>&nbsp;</p>
+                <br/>
+            </div>
+
+            <div class="column">
+
+                <apex:pageMessages escape="false" id="error"/>
+                
+           
+            
+             <apex:form >         
+                <label>Username:</label>
+                    <apex:inputText id="Username" styleClass="input" value="{!usernameL}"/>
+                <label style="width:250px;">Password:<apex:outputLink value="{!$Page.ForgotPassword}">Forgotten Password</apex:outputLink> </label>
+                   <apex:inputSecret id="Password" styleClass="input" value="{!passwordL}"/>
+                   <apex:commandButton styleClass="btnlogin" action="{!login}" value="Login" id="Login"/><br/><br/><br/><br/><br/>
+                   <div class="show_help" style="float:right;"><a href="#info" rel="facebox2"><img src="{!URLFOR($Resource.idea_help)}" /></a></div>
+                   
+            </apex:form> 
+    
+         <a class="btnframework orange" href="#join" rel="facebox">Join now</a>
+         
+    
+        </div>
+
+        </div>
+
+
+    </section>
+    
+    <div id="info" style="display:none;">
+        <div style="padding:10px;">
+            <h2 style="color: #F60;font-size: 20px;">Having trouble logging in?</h2>
+            
+            <p>If this is the first time you have used I’dea then you’ll need to register using the “Join now” button.</p>
+            <br/>
+            <p>Please make sure you carefully enter your details ensuring you use your valid TNT email address and a password that you will easily remember. During the registration process you should receive a confirmation email that you will have to click in order to log in for the first time. </p>
+            <br/>
+            <p>Once you are successfully registered you will need to enter your username which will be your TNT email address and the password that you used to register. </p>
+            <br/>
+            <p>If you do not remember your password please click “Forgotten password” and follow the necessary steps.</p>
+        </div>    
+    </div>
+
+    <div id="join" class="modal">
+       
+            
+                <div class="data">
+            
+                    <h2>Join now</h2>
+            
+                    <apex:form >         
+                       <div class="formgroup">
+                                 <label>First Name</label>
+                                 <apex:inputText styleClass="input" id="firstName" value="{!firstName}"/>
+                        </div>
+                       <div class="formgroup">
+                                 <label>Last Name</label>
+                                 <apex:inputText styleClass="input" id="lastName" value="{!lastName}"/>
+                        </div>
+                         <div class="formgroup">
+                               <label>Email</label>
+                               <apex:inputText styleClass="input" id="email" value="{!email}"/>
+                        </div>
+                        <div class="formgroup">
+                               <label>Password</label>
+                               <label style="color:red;">Min 8 character alphanumeric</label>
+                               <apex:inputSecret id="password2" styleClass="input" value="{!password}"/>
+                               
+                        </div>
+                        <div class="formgroup">
+                               <label>Confirm Password</label>
+                               <apex:inputSecret styleClass="input" id="confirmPassword" value="{!confirmPassword}"/>
+                        </div>
+                        <div class="formgroup">       
+                            <label>Location</label>
+                            
+                            <apex:selectList style="width:255px;" id="Location" styleClass="select" value="{!location}" size="1">
+                                <apex:selectOptions value="{!locationsForUpdate}" />
+                            </apex:selectList>
+                            
+                        </div>
+                         
+                        <div class="formgroup">
+                            <apex:inputCheckbox value="{!tNcAgree}" />
+                            
+                            <span>Terms And Conditions</span>
+                            <!-- <a href="#" id="toggleterms" class="toggleterms">Agree to Terms And Conditions</a> -->
+                           
+                   
+                        </div>
+                        
+                        
+                        <div id="terms" style="">
+                        <p>I agree that by registering for I’dea systems and submitting ideas, I accept that TNT will not treat any of my ideas as confidential and may use the idea (or have it used) for any purpose.</p>
+                        </div>
+                        
+                        
+                        
+                        <div class="formgroup">
+                            <apex:commandButton styleClass="btnlogin right" action="{!registerUser}" value="Submit" id="submit1"/>
+                        </div>
+                   </apex:form>
+                   
+                   
+                </div>
+            
+       
+    
+    
+</div>
+    <script type="text/javascript">
+    /* Image Rotator and modals */
+        $.noConflict();
+        jQuery(document).ready(function ($) {
+            $('a[rel*=facebox]').facebox();
+            
+            $('a[rel*=facebox2]').facebox();
+            
+    /* Add more images to list after photoshoot small folder for left, large folder for right */
+            var images = ['person_1.png', 'person_1.png'];
+            //$('<img src="images/people/large/' + images[Math.floor(Math.random() * images.length)] + '">').appendTo('#lrgImg');
+            //$('<img src="images/people/small/' + images[Math.floor(Math.random() * images.length)] + '">').appendTo('#smlImg');
+        })
+        
+   </script>
+   
+   <script type="text/javascript">
+     $(document).bind('reveal.facebox', function() {
+       $('#facebox #email').val();
+       $('#facebox .toggleterms').click(function() {
+         $("#facebox").find("#terms").toggle();
+
+       });
+
+
+     })
+
+ 
+
+   </script>
+    
+    
+    
+    
+</body>
+
+</apex:page>

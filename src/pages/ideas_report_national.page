@@ -1,0 +1,134 @@
+<apex:page sidebar="false" showHeader="false" controller="idea_report" >
+
+<html>
+<head>
+    <style>
+    
+    #wrapper{
+        margin: 0 0 0 0px;
+    }
+    
+    #banner{
+        //background-image: url({!URLFOR($Resource.IdeaReportBanner)});
+        //background-repeat: no-repeat;
+        width: 100%;
+        height: 100px;
+        
+    }
+    #banner .imageB{
+        background-image: url({!URLFOR($Resource.IdeaReportBanner)});
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100px;
+        position: absolute;
+        position:absolute;
+        
+    }
+    
+    #fotter{
+        //background-image: url({!URLFOR($Resource.IdeaReportLegend)});
+        //background-repeat: no-repeat;
+        width: 90%;
+        height: 140px;
+    }
+    
+    #fotter .imageF{
+        background-image: url({!URLFOR($Resource.IdeaReportLegend)});
+        background-repeat: no-repeat;
+        width:100%;
+        height: 140px;
+        position:absolute;
+    }
+    
+    .table_style{
+        background-color:#f26722;
+        border-style:solid;
+        border-width:1px;
+        border-color:black;
+        text-align:center;
+    }
+    
+    .column_style{
+        //background-color:red;
+        border-style:solid;
+        border-width:1px;
+        border-color:green;
+        text-align:center;
+    }
+    
+    .column_style2{
+        //background-color:green;
+        border-style:solid;
+        border-width:1px;
+        border-color:black;
+        text-align:center;
+    }
+    
+    .no_dec{
+    
+    //text-decoration:underline;
+    
+    }
+    
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        
+        <div id="banner">
+            <!-- <div class="imageB"> -->
+            
+            <img src="{!URLFOR($Resource.IdeaReportBanner)}" />
+            
+            <!-- </div> -->
+        </div>
+        <br/>
+        <div id="content">
+            <apex:dataTable headerClass="table_style" cellspacing="0" cellpadding="5" value="{!ideas_for_national_report}" var="r">
+                <apex:column styleClass="column_style2" width="150" headerValue="Created" value="{!r.CreatedDate}"/>
+                <apex:column styleClass="column_style2" headerValue="Points" value="{!r.voteTotal}"/>
+                <apex:column styleClass="column_style2" width="90" headerValue="Comments">
+                    {!r.NumComments}
+                </apex:column>
+                <apex:column styleClass="column_style2" width="150" headerValue="Title" value="{!r.Title}"/>
+                <apex:column styleClass="column_style2" width="150" headerValue="Submitted By">
+                    {!IF(AND(r.Anonymous_Idea__c=false,ISBLANK(r.On_Behalf__c)),r.CreatedBy.Name,
+                      IF(AND(r.Anonymous_Idea__c=false,NOT(ISBLANK(r.On_Behalf__c))),r.On_Behalf__c,
+                      IF(AND(r.Anonymous_Idea__c=true,NOT(ISBLANK(r.On_Behalf__c))),'Anonymous','Anonymous'
+                    )))}
+                </apex:column>
+                
+                <apex:column styleClass="column_style2" width="150" headerValue="Local or National" value="{!r.Move_Idea_To__c}"/>
+                <apex:column styleClass="column_style2" width="150" headerValue="See Champion?">
+                    {!IF(OR(AND(r.Request_Additional_Information__c = 'Yes',ISBLANK(r.Additional_Information__c)),AND(r.Request_Additional_Information_SC__c = 'Yes',ISBLANK(r.Additional_Information_SC__c))),'Yes','No')}
+                </apex:column>
+                <apex:column styleClass="column_style2" width="150" headerValue="Status" >
+                    <img src="{!
+                    IF(r.Status__c = 'New',URLFOR($Resource.idea_new),
+                    IF(r.Status__c = 'Acknowledged',URLFOR($Resource.idea_new),
+                    IF(r.Status__c = 'In Progress',URLFOR($Resource.idea_evaluated),
+                    IF(r.Status__c = 'Rejected',URLFOR($Resource.idea_closed),
+                    IF(r.Status__c = 'One for the Future',URLFOR($Resource.idea_future),
+                    IF(r.Status__c = 'To be Implemented',URLFOR($Resource.idea_implemented),
+                    URLFOR($Resource.idea_new)
+                    ))))))
+                    
+                    }" width="30" height="30" />
+                </apex:column>
+            </apex:dataTable>
+        </div>
+       
+        <div id="fotter">
+            <!-- <div class="imageF"></div> -->
+            <img src="{!URLFOR($Resource.IdeaReportLegend)}" />
+            
+        </div>
+        <A HREF="javascript:window.print()">Click to Print This Page</A>
+        <br/>
+        <br/>
+        <A HREF="{!$Page.ideas_report}">Location Report</A>
+    </div>
+</body>
+</html>
+
+</apex:page>

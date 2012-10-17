@@ -1,0 +1,86 @@
+<apex:page controller="FeedbackPortalController">
+<apex:form >
+    <apex:pageblock title="Your Feedback Records">
+        <apex:pageblockbuttons location="top">
+            <apex:commandbutton action="{!create}" value="New Feedback" />
+        </apex:pageblockbuttons>
+        <apex:pageblocktable value="{!BusinessOwnerFeedback}" var="feedback">
+            <!-- 
+            <apex:column >
+                <apex:commandlink rendered="{!feedback.Status__c=='Assigned to Dept'}" action="{!accept}" value="Accept" >
+                    <apex:param assignto="{!Id}" name="Id" value="{!feedback.id}"/>
+                    <apex:param assignto="{!status}" name="Status" value="{!feedback.Status__c}"/>
+                </apex:commandlink>
+                <apex:commandlink rendered="{!feedback.Status__c!='Assigned to Dept'}" action="{!edit}" value="Resolve" >
+                    <apex:param assignto="{!Id}" name="Id" value="{!feedback.id}"/>
+                    <apex:param assignto="{!status}" name="Status" value="{!feedback.Status__c}"/>
+                </apex:commandlink>
+            </apex:column>
+             -->
+            <apex:column headervalue="Date Logged">
+                <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                       <apex:param value="{!feedback.Date_Logged__c}" />
+                </apex:outputText>
+            </apex:column>
+            <apex:column headervalue="Reference">
+            <!-- 
+                {!feedback.Name}
+            -->
+                <apex:commandlink action="{!edit}" value="{!feedback.Name}" >
+                    <apex:param assignto="{!Id}" name="Id" value="{!feedback.id}"/>
+                    <apex:param assignto="{!status}" name="Status" value="{!feedback.Status__c}"/>
+                </apex:commandlink>
+            </apex:column>
+
+            
+         <apex:column value="{!feedback.Nature_of_Feedback__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Nature_of_Feedback{!IF(sortExpression=='Nature_of_Feedback__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Nature_of_Feedback__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+       
+         <apex:column value="{!feedback.Subject__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Subject{!IF(sortExpression=='Subject__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Subject__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+        
+         <apex:column value="{!feedback.Status__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Status{!IF(sortExpression=='Status__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Status__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+            
+       <apex:column headervalue="Assigned to Dept">
+                <apex:outputText value="{0,date,dd'/'MM'/'yyyy hh:mm:ss}">
+                       <apex:param value="{!feedback.Assigned_to_dept__c}" />
+                </apex:outputText>
+            </apex:column>
+            
+            <apex:column headervalue="Due Completion Date">
+                <apex:outputText value="{0,date,dd'/'MM'/'yyyy hh:mm:ss}">
+                       <apex:param value="{!feedback.Next_Action_Due__c}" />
+                </apex:outputText>
+            </apex:column>
+            
+          <apex:column value="{!feedback.Feedback_Age__c}">
+         <apex:facet name="header">
+           <apex:commandLink action="{!ViewData}" value="Days Open{!IF(sortExpression=='Feedback_Age__c',IF(sortDirection='ASC','▼','▲'),'')}">
+             <apex:param value="Feedback_Age__c" name="column" assignTo="{!sortExpression}" ></apex:param>
+           </apex:commandLink>
+         </apex:facet>
+       </apex:column>
+                      
+              <apex:column headervalue="Status Flag">
+             <apex:outputText value="{!feedback.Progress__c}" escape="false"/>   
+            </apex:column>
+        </apex:pageblocktable>
+    </apex:pageblock>
+</apex:form>
+</apex:page>

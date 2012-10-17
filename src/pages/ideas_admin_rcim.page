@@ -1,0 +1,31 @@
+<apex:page sidebar="false" tabStyle="Idea_RCIM__tab" standardController="idea" extensions="idea_admin">
+<apex:form >
+    <apex:actionFunction name="adminValue" action="{!setPageAdmin}" reRender="form" >
+        <apex:param name="admin" value="" />
+    </apex:actionFunction>
+</apex:form>
+    
+<script>
+
+    adminValue('RCIM Queue');
+
+</script>
+
+<apex:form id="form">
+    <apex:pageblock >
+        <apex:pageBlockTable value="{!ideas}" var="i">
+            <apex:column headerValue="Title" >
+            <a href="{!$Page.ideas_admin_detail}?id={!i.Id}&f={!i.Workflow_Status__c}">{!i.title}</a>
+            </apex:column>
+            <!-- <apex:column value="{!i.Status}"/> -->
+            <apex:column headerValue="Submitted By" value="{!i.CreatedBy.Name}"/>
+            <apex:column headerValue="Location" value="{!i.Location__c}"/>
+            <apex:column headerValue="Vote Total" value="{!i.VoteTotal}"/>
+            <apex:column headerValue="Created Date" value="{!i.CreatedDate}"/>
+            <apex:column headerValue="Days To SLA" >
+                {!i.Days_to_SLA__c}
+            </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageblock>
+</apex:form>
+</apex:page>

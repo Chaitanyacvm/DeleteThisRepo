@@ -1,0 +1,7 @@
+<apex:page standardController="Order__c" extensions="Cancel_Order_Controller" action="{!save}">
+    <apex:form >
+        <apex:commandLink action="{!backURL}" value="Back to Order" rendered="{!renderBack}"/>
+    </apex:form>
+    
+    <apex:pageMessages id="userMessages"></apex:pageMessages>
+</apex:page>

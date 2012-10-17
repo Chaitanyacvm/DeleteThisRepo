@@ -1,0 +1,40 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+  <apex:form >
+      <apex:pageBlock title="Reward and Recognition">
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">      
+      
+      <font size="2"><b>15. What could TNT do to make this role more relevant, efficient or interesting</b></font>
+      <br/><br/>   
+      <b>Comments:</b>
+             <apex:inputTextarea id="q15comments" value="{!Questionnaire__c.Question15Comment__c}" cols="100" rows="4" required="true"/>
+                       
+<p/><p/> <font size="2"><b>16. What are your thoughts on TNT bonus and reward scheme?</b></font>                        
+        <apex:selectRadio id="q16" value="{!Questionnaire__c.Question16__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Excellent" itemValue="Excellent"></apex:selectoption>
+            <apex:selectoption itemLabel="Good" itemValue="Good"></apex:selectoption>
+            <apex:selectoption itemLabel="Fair" itemValue="Fair"></apex:selectoption>
+            <apex:selectoption itemLabel="Poor" itemValue="Poor"></apex:selectoption>
+            <apex:selectoption itemLabel="Very Poor" itemValue="Very Poor"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+            
+             <apex:inputTextarea id="q16comments" value="{!Questionnaire__c.Question16Comment__c}" cols="100" rows="4"/>
+            <br/><br/>
+        <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page7}" value="Previous"/></td> 
+            </tr>
+            </table>
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage7}" value="Next"/></td>
+            </tr>
+            </table>
+
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

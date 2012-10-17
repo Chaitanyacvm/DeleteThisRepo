@@ -1,0 +1,41 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+
+    <script type="text/javascript"> 
+        var newCount;
+    function timer(position,count)
+     {
+      if (position == 'start') 
+      {
+       document.getElementById("timer").innerHTML=count
+       newCount = count - 1
+       setTimeout("timer('go',newCount)",1000)
+      }
+  
+      if (position == 'go') 
+      {
+       document.getElementById("timer").innerHTML=count
+       newCount--;
+       setTimeout("timer('go',newCount)",1000)
+   
+       if (newCount == -1) 
+       {
+       alert("Thank you for completing the leavers questionnaire"); 
+       window.location = "http://www.tnt.com/"
+       }
+   
+      if (newCount < -1) 
+      {
+       window.location = "http://www.tnt.com/"
+      }
+     } 
+   }
+</script>
+<body onload="timer('start',10);">
+</body>
+  <apex:form >
+      <apex:pageBlock title="Thank you">
+       <apex:outputText > Your Questionnaire has now been submited</apex:outputText>
+      <p/><apex:outputText > Please wait while we redirect you to TNT website in <div id="timer"/> seconds.</apex:outputText>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

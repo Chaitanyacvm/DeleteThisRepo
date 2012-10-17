@@ -1,0 +1,59 @@
+<apex:page controller="PUD_RoundOverview_Controller" >
+    <apex:form >
+        <apex:actionFunction action="{!getDepots}" name="onSelectDepot" />
+        <apex:actionFunction action="{!getRounds}" name="onSelectDate" />
+        <apex:actionFunction action="{!getStops}" name="onSelectRound" />
+        
+        <apex:sectionHeader title="Round Overview"/>
+        <apex:pageBlock id="pageBlock" tabStyle="PUD_Round_Overview__tab">
+            <apex:pageMessages id="pageErrors"></apex:pageMessages>
+            
+            <apex:pageBlockSection columns="3">
+                <apex:pageBlockSectionItem >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="depot_list">Depot:</apex:outputLabel>
+                        <apex:selectList value="{!selectedDepot}" size="1" onchange="onSelectDepot(this.value);" id="depot_list" style="width:75px;">
+                            <apex:selectOptions value="{!soDepots}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="date_list">Date:</apex:outputLabel>
+                        <apex:selectList value="{!selectedColDate}" size="1" onchange="onSelectDate(this.value);" id="date_list">
+                            <apex:selectOptions value="{!soColDate}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="round_list">Round:</apex:outputLabel>
+                        <apex:selectList value="{!selectedRound}" size="1" onchange="onSelectRound(this.value);" id="round_list">
+                            <apex:selectOptions value="{!soRounds}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" rendered="{!showStops}">
+                <apex:pageBlockSection title="Stops" columns="1">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >No of Stops</apex:outputLabel>
+                        <apex:outputText value="{!numberStops}"></apex:outputText>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:pageBlockTable value="{!table}" var="s">
+                        <apex:column value="{!s.Stop_No_RO__c}"/>
+                        <apex:column value="{!s.Post_Code__c}"/>
+                        <apex:column value="{!s.Company__c}"/>
+                        <apex:column value="{!s.Time_Text__c}"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection title="Route" columns="1" rendered="{!showStops}">
+                    <!-- insert map -->
+                    <c:GoogleRoute start="{!DepotAddress}" end="{!DepotAddress}" getroute="{!getRoute}" waypoints="{!Address}"/> <!--  -->
+                </apex:pageBlockSection>
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

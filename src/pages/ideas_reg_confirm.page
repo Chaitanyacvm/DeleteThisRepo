@@ -1,0 +1,11 @@
+<apex:page showHeader="false" controller="SiteLoginAndRegController_TNT_Idea" action="{!registerUserComplete}" >  
+  
+  <center style="font-size:3em;padding:20% 0 0 0;">
+          <apex:outputText rendered="{!renderMsg}">Check your inbox to complete the registration process...</apex:outputText>
+          <apex:form >
+              <apex:commandLink rendered="{!renderMsg}" style="color:red;" oncomplete="window.close();" onclick="window.close();" value="Close Window"/>
+          </apex:form>
+             
+  </center>
+  
+</apex:page>

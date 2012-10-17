@@ -1,0 +1,1 @@
+function PageBlockSectionCollapse(el){	if(typeof twistSection === 'function'){		var theTwist = document.getElementById(el);		if(theTwist){						twistSection(theTwist.childNodes[0].childNodes[0]);		}	}}

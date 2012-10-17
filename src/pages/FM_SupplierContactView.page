@@ -1,0 +1,5 @@
+<apex:page standardController="FM_Supplier_Contact__c" extensions="FM_SupplierContactController" action="{!goToSupplierContactView}">
+    <apex:pageBlock >
+        <apex:pageMessages ></apex:pageMessages>
+    </apex:pageBlock>
+</apex:page>

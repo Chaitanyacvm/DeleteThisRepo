@@ -1,0 +1,369 @@
+<apex:page showHeader="false" standardStylesheets="false" standardController="Idea" extensions="ideas_test" recordSetVar="ideaSetVar">
+
+<!-- Action Functions For Voting -->
+
+<apex:form >
+    
+    <apex:actionFunction name="ideaVoatUp" action="{!voteUp}" rerender="ideaListRepeter">
+        <apex:param name="ideaIdForVoatUp" value=""/>
+    </apex:actionFunction>
+    
+    <apex:actionFunction name="ideaVoatDown" action="{!voteDown}" rerender="ideaListRepeter">
+        <apex:param name="ideaIdForVoatDown" value=""/>
+    </apex:actionFunction>
+    
+</apex:form>
+
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>TNT SalesForce</title>
+  <link rel="stylesheet" href="{!URLFOR($Resource.IdeasTNT, 'css/stylesheet.css')}" type="text/css" />   
+  <script type="text/javascript" src="{!URLFOR($Resource.IdeasTNT, 'js/jquery-1.6.min.js')}"></script>
+  <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="{!URLFOR($Resource.IdeasTNT, 'css/facebox.css')}" media="screen" rel="stylesheet" type="text/css"/>
+    <script src="{!URLFOR($Resource.IdeasTNT, 'js/facebox.js')}" type="text/javascript"></script> 
+    
+    <style>
+    
+    .noHover:hover{
+        
+        cursor:default;
+        
+        
+    }
+    
+    
+    
+    .dislike:hover{width:28px; height:31px; background:url("{!URLFOR($Resource.IdeasTNT, 'images/bg_btn_dislike.png')}"); text-indent:-9999px; line-height:37px;}
+    .dislike2:hover{width:28px; height:31px; background:url("{!URLFOR($Resource.IdeasTNT, 'images/bg_btn_dislike2.png')}"); text-indent:-9999px; line-height:37px;}
+    
+    
+    </style>
+    
+ </head>
+ <body>
+ <!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]--> 
+
+    <header id="mainHead">
+        <div class="wrapper">
+            <h2 class="idea">Ideas</h2>
+            <h1 class="logo">TNT Sure We Can</h1>
+        </div>
+    </header>
+
+    <!-- Heading -->
+    <div class="wrapper">
+        <div class="pageHeading" >         
+              <section class="leftCol" id="header1" >
+              <!-- Change Header here 1-5 -->
+                <img src="{!URLFOR($Resource.IdeasTNT, 'images/pageheader/page_header1.jpg')}" alt=""/>
+              </section>
+              <section class="rightCol">
+                       
+                  <section id="userDetails">
+                      
+                       
+                  
+                       <h3 class="username">{!$User.FirstName}  {!$User.LastName}</h3>
+                       <a href="{!$Page.ideas_profilePage_v2}?c=09a200000000gmn" class="profile">Profile</a>
+                       <apex:outputLink styleClass="profile" value="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">{!$Label.site.logout}</apex:outputLink>
+                       
+                        
+                       <span class="currentlocation">Current Location: {!u.Idea_Location__c} </span>
+                       <br/>
+                       <br/>
+                       <br/>
+                         <form action="#" method="post">
+                         <!-- Location Select -->
+                           
+                           <apex:outputPanel rendered="{!LocalNav}" >
+                           <label>Location</label>
+                           <apex:form >
+                           
+                               <apex:selectList style="width:150px;" value="{!locationValue}" size="1" id="Location" styleClass="select">
+                                   <apex:selectOptions value="{!locationsForUpdate}" />
+                                   <!-- <apex:actionSupport event="onchange" reRender="ideaListRepeter"/> -->
+                               </apex:selectList>
+                               
+                               <apex:commandButton value="Go" action="{!updateLocationView}"/>
+                               <!-- <span class="profile"> Update</span> -->
+                           </apex:form>
+                           </apex:outputpanel>
+                        <!-- Location Select End -->
+                        </form>
+                  </section> 
+              </section>
+       </div>
+    </div>
+
+    <!-- Content -->
+
+    <div class="wrapper pageContent">
+        
+        <section class="leftCol">
+               <nav id="mainNav">
+                <!-- For active tabs just add active class to the a tag -->
+                    <ul>
+                        <li class="first">
+                        
+                        <!-- <a class="active" href="#">Local Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(LocalNav)}" styleClass="" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        <ideas:listOutputLink rendered="{!LocalNav}" styleClass="active" communityId="09a200000000gmn" page="ideas_test_v2">Local Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li>
+                        
+                        <!-- <a href="#">National Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(NationalNav)}"  styleClass="" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!NationalNav}"  styleClass="active" communityId="09a200000000gms" page="ideas_test_v2">National Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                        <li class="last">
+                        
+                        <!-- <a href="#">Campaign Ideas</a> -->
+                        
+                        <ideas:listOutputLink rendered="{!NOT(CampaignNav)}" styleClass="" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        <ideas:listOutputLink rendered="{!CampaignNav}" styleClass="active" communityId="09a200000000gmx" page="ideas_test_v2">Campaign Ideas
+                        </ideas:listOutputLink>
+                        
+                        </li>
+                    </ul>
+                </nav>
+                 <nav id="subNav">
+                 <apex:form >
+                <!-- For active tabs just add active class to the a tag -->
+                    <ul>
+                        
+                        <li class="first">
+                        
+                        <apex:outputPanel rendered="{!LocalNav}">
+                            <apex:commandLink rendered="{!NOT(RecentNav)}" value="Recent Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="recent"/>
+                            </apex:commandLink>
+                            <apex:commandLink rendered="{!RecentNav}" styleClass="active" value="Recent Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="recent"/>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!NOT(LocalNav)}">
+                            <ideas:listOutputLink rendered="{!NOT(RecentNav)}" styleClass="" sort="recent" page="ideas_test_v2">Recent Ideas
+                            </ideas:listOutputLink>
+                            <ideas:listOutputLink rendered="{!RecentNav}" styleClass="active" sort="recent" page="ideas_test_v2">Recent Ideas
+                            </ideas:listOutputLink>
+                        </apex:outputPanel>
+                        
+                        </li>
+                        <li>
+                        
+                        <apex:outputPanel rendered="{!LocalNav}">
+                            <apex:commandLink rendered="{!NOT(TopNav)}" value="Top Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="top"/>
+                            </apex:commandLink>
+                            <apex:commandLink rendered="{!TopNav}" styleClass="active" value="Top Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="top"/>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!NOT(LocalNav)}">
+                            <ideas:listOutputLink rendered="{!NOT(TopNav)}" styleClass="" sort="top" page="ideas_test_v2">Top Ideas
+                            </ideas:listOutputLink>
+                            <ideas:listOutputLink rendered="{!TopNav}" styleClass="active" sort="top" page="ideas_test_v2">Top Ideas
+                            </ideas:listOutputLink>
+                        </apex:outputPanel>
+                        
+                        </li>
+                        <li>
+                        
+                        <apex:outputPanel rendered="{!LocalNav}">
+                            <apex:commandLink rendered="{!NOT(PopularNav)}" value="Popular Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="popular"/>
+                            </apex:commandLink>
+                            <apex:commandLink rendered="{!PopularNav}" styleClass="active" value="Popular Ideas" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="popular"/>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!NOT(LocalNav)}">
+                            <ideas:listOutputLink rendered="{!NOT(PopularNav)}" styleClass=""  sort="popular" page="ideas_test_v2">Popular Ideas
+                            </ideas:listOutputLink>
+                            <ideas:listOutputLink rendered="{!PopularNav}" styleClass="active" sort="popular" page="ideas_test_v2">Popular Ideas
+                            </ideas:listOutputLink>
+                        </apex:outputPanel>
+                        
+                        </li>
+                        <li class="last">
+                        
+                        <apex:outputPanel rendered="{!LocalNav}">
+                            <apex:commandLink rendered="{!NOT(CommentsNav)}" value="Comments" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="comments"/>
+                            </apex:commandLink>
+                            <apex:commandLink rendered="{!CommentsNav}" styleClass="active" value="Comments" action="{!location_sort_recent}">
+                                <apex:param name="sort_idea" value="comments"/>
+                            </apex:commandLink>
+                        </apex:outputPanel>
+                        
+                        <apex:outputPanel rendered="{!NOT(LocalNav)}">
+                            <ideas:listOutputLink rendered="{!NOT(CommentsNav)}" styleClass=""  sort="comments" page="ideas_test_v2">Comments
+                            </ideas:listOutputLink>
+                            <ideas:listOutputLink rendered="{!CommentsNav}" styleClass="active" sort="comments" page="ideas_test_v2">Comments
+                            </ideas:listOutputLink>
+                        </apex:outputPanel>
+                                
+                        </li>
+                    </ul>
+                    </apex:form>
+                </nav>
+
+                <div id="searchBox">
+                     <apex:form >
+                        <!-- <input type="text" value="Search ideas" onfocus="if (this.value == 'Search ideas') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search ideas';}"/> -->
+                        <apex:inputText value="{!searchIdeas}" onfocus="if (this.value == 'Search ideas') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search ideas';}">
+                            <apex:actionSupport event="onkeyup" reRender="ideaListRepeter"/>
+                        </apex:inputText>             
+                    </apex:form>
+                </div>
+
+
+                <div id="ideas">
+
+                <!-- Repeater for ideas list -->
+                <apex:outputPanel id="ideaListRepeter"> 
+                <apex:outputPanel >
+                    <apex:repeat value="{!ideasList}" var="idea">
+                        <div class="idea">
+                            <div class="text" style="list-style: inherit;">
+                               <h2><a href="{!$Page.ideas_detail_v2}?id={!idea.id}">{!idea.title}</a></h2>
+                                <p><apex:outputText value="{!idea.Body}" escape="false"/></p>
+                                <p class="status">Status: <a class="noHover" href="javascript:void(0);">{!idea.Status__c}</a> | Comments: <a class="noHover" href="javascript:void(0);">{!idea.NumComments}</a></p>
+                            </div>
+                            <div class="actions">
+                                <a href="javascript:void(0);" class="commentCount noHover">{!CEILING(idea.VoteTotal)}</a>
+                                <!-- Vote Up -->
+                                <apex:outputPanel rendered="{!NOT(idea.Voted__c)}" onclick="ideaVoatUp('{!idea.id}')">
+                                    <a class="btnframework like" href="javascript:void(0);" >Like this</a>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!idea.Voted__c}">
+                                    <a class="btnframework dislike2 noHover" href="javascript:void(0);" >Like this</a>
+                                </apex:outputPanel>
+                                <!-- Vote Down -->
+                                <apex:outputPanel rendered="{!NOT(idea.Voted__c)}" onclick="ideaVoatDown('{!idea.id}')">
+                                    <a class="btnframework like2" href="javascript:void(0);" >Dislike this</a>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!idea.Voted__c}" >
+                                    <a class="btnframework dislike noHover" href="javascript:void(0);" >Dislike this</a>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                     </apex:repeat>
+                </apex:outputPanel>     
+                </apex:outputPanel>
+                    
+               <!-- end repeater -->
+
+                   
+                    <!-- Pagination add .active for active page -->
+
+                    <nav id="paginationNav">
+
+                        <ul>
+                            
+                            
+                            <li><apex:form ><apex:commandLink immediate="true" action="{!backPage}" rendered="{!HasPrevious}">Previous &#60;</apex:commandLink></apex:form></li>
+                            
+                             
+                            
+
+                            <apex:outputPanel id="pageNav">
+                                <apex:repeat value="{!newPageNav}" var="p">
+                                    <!-- List -->
+                                    <apex:outputPanel rendered="{!IF(OR(TEXT(p.pageNR) = $CurrentPage.parameters.lsr,AND($CurrentPage.parameters.lsr = null,p.pageNR = 1)), false, true)}">
+                                        <li><a href="{!p.selectedURL}">{!p.pageNR}</a></li>
+                                    </apex:outputPanel>
+                                    <!-- Highlighted List -->
+                                    <apex:outputPanel rendered="{!IF(OR(TEXT(p.pageNR) = $CurrentPage.parameters.lsr,AND($CurrentPage.parameters.lsr = null,p.pageNR = 1)), true, false)}">
+                                        <li><a style="color:black;" href="{!p.selectedURL}">{!p.pageNR}</a></li>
+                                    </apex:outputPanel>
+ 
+                                </apex:repeat>
+                            </apex:outputPanel>
+                            
+                            
+                            <li><apex:form ><apex:commandLink immediate="true" action="{!nextPage}" rendered="{!HasNext}">Next &#62;</apex:commandLink></apex:form></li>
+                            <!-- <li><apex:form ><apex:commandButton value="Next >" action="{!nextPage}" rendered="{!HasNext}"></apex:commandButton></apex:form></li>-->
+                            
+                        </ul>
+
+                    </nav>
+
+
+                </div>
+
+
+
+
+
+        </section>
+        <section class="rightCol">
+
+            <section id="newIdea">
+                <h2>New Idea</h2>
+               <p> Got a great new idea? <br />
+                Submit it here.</p>
+                <a class="btnframework orange" href="{!$Page.ideas_new_v2}" >Submit Idea</a>
+            </section>
+
+            <section id="campaign">
+              <h1>Campaigns</h1>
+              
+              <apex:repeat value="{!ideaCampaign}" var="iCamp">
+                   <div class="item">
+                        <div class="image"><apex:image url="{!URLFOR($Action.Attachment.Download, iCamp.Attachment_Id__c)}"/></div>
+                        <h2><a href="{!$Page.ideas_camp_v2}?camp={!iCamp.Id}">{!iCamp.Name}</a></h2>
+                        <p>{!iCamp.info__c}</p>
+                        <a class="btnframework clear" href="{!$Page.ideas_new_v2}?camp={!iCamp.Id}" >Submit Idea</a>
+                   </div>
+              </apex:repeat>
+            
+            </section>
+
+            <section id="ideasInAction">
+                <div class="image"><img src="{!URLFOR($Resource.IdeasTNT, 'images/img_ideasinaction.jpg')}" alt="TNT Ideas in Action" /></div>
+                <nav id="ideaNav">
+                    <ul>
+                        <!-- <li><a href="#"><strong>Idea 1</strong> - Lorem ipsum delor sat urn</a></li> -->
+                        <apex:repeat value="{!ideasInAction}" var="idea">    
+                        <li><a href="{!$Page.ideas_detail_v2}?id={!idea.id}"><strong>{!idea.Title}</strong> - More</a></li>
+                        </apex:repeat>
+                    </ul>
+                </nav>
+
+
+            </section>
+
+
+
+        </section>
+
+    </div>
+
+
+
+    
+<!-- <link rel="stylesheet" href="{!URLFOR($Resource.IdeasTNT, 'css/stylesheet.css')}" type="text/css" /> -->
+</body>
+
+
+</apex:page>

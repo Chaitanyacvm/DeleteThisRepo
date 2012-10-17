@@ -1,0 +1,14 @@
+<apex:page standardController="Order__c" extensions="Another_Order_Controller" action="{!Save}">
+    <apex:form >
+        <apex:commandLink action="{!backURL}" value="Back to Order"/>
+    </apex:form>
+    
+    <apex:pageMessages id="userMessages"></apex:pageMessages>
+    
+    <apex:outputPanel id="redirectPanel" rendered="{!redirectNeeded}" >
+        <script type="text/javascript">
+            // redirect the top level window
+            window.location.href = '{!createOrderURL}';
+        </script>   
+    </apex:outputPanel>
+</apex:page>

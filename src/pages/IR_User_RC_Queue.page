@@ -1,0 +1,43 @@
+<apex:page standardController="IR_Customer__c" tabStyle="IR_RC_Queue__tab" extensions="IR_User_RC_Queue_Extension">
+    <apex:sectionHeader title="Rates and Contacts" subtitle="The Rates and Contacts Queue"/>
+    <apex:pageMessages id="userMessages"/>
+    
+    <apex:form >
+        <apex:pageBlock title="Current Queue">
+            <apex:actionPoller action="{!refreshScreen}" interval="30" status="queueRefreshStatus" reRender="RateandContactsCustomer"/>
+            
+            <apex:pageBlockTable id="RateandContactsCustomer" value="{!RateandContactsCustomers}" var="RateandContacts">
+                <apex:column headerValue="Action">
+                    <apex:commandLink value="Accept" action="{!acceptCustomer}">
+                        <apex:param name="userSelection" value="{!RateandContacts.customer.Id}"/>
+                    </apex:commandLink>
+                </apex:column>
+                
+                <apex:column value="{!RateandContacts.customer.Name}"/>
+                <apex:column value="{!RateandContacts.customer.Company__c}"/>
+                <apex:column value="{!RateandContacts.customer.Time_Order_Placed__c}"/>
+                <apex:column value="{!RateandContacts.customer.Dom_Rates_Loaded__c}"/>
+                <apex:column value="{!RateandContacts.customer.Dom_Contacts_Loaded__c}"/>
+                <apex:column value="{!RateandContacts.customer.Int_Rates_Loaded__c}"/>
+                <apex:column value="{!RateandContacts.customer.Int_Contacts_Loaded__c}"/>
+                
+                <apex:column headerValue="Status">
+                    <apex:image width="60px" height="20px" url="/img/samples/light_green.gif" rendered="{!(RateandContacts.customer.SLA_RC_Status_Text__c=='GREEN')}"/>
+                    <apex:image width="60px" height="20px" url="/img/samples/light_yellow.gif" rendered="{!(RateandContacts.customer.SLA_RC_Status_Text__c=='YELLOW')}"/>
+                    <apex:image width="60px" height="20px" url="/img/samples/light_red.gif" rendered="{!(RateandContacts.customer.SLA_RC_Status_Text__c=='RED')}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Refresh" action="{!refreshScreen}" status="queueRefreshStatus" reRender="RateandContacts"/>
+                <apex:actionStatus id="queueRefreshStatus">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

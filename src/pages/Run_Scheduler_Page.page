@@ -1,0 +1,6 @@
+<apex:page standardController="Form_Schedule__c" extensions="Run_Scheduler_Page_Extension" action="{!runScheduler}">
+    <apex:form >
+        <apex:commandLink value="Back" action="{!back}"/>
+        <apex:pageMessages id="userMessages"/>
+    </apex:form>
+</apex:page>

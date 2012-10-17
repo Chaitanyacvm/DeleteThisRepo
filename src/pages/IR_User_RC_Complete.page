@@ -1,0 +1,19 @@
+<apex:page standardController="IR_Customer__c" extensions="IR_User_RC_Complete_Extension">
+	    
+	<script src="{!URLFOR($Resource.jQuery_min)}" type="text/javascript"/>
+	<script src="{!URLFOR($Resource.jQuery_ui_min)}" type="text/javascript"/>
+	
+    <apex:sectionHeader title="Complete and Save"/>
+    <script>
+    	j$ = jQuery.noConflict();
+    	
+    	j$(document).ready(function(){
+    		comlpleteRC();
+    	}); 
+    </script>
+    <apex:form >
+    	<apex:actionFunction name="comlpleteRC" action="{!complete}" rerender="userMessages" />
+        <apex:commandLink value="Back to Customer: {!thisCustomer.Name}" action="{!back}"/>
+    </apex:form>
+    <apex:pageMessages id="userMessages"/>
+</apex:page>

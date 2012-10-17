@@ -1,0 +1,10 @@
+<apex:page standardController="FM_Incident__c" extensions="FM_CancelIncident" tabStyle="FM_Incident__c" action="{!cancelIncident}">
+    <apex:form > 
+        <apex:pageBlock title="Cancel Incident">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="back" action="{!back}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

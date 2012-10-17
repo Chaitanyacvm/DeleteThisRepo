@@ -1,0 +1,3 @@
+<apex:page StandardController="CS_Claims__c" extensions="CS_Claims_Form_Controller" action="{!sendLink}">
+
+</apex:page>

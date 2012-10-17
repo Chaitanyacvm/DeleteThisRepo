@@ -1,0 +1,42 @@
+<apex:page showheader="false" >
+<head>
+<style type="text/css">
+
+html{
+          font-size:80%;
+          font-family: Arial Unicode MS;
+          color:#666;
+      }                
+      body{
+            font-family: Arial Unicode MS;
+      }
+      h2 {
+          color:#ff6600;
+          text-align:center;
+      }       
+      LI.list1{
+            list-style-type:circle inside;
+            color:#ff6600;              
+      } 
+      .fontClr{
+         font-family: Arial Unicode MS;
+          color:#666;
+      }      
+</style>
+</head>
+<body>
+<h2>Quick Checklist</h2>
+
+<p>In order to use our online services you will need:</p>
+
+<ul>
+<li class="list1"><span class="fontClr">Internet Explorer 7 or above or equivalent web browser to display our online applications correctly.</span></li>
+<li class="list1"><span class="fontClr">A valid e-mail address to confirm your account details and receive your account and shipment documentation.</span></li>
+<li class="list1"><span class="fontClr">A printer to print your shipment labels and documentation.</span></li>
+<li class="list1"><span class="fontClr">Software to view pdf documents and csv files so you are able to receive your account invoices and statements.</span></li>
+</ul>
+
+
+
+</body>
+</apex:page>

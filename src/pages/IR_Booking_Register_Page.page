@@ -1,0 +1,424 @@
+<apex:page controller="IR_Booking_Register_Controller" showHeader="false" standardStylesheets="false" title="{!$ObjectType.Quote_Settings__c.fields.Get_Quote__c.label}">
+    <html>
+        <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+            <apex:stylesheet value="{!$Resource.IR_Style}"/>
+            
+            <style type="text/css">
+                .requiredInput {
+                    background-image: url({!URLFOR($Resource.IR_Required)});
+                    background-repeat:no-repeat;
+                    background-position:left center;
+                }
+                
+                .custInfo {
+                    position:relative;
+                    width:auto;
+                }
+                
+                .custInfoLeft {
+                    position:relative;
+                    float:left;
+                    width:350px;
+                    word-wrap:break-word;
+                }
+                
+                .custInfoRight {
+                    position:relative;
+                    float:right;
+                    width:570px;
+                }
+        
+                .greyOrangeButton {
+                    background-image: url({!URLFOR($Resource.IR_Package_Button_BG)});
+                }
+                
+                .grey-button {
+                     background:transparent url({!URLFOR($Resource.IR_grey_left)}) no-repeat left center;
+                }
+                
+                .grey-button span {
+                     background:transparent url({!URLFOR($Resource.IR_grey_right)}) no-repeat right center;
+                }
+                
+                .white-button {
+                     background:transparent url({!URLFOR($Resource.IR_white_left)}) no-repeat left center;
+                }
+                
+                .white-button span {
+                     background:transparent url({!URLFOR($Resource.IR_white_right)}) no-repeat right center;
+                }
+                .header p {
+                    position:relative;                  
+                    margin-top:-20px;                   
+                    text-align:right;
+                }                
+                .header a{
+                    color:#FF6600;
+                    font-weight:bold;
+                }
+                                
+            </style>
+            
+            <apex:includeScript value="{!$Resource.IR_jquery_min}"/>
+            
+            <!--START HELP TEXT-->
+            <apex:includeScript value="{!$Resource.IR_jquery_tooltip_js}"/>
+            <apex:stylesheet value="{!$Resource.IR_tooltip_css}"/>
+            
+            <style>
+            #tooltip {
+                font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+                font-size: 8px;
+            }
+            </style>
+            <!--END HELP TEXT-->
+            
+            <!--START FANCYBOX-->
+            <apex:includeScript value="{!$Resource.IR_jquery_fancybox_js}"/>
+            <apex:stylesheet value="{!$Resource.IR_jquery_fancybox_css}"/>
+            <style>
+            #fancybox-loading div {
+                background-image: url({!URLFOR($Resource.IR_fancybox)});
+            }
+            
+            #fancybox-close {
+                background-image: url({!URLFOR($Resource.IR_fancybox)});
+            }
+            </style>
+            <!--END FANCYBOX-->
+        </head>
+        
+        <body>
+            <apex:form >
+                <apex:outputPanel id="wrapper" layout="block" styleClass="wrapper">
+                    <!--START HELP TEXT-->
+                    <script type="text/javascript"> 
+                        $(function() {
+                        $('.helpHover *').tooltip();
+                        });
+                    </script>
+                    <!--END HELP TEXT-->
+                    
+                    <!--START FANCYBOX-->
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                
+                            $(".fancybox").fancybox({
+                                'autoScale'         : false,
+                                'transitionIn'      : 'none',
+                                'transitionOut'     : 'none',
+                                'type'              : 'iframe',
+                                'width'             : '85%',
+                                'height'            : '90%'
+                            });
+                        });
+                    </script>
+                    <!--END FANCYBOX-->
+                    
+                    <apex:outputPanel layout="block" styleClass="header">
+                        <br />
+                        <h2>Registration</h2><p>What do I require to use TNT online services? Click <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Quick_Checklist_Page)}">here</a> to check</p>
+                    </apex:outputPanel>
+                    
+                    <apex:pagemessages id="userMessages"/>                    
+                    <apex:outputPanel id="custInfoLeft" layout="block" styleClass="custInfoLeft">
+                        <apex:outputPanel layout="block" styleClass="sectionMain">
+                            <apex:outputPanel layout="block" styleClass="sectionHeader">
+                                <apex:outputPanel style="text-align:left;position:relative;float:left;">Your Details</apex:outputPanel>
+                                <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                                <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="block" styleClass="sectionBody">
+                                <table columns="2" width="100%" id="standardTable">
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custCompanyInput">{!$ObjectType.IR_Customer__c.fields.Company__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custCompanyInput" value="{!customer.Company__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custTitleInput">{!$ObjectType.IR_Customer__c.fields.Title__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custTitleInput" value="{!customer.Title__c}" styleClass="fullInput" required="true"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custFirstNameInput">{!$ObjectType.IR_Customer__c.fields.First_Name__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custFirstNameInput" value="{!customer.First_Name__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                   <!-- <tr>
+                                        <td width="30%"><apex:outputLabel for="custInitialInput">{!$ObjectType.IR_Customer__c.fields.Initial__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custInitialInput" value="{!customer.Initial__c}" styleClass="fullInput"/></td>
+                                    </tr> -->                                     
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custSurnameInput">{!$ObjectType.IR_Customer__c.fields.Surname__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custSurnameInput" value="{!customer.Surname__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custJobTitleInput">{!$ObjectType.IR_Customer__c.fields.Job_Title__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custJobTitleInput" value="{!customer.Job_Title__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custTelInput">{!$ObjectType.IR_Customer__c.fields.Telephone__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Telephone__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                        <td width="70%">
+                                            <div class="requiredInput"><div class="requiredBlock"></div>
+                                                <apex:inputText value="{!tel.countryCode}" size="2" maxlength="4"/>
+                                                <apex:inputText value="{!tel.std}" size="5" maxlength="7" style="margin-left:3px;"/>
+                                                <apex:inputText id="custTelInput" value="{!tel.phoneNumber}" size="12" maxlength="9" style="margin-left:3px;"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custMobileInput">{!$ObjectType.IR_Customer__c.fields.Mobile_Phone__c.label}:</apex:outputLabel></td>
+                                        <td width="70%">
+                                            <div>
+                                                <apex:inputText value="{!mob.countryCode}" size="2" maxlength="4"/>
+                                                <apex:inputText value="{!mob.std}" size="5" maxlength="7" style="margin-left:3px;"/>
+                                                <apex:inputText id="custMobileInput" value="{!mob.phoneNumber}" size="12" maxlength="9" style="margin-left:3px;"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custFaxInput">{!$ObjectType.IR_Customer__c.fields.Fax__c.label}:</apex:outputLabel></td>
+                                        <td width="70%">
+                                            <div>
+                                                <apex:inputText value="{!fax.countryCode}" size="2" maxlength="4"/>
+                                                <apex:inputText value="{!fax.std}" size="5" maxlength="7" style="margin-left:3px;"/>
+                                                <apex:inputText id="custFaxInput" value="{!fax.phoneNumber}" size="12" maxlength="9" style="margin-left:3px;"/>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custEmailInput">{!$ObjectType.IR_Customer__c.fields.Email__c.label}:</apex:outputLabel></td>
+                                        <td width="70%"><apex:inputField id="custEmailInput" value="{!customer.Email__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custEmailConfInput">Email Confirmation:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Email__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                        <td width="70%"><div class="requiredInput"><div class="requiredBlock"></div><apex:inputText id="custEmailConfInput" value="{!custEmailConf}" styleClass="fullInput"/></div></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td width="30%"><apex:outputLabel for="custVATRegNum">{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.VAT_Registration_Number__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                        <td width="70%"><apex:inputField id="custVATRegNum" value="{!customer.VAT_Registration_Number__c}" styleClass="fullInput"/></td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="custInfoRight" layout="block" styleClass="custInfoRight">
+                        <apex:outputPanel layout="block" styleClass="sectionMain">
+                            <apex:outputPanel layout="block" styleClass="sectionHeader">
+                                <apex:outputPanel style="text-align:left;position:relative;float:left;">Address Details</apex:outputPanel>
+                                <apex:outputPanel style="text-align:right;position:relative;float:right;background-image: url({!URLFOR($Resource.IR_Required)});background-repeat:no-repeat;background-position:left center;padding-left:10px;padding-right:2px;"> = Required Information</apex:outputPanel>
+                                <apex:outputPanel layout="block" styleClass="clear"></apex:outputPanel>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="block" styleClass="sectionBody">
+                                <apex:outputPanel rendered="{!showCustAddrLookup}">
+                                    <table columns="2" width="95%" id="standardTable">
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:outputLabel for="custPostcodeInput" title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}">{!$ObjectType.IR_Customer__c.fields.Postcode__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span>
+                                                <apex:inputField id="custPostcodeInput" value="{!customer.Postcode__c}" required="true"/>
+                                            </td>
+                                            
+                                            <td width="50%">
+                                                <apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!lookupCustAddress}" status="lookupCustAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                
+                                                <apex:actionStatus id="lookupCustAddressLoadingStatus_Lookup">
+                                                    <apex:facet name="start">
+                                                        <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:selectList id="custAddressOptionsList_Lookup" value="{!selectedCustAddress}" size="1" style="width:70%;" rendered="{!hasAddress}">
+                                                    <apex:selectOptions value="{!custAddressOptions}"/>
+                                                    <apex:actionSupport event="onchange" action="{!selectCustAddress}" status="selectCustAddressLoadingStatus_Lookup" reRender="wrapper"/>
+                                                </apex:selectList>
+                                                
+                                                <apex:actionStatus id="selectCustAddressLoadingStatus_Lookup">
+                                                    <apex:facet name="start">
+                                                        <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                            </td>
+                                            <td width="50%">
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%"><apex:outputLabel for="custAddress1Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_1__c.label}:</apex:outputLabel></td>
+                                            <td width="50%"><apex:outputLabel for="custTownCityInput_Lookup">{!$ObjectType.IR_Customer__c.fields.Town_City__c.label}:</apex:outputLabel></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:inputField id="custAddress1Input_Lookup" value="{!customer.Address_1__c}" styleClass="fullInput"/>
+                                            </td>
+                                            <td width="50%">
+                                                <apex:inputField id="custTownCityInput_Lookup" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/>
+                                                <apex:outputField id="custTownCityOutput_Lookup" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%"><apex:outputLabel for="custAddress2Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_2__c.label}:</apex:outputLabel></td>
+                                            <td width="50%"><apex:outputLabel for="custCountyInput_Lookup">{!$ObjectType.IR_Customer__c.fields.County__c.label}:</apex:outputLabel></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:inputField id="custAddress2Input_Lookup" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/>
+                                                <apex:outputField id="custAddress2Output_Lookup" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                            <td width="50%">
+                                                <apex:inputField id="custCountyInput_Lookup" value="{!customer.County__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/>
+                                                <apex:outputField id="custCountyOutput_Lookup" value="{!customer.County__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:outputLabel for="custAddress3Input_Lookup">{!$ObjectType.IR_Customer__c.fields.Address_3__c.label}:</apex:outputLabel></td>
+                                            <td width="50%"></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td width="50%">
+                                                <apex:inputField id="custAddress3Input_Lookup" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/>
+                                                <apex:outputField id="custAddress3Output_Lookup" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                            <td width="50%">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!!showCustAddrLookup}">
+                                    <table columns="2" width="95%" id="standardTable">
+                                    <tr>
+                                            <td width="20%"><apex:outputLabel for="custPostcodeInput" title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}">{!$ObjectType.IR_Customer__c.fields.Postcode__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Postcode__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span></td>
+                                            <td width="20%">
+                                                <apex:inputField id="custPostcodeInput_Validate" value="{!customer.Postcode__c}" required="true"/>                                                                                               
+                                            </td>           
+                                            <td id="lookUpBtnTd">
+                                            		<apex:commandButton value="Lookup" styleClass="greyOrangeButton" action="{!lookupCustAddress}" status="lookupCustAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                            </td>                                 	                                                
+                                 	</tr>
+                                    <tr>
+                                    	<td width="30%">                                    		                                                                                     
+                                                <apex:actionStatus id="lookupCustAddressLoadingStatus_Validate">
+                                                    <apex:facet name="start">
+                                                        <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                        </td>
+                                        <td width="70%">
+                                                <apex:selectList id="custAddressOptionsList_Validate" value="{!selectedCustAddress}" size="1" style="width:70%;" rendered="{!hasAddress}">
+                                                    <apex:selectOptions value="{!custAddressOptions}"/>
+                                                    <apex:actionSupport event="onchange" action="{!selectCustAddress}" status="selectCustAddressLoadingStatus_Validate" reRender="wrapper"/>
+                                                </apex:selectList>
+                                                
+                                                <apex:actionStatus id="selectCustAddressLoadingStatus_Validate">
+                                                    <apex:facet name="start">
+                                                        <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                       </td>                                       
+                                    </tr>    
+                                        <tr>
+                                            <td width="30%"><apex:outputLabel for="custAddress1Input_Validate">{!$ObjectType.IR_Customer__c.fields.Address_1__c.label}:</apex:outputLabel></td>                                            
+                                            <td width="70%">
+                                            	<!-- <apex:inputField id="custAddress1Input_Validate" value="{!customer.Address_1__c}" styleClass="fullInput"/> -->                                            	
+                                            	<apex:outputField id="custAddress1Input_Validate" value="{!customer.Address_1__c}" styleClass="fullInput" />
+                                           	</td>                                       
+                                        </tr>                                        
+                                        <tr>
+                                            <td width="30%"><apex:outputLabel for="custAddress2Input_Validate">{!$ObjectType.IR_Customer__c.fields.Address_2__c.label}:</apex:outputLabel></td>
+                                            <td width="70%">
+                                                <!-- <apex:inputField id="custAddress2Input_Validate" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/> -->
+                                                <apex:outputField id="custAddress2Output_Validate" value="{!customer.Address_2__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%"><apex:outputLabel for="custAddress3Input_Validate">{!$ObjectType.IR_Customer__c.fields.Address_3__c.label}:</apex:outputLabel></td>
+                                            <td width="70%">                                                
+                                                <!-- <apex:inputField id="custAddress3Input_Validate" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/> -->
+                                                <apex:outputField id="custAddress3Output_Validate" value="{!customer.Address_3__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td width="30%">
+                                                <apex:outputLabel for="custTownCityInput_Validate">{!$ObjectType.IR_Customer__c.fields.Town_City__c.label}:</apex:outputLabel>
+                                            </td>
+                                            <td width="70%">
+                                                <!-- <apex:inputField id="custTownCityInput_Validate" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/> -->
+                                                <apex:outputField id="custTownCityOutput_Validate" value="{!customer.Town_City__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>                                        
+                                        <tr>
+	                                        <td width="30%"><apex:outputLabel for="custCountyInput_Validate">{!$ObjectType.IR_Customer__c.fields.County__c.label}:</apex:outputLabel></td>
+                                            <td width="70%">
+                                                <!-- <apex:inputField id="custCountyInput_Validate" value="{!customer.County__c}" styleClass="fullInput" rendered="{!allowAddrInput}"/> -->
+                                                <apex:outputField id="custCountyOutput_Validate" value="{!customer.County__c}" styleClass="fullInput" rendered="{!!allowAddrInput}"/>
+                                            </td>
+                                        </tr>                                                                                                                                                            
+                                    </table>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="block" styleClass="bottomButtons" style="text-align:right;">
+                        <br/>
+                        <table columns="2" width="95%" id="standardTable" style="text-align:right;">
+                            <tr>
+                                <td width="60%"><apex:outputLabel for="extTransLiaSet">{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.label}:</apex:outputLabel><span class="helpHover"><span title="{!$ObjectType.IR_Customer__c.fields.Extended_Transit_Liability_Setting__c.inlineHelpText}"><apex:image url="{!$Resource.IR_Help_Icon}"/></span></span><!-- <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Enhanced_Liability)}?cid={!customer.Id}"></a> --></td>
+                                <td width="40%">
+                                    <apex:selectList value="{!customer.Extended_Transit_Liability_Setting__c}" size="1">
+                                       <apex:selectOptions value="{!accountETLOptions}"/>
+                                       
+                                       <apex:actionSupport event="onchange" status="extTransLiaSetLoadingStatus" action="{!quickSave}" reRender="wrapper"/>
+                                    </apex:selectList>
+                                    <!--<apex:inputField id="extTransLiaSet" value="{!customer.Extended_Transit_Liability_Setting__c}" styleClass="fullInput">
+                                        <apex:actionSupport event="onchange" status="extTransLiaSetLoadingStatus" action="{!quickSave}" reRender="wrapper"/>
+                                    </apex:inputField>-->
+                                    
+                                    <apex:actionStatus id="extTransLiaSetLoadingStatus">
+                                        <apex:facet name="start">
+                                            <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                </td>
+                            </tr>
+                        </table> 
+                        <br />
+                        <br />
+                        Accept&nbsp;<a class="fancybox" href="{!URLFOR($Page.IR_Booking_Rate_Card_Page)}?cid={!customer.Id}&df=0">Rate Agreement</a> and <a class="fancybox" href="{!URLFOR($Page.IR_Booking_Offer_Conditions_Page)}">Terms of Offer</a>&nbsp;&nbsp;
+                        <apex:inputField id="notRecentlyTraded" value="{!customer.Rate_And_Offer_Terms__c}"/><br/>
+                        <br/>
+                        Accept&nbsp;<a class="fancybox" href="{!URLFOR($Page.IR_Booking_Terms_And_Conditions_Page)}">Terms and Conditions of Carriage</a>&nbsp;&nbsp;
+                        <apex:inputField id="acceptedTandC" value="{!customer.Terms_and_Conditions__c}"/><br/>
+                        <span class="white-button"><span><apex:commandLink value="Back" action="{!back}" immediate="true"/></span></span>
+                        <span class="white-button"><span><apex:commandLink value="Register" action="{!register}"/></span></span>
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel layout="block" styleClass="clear">
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:form>
+        </body>
+    </html>
+</apex:page>

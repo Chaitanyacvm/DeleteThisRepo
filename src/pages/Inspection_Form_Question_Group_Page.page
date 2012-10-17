@@ -1,0 +1,55 @@
+<apex:page standardController="Inspection_Form_Question_Group__c" extensions="IFQG_Page_Controller">
+    <apex:sectionHeader title="{!$ObjectType.Inspection_Form_Question_Group__c.label}" subtitle="{!IFQGroup.Name}"/>
+    <apex:pageMessages id="userMessages"></apex:pageMessages>
+    <apex:form >
+        <apex:outputPanel id="newFormPanel" rendered="{!createNewForm}">
+            <apex:pageBlock >
+                <apex:pageBlockSection title="Inspection Form Question Group Details" columns="2" collapsible="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="reportTypeList">{!$ObjectType.Inspection_Form_Question_Group__c.fields.Form__c.label}</apex:outputLabel>
+                        
+                        <apex:outputPanel >
+                            <apex:inputText value="{!newFormName}" rendered="{!createNewForm}"/>
+                            <apex:commandButton value="Save" action="{!saveForm}" rendered="{!createNewForm}" status="formLoadingStatus"/>
+                            
+                            <apex:actionStatus id="formLoadingStatus">
+                                <apex:facet name="start">
+                                    <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+    
+    <apex:form >
+        <apex:outputPanel id="formPanel" rendered="{!!createNewForm}">
+            <apex:pageBlock >
+                <apex:pageBlockSection title="Inspection Form Question Group Details" columns="2" collapsible="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="reportTypeList">{!$ObjectType.Inspection_Form_Question_Group__c.fields.Form__c.label}</apex:outputLabel>
+                        
+                        <apex:outputPanel >
+                            <apex:selectList id="reportTypeList" value="{!IFQGroup.Form__c}" required="true" size="1" rendered="{!!createNewForm}">
+                                <apex:selectOptions value="{!formTypes}"/>
+                            </apex:selectList>
+                            <apex:commandButton value="New" action="{!newForm}" rendered="{!!createNewForm}" status="formLoadingStatus" immediate="true"/>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection showHeader="false" columns="2" collapsible="false">
+                    <apex:inputField value="{!IFQGroup.Group_Number__c}"/>
+                    <apex:inputField value="{!IFQGroup.Group_Name__c}"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Save" action="{!save}"/>
+                    <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

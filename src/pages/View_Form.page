@@ -1,0 +1,74 @@
+<apex:page standardController="Form__c" extensions="View_Form_Controller" showHeader="false">
+    <apex:pageBlock title="{!formRecordTypeName} {!$ObjectType.Form__c.Label}">
+        <apex:pageBlockSection title="{!$ObjectType.Form__c.Label} Details" columns="2" showHeader="false">
+            <apex:outputField value="{!form.Depot__c}"/>
+            <apex:outputField value="{!form.RecordType.Name}"/>
+            
+            <apex:outputField value="{!form.Location__c}"/>
+            <apex:outputField value="{!form.Form_Name__c}"/>
+            
+            <apex:outputField value="{!form.Date__c}"/>
+            
+        </apex:pageBlockSection>
+        <br />
+        <apex:pageBlockTable id="extinguisherAnswerTable" value="{!extinguisherAnswers}" var="extinguisherAnswer" width="100%" rendered="{!extinguisherForm}">
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Number__c.label}" value="{!extinguisherAnswer.Extinguisher_Number__c}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Type__c.label}" value="{!extinguisherAnswer.Extinguisher_Type__c}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_Location__c.label}" value="{!extinguisherAnswer.Extinguisher_Location__c}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Extinguisher_free_from_Defect__c.label}" value="{!extinguisherAnswer.Extinguisher_free_from_Defect__c}" footerValue="Total Score {!totalScore}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Action_Required__c.label}" value="{!extinguisherAnswer.Action_Required__c}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.By_Whom__c.label}" value="{!extinguisherAnswer.By_Whom__c}"/>
+            <apex:column headerValue="{!$ObjectType.Extinguisher_Form_Item__c.fields.Date_Completed__c.label}" value="{!extinguisherAnswer.Date_Completed__c}"/>
+        </apex:pageBlockTable>
+        
+        <apex:pageBlockTable id="emergLightAnswerTable" value="{!emergLightAnswers}" var="emergLightAnswer" width="100%" rendered="{!emergLightForm}">
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Unit_Light_Number__c.label}" value="{!emergLightAnswer.Unit_Light_Number__c}"/>
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Unit_Location__c.label}" value="{!emergLightAnswer.Unit_Location__c}"/>
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Light_free_from_Defect__c.label}" value="{!emergLightAnswer.Light_free_from_Defect__c}" footerValue="Total Score {!totalScore}"/>
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Action_Required__c.label}" value="{!emergLightAnswer.Action_Required__c}"/>
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.By_Whom__c.label}" value="{!emergLightAnswer.By_Whom__c}"/>
+            <apex:column headerValue="{!$ObjectType.Emergency_Lighting_Form_Item__c.fields.Date_Completed__c.label}" value="{!emergLightAnswer.Date_Completed__c}"/>
+        </apex:pageBlockTable>
+        
+        <apex:pageBlockTable id="inspectionAnswerTable" value="{!inspectionAnswers}" var="answer" width="100%" rendered="{!inspectionForm}">
+            <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Question__c.label}" value="{!answer.Question__c}" width="50%"/>
+            <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Answer__c.label}" value="{!answer.Answer__c}" footerValue="Total Score {!totalScore}"/>
+            <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Action_Required__c.label}" value="{!answer.Action_Required__c}"/>
+            <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.By_Whom__c.label}" value="{!answer.By_Whom__c}"/>
+            <apex:column headerValue="{!$ObjectType.Inspection_Form_Item__c.fields.Date_Completed__c.label}" value="{!answer.Date_Completed__c}"/>
+        </apex:pageBlockTable>
+        
+        <apex:pageBlockSection columns="1" showHeader="false">
+            <apex:outputText >We certify that the above inspection took place on {!formDate} and that recommendations have been made for the necessary corrective action to be taken.</apex:outputText>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="2" showHeader="false">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Name</apex:outputLabel>
+                <apex:outputText >{!$User.FirstName} {!$User.LastName}</apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Position</apex:outputLabel>
+                <apex:outputText >{!$User.Title}</apex:outputText>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Signed</apex:outputLabel>
+                <apex:outputText >____________________________</apex:outputText>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Date</apex:outputLabel>
+                <apex:outputText >____________________________</apex:outputText>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection columns="1">
+            <apex:outputText >This document should be kept in the “Safety Inspections File” when completed.</apex:outputText>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,425 @@
+<apex:page sidebar="false" standardController="idea" tabStyle="TNT_I_dea2__tab" extensions="idea_admin">
+<script language="javascript">
+                function textCounter(field,maxlimit) {
+                    if (field.value.length > maxlimit) 
+                        field.value = field.value.substring(0, maxlimit);
+                    
+                }
+     </script>
+<style>
+.bPageBlock .detailList .errorMsg {
+    display:none;
+}
+</style>
+
+<script type="text/javascript" src="{!URLFOR($Resource.IdeasTNT, 'js/jquery-1.6.min.js')}"></script>
+
+ <apex:form >
+
+<apex:actionFunction name="assignIdeaId" action="{!assignIdea}" rerender="ideaDetailBlock">
+    <apex:param name="ideaId" value=""/>
+</apex:actionFunction>
+
+<apex:outputPanel id="ideaDetailBlock">
+    <apex:pageBlock title="
+        {!
+        IF(idea.Workflow_Status__c = 'RCIM Queue','RCIM',
+        IF(OR(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback'),'Local Evaluator',
+        IF(OR(idea.Workflow_Status__c = 'Sensibility Check Queue',idea.Workflow_Status__c = 'Sensibility Check Queue - Awaiting User Feedback'),'Sensibility Check Queue',
+        IF(OR(idea.Workflow_Status__c = 'National Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback'),'National Evaluator Queue',
+        IF(OR(idea.Workflow_Status__c = 'Local Delivering More Queue',idea.Workflow_Status__c = 'National Delivering More Queue'),'Delivering More','Idea')))))}
+        
+        {!IF(idea.Delivery_More_Approved__c = 'No',' - Rejected By Deliver More','')}
+    ">
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton immediate="true" action="{!backToAdmin}" value="Back"/>
+            <apex:commandButton action="{!updateAdmin}" value="Update Idea"/>
+            <apex:commandButton rendered="{!IF(OR(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback',idea.Workflow_Status__c = 'National Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback'),true,false)}" immediate="true" action="{!delegateIdea}" value="Delegate"/>
+            <apex:commandButton rendered="{!IF(OR(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback',idea.Workflow_Status__c = 'National Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback'),true,false)}" immediate="true" action="{!backToCCIM}" value="Push to Central Admin"/>
+            <apex:commandButton rendered="{!IF(OR(idea.Workflow_Status__c = 'Sensibility Check Queue',idea.Workflow_Status__c = 'Sensibility Check Queue - Awaiting User Feedback'),true,false)}" immediate="true" action="{!backToLocal}" value="Send to Local Eval"/>
+            
+        
+        </apex:pageBlockButtons>
+        
+        <apex:pageMessages rendered="{!IF(AND(idea.Workflow_Status__c = 'Sensibility Check Queue',idea.Request_Additional_Information_SC__c = 'No'), false, IF(OR(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue'), false, true) )}" escape="false" id="error"/>
+        
+        <apex:pageBlockSection title="Idea Detail" >
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Submitted By" />
+                <apex:outputText >
+                    {!IF(AND(idea.Anonymous_Idea__c=false,ISBLANK(idea.On_Behalf__c)),idea.CreatedBy.Name,
+                      IF(AND(idea.Anonymous_Idea__c=false,NOT(ISBLANK(idea.On_Behalf__c))),idea.CreatedBy.Name + ' on Behalf of ' + idea.On_Behalf__c,
+                      IF(AND(idea.Anonymous_Idea__c=true,NOT(ISBLANK(idea.On_Behalf__c))),idea.CreatedBy.Name + ' on Behalf of ' + idea.On_Behalf__c + ' (Anonymous)',idea.CreatedBy.Name + ' (Anonymous)'
+                    )))}
+                </apex:outputText>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Submitted Date" />
+                <apex:outputField value="{!idea.CreatedDate}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Title" />
+                <apex:outputLink target="_BLANK" value="{!$Page.ideas_detail_v2}?id={!idea.Id}">{!idea.title}</apex:outputLink>
+                <!-- <apex:outputField value="{!idea.title}"/> -->
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Location" />
+                <apex:outputField value="{!idea.Location__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Body" />
+                <apex:outputText escape="false" value="{!idea.Body}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Information From Owner(Evaluator)" />
+                <apex:outputField value="{!idea.Additional_Information__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(ISBLANK(idea.Additional_Information_SC__c),false,true)}" >
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!IF(ISBLANK(idea.Additional_Information_SC__c),false,true)}" >
+                <apex:outputLabel value="Additional Information From Owner(Central Admin)" />
+                <apex:outputField value="{!idea.Additional_Information_SC__c}"/>
+            </apex:pageblockSectionItem>
+            <!-- Comments -->
+            <apex:pageBlockSectionItem rendered="{!IF(AND(OR(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback',idea.Workflow_Status__c = 'National Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback'),NOT(ISBLANK(idea.Evaluator_Comments_To_DM__c))),true,false)}" >
+                <apex:outputLabel value="Delivering More Comments" />
+                <apex:outputField value="{!idea.DM_Comments_To_Evaluator__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(AND(OR(idea.Workflow_Status__c = 'National Delivering More Queue',idea.Workflow_Status__c = 'Local Delivering More Queue'),NOT(ISBLANK(idea.Evaluator_Comments_To_DM__c))),true,false)}" >
+                <apex:outputLabel value="Evaluator Comments" />
+                <apex:outputField value="{!idea.Evaluator_Comments_To_DM__c}"/>
+            </apex:pageblockSectionItem>
+        
+        </apex:pageblockSection>
+        
+        <!-- 1st Stage Evaluator -->
+        
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF((IdeaAdminSectionFilter = '1st_Stage_Evaluator'), true, false)}"> -->
+        <apex:pageBlockSection title="Admin - CIM" rendered="{!IF(idea.Workflow_Status__c = 'RCIM Queue', true, false)}">    
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Move Idea To" />
+                <!-- <apex:inputField required="true" value="{!idea.Move_Idea_To__c}"/> -->
+                <apex:selectList required="true" id="chooseColor" value="{!Move_Idea_To}" size="1">
+                    <apex:selectOption itemValue="Local" itemLabel="Local"/>
+                    <apex:selectOption itemValue="National" itemLabel="National"/>
+                </apex:selectList> 
+            </apex:pageblockSectionItem>
+            
+            
+            
+        </apex:pageblockSection>
+
+        <!-- Site GM -->
+        
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF(OR(IdeaAdminSectionFilter = 'Site_GM',IdeaAdminSectionFilter = 'Site_GM_-_Owner_Feedback'), true, false)}"> -->
+        <apex:outputPanel id="addInfoShow">
+        <apex:pageBlockSection title="Additional User Information" rendered="{!IF(AND(idea.Workflow_Status__c = 'Local Evaluator Queue',ISBLANK(idea.Additional_Information__c),ideaDetail.Request_Additional_Information__c != 'No'), true, false)}">
+        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Information Required?" />
+                <apex:inputField required="True" value="{!ideaDetail.Request_Additional_Information__c}">
+                <!-- <apex:actionSupport action="{!showAdminInfo}" event="onchange" reRender="addInfoShow"/> -->
+                </apex:inputField>
+            </apex:pageblockSectionItem>
+            
+        
+            
+            <apex:pageBlockSectionItem helpText="Max character limit is 250" >
+                <apex:outputLabel value="Question" />
+                <!-- <apex:inputField  value="{!idea.Additional_Information_Question__c}"/> -->
+                <apex:inputTextArea onkeydown="textCounter(this, 250)"  style="width:250px;height:60px;" required="{!addInfoShow}" value="{!ideaDetail.Additional_Information_Question__c}" />
+            </apex:pageblockSectionItem>
+            
+            
+            
+        </apex:pageblockSection>
+        </apex:outputPanel>
+        
+        <!-- Main Form -->
+        
+        <!-- <apex:pageBlockSection title="Admin - Local Evaluator" rendered="{!IF(OR(AND(idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Request_Additional_Information__c = 'No',idea.Further_investigation_required__c = 'No'),AND(idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback',idea.Request_Additional_Information__c = 'Yes',idea.Further_investigation_required__c = 'No',NOT(ISBLANK(idea.Additional_Information__c)))), true, false)}"> -->
+        <apex:outputPanel id="decision1">
+        <apex:pageBlockSection title="Admin - Local Evaluator" rendered="{!IF(OR(AND(idea.Workflow_Status__c = 'Local Evaluator Queue',OR(idea.Request_Additional_Information__c = 'No',ideaDetail.Request_Additional_Information__c = 'No')),AND(idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback',idea.Request_Additional_Information__c = 'Yes',NOT(ISBLANK(idea.Additional_Information__c)))), true, false)}">
+
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:inputField required="True" value="{!ideaDetail.Decision__c}">
+                    <apex:actionSupport event="onchange" rerender="decision1"/>
+                </apex:inputField>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c != null, true, false)}">
+                <apex:outputLabel value="Evaluator Story" />
+                <apex:inputField required="true" style="width:250px;height:120px;" value="{!ideaDetail.Evaluator_Story__c}"/>
+            </apex:pageblockSectionItem>
+            
+                        
+            <apex:pageBlockSectionItem rendered="{!IF(AND(ideaDetail.Decision__c != null, ideaDetail.Decision__c != 'Reject'), true, false)}" >
+                <apex:outputLabel value="Reward Amount" />
+                <apex:outputText >{!IF(ideaDetail.Decision__c = 'Implement','£10','£5')}</apex:outputText>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!IF(AND(ideaDetail.Decision__c != null, ideaDetail.Decision__c != 'Reject', ideaDetail.Decision__c != 'One for the Future'), true, false)}">
+            </apex:pageblockSectionItem>
+
+           
+            
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c = 'One for the Future', true, false)}">
+                <apex:outputLabel value="Re-evaluation Date (One For the Future)" />
+                <apex:inputField required="true" value="{!ideaDetail.Re_evaluation_Date__c}"/>
+            </apex:pageblockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c != null, true, false)}" helpText="Max character limit is 250"  >
+                <apex:outputLabel value="System Comment" />
+                <apex:inputField onkeydown="textCounter(this, 250)"  required="true" style="width:250px;height:60px;" value="{!ideaDetail.System_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c != null, true, false)}">
+                <apex:outputLabel value="Comments To Delivering More" />
+                <apex:inputField style="width:250px;height:60px;" value="{!ideaDetail.Evaluator_Comments_To_DM__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <!-- </apex:outputPanel> -->
+            
+        </apex:pageblockSection>
+        </apex:outputPanel>
+        <!-- Sensibility Check Queueer -->
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF(OR(IdeaAdminSectionFilter = 'Sensibility_Checker',IdeaAdminSectionFilter = 'Sensibility_Checker_-_Owner_Feedback'), true, false)}" > -->
+        
+       
+        <apex:pageBlockSection title="Additional User Information (SC)" rendered="{!IF(AND(idea.Workflow_Status__c = 'Sensibility Check Queue',ISBLANK(idea.Additional_Information_SC__c),ideaDetail.Request_Additional_Information_SC__c != 'No'), true, false)}">
+        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Information Required?" />
+                <apex:inputField required="True" value="{!ideaDetail.Request_Additional_Information_SC__c}">
+                <apex:actionSupport action="{!showAdminInfo}" event="onchange" reRender=""/>
+                </apex:inputField>
+            </apex:pageblockSectionItem>
+            
+        
+            
+            <apex:pageBlockSectionItem helpText="Max character limit is 250"  >
+                <apex:outputLabel value="Question" />
+                <!-- <apex:inputField  value="{!idea.Additional_Information_Question__c}"/> -->
+                <apex:inputTextArea onkeydown="textCounter(this, 250)"  style="width:250px;height:60px;" value="{!ideaDetail.Additional_Information_Question_SC__c}" />
+            </apex:pageblockSectionItem>
+
+        </apex:pageblockSection>
+        
+        <apex:pageBlockSection title="Admin - Sensibility Check Queueer" rendered="{!IF(OR(AND(idea.Workflow_Status__c = 'Sensibility Check Queue',OR(idea.Request_Additional_Information_SC__c = 'No',ideaDetail.Request_Additional_Information_SC__c = 'No')),AND(idea.Workflow_Status__c = 'Sensibility Check Queue - Awaiting User Feedback',idea.Request_Additional_Information_SC__c = 'Yes',NOT(ISBLANK(idea.Additional_Information_SC__c)))), true, false)}">
+        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Assign to Evaluator" />
+                <apex:inputField required="True" value="{!ideaDetail.National_Evaluator__c}"/>
+            </apex:pageblockSectionItem>
+            
+            
+        </apex:pageblockSection>
+
+        
+        <!-- National Evaluator Queue -->
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF((IdeaAdminSectionFilter = 'National_Evaluator'), true, false)}"> -->
+        
+        <!-- Additional Information Request -->
+        
+        <apex:pageBlockSection title="Additional User Information (Eval)" rendered="{!IF(AND(idea.Workflow_Status__c = 'National Evaluator Queue',ISBLANK(idea.Additional_Information__c),idea.Request_Additional_Information__c != 'No'), true, false)}">
+        
+        
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Additional Information Required?" />
+                <apex:inputField required="True" value="{!ideaDetail.Request_Additional_Information__c}">
+                <apex:actionSupport action="{!showAdminInfo}" event="onchange" reRender=""/>
+                </apex:inputField>
+            </apex:pageblockSectionItem>
+
+            <apex:pageBlockSectionItem helpText="Max character limit is 250"  >
+                <apex:outputLabel value="Question" />
+                <!-- <apex:inputField  value="{!idea.Additional_Information_Question__c}"/> -->
+                <apex:inputTextArea onkeydown="textCounter(this, 250)"  style="width:250px;height:60px;" value="{!ideaDetail.Additional_Information_Question__c}" />
+            </apex:pageblockSectionItem>
+            
+        </apex:pageblockSection>
+        
+        <!-- Further Investigation Chechk 
+        
+        <apex:pageBlockSection title="Admin - National Evaluator Queue" rendered="{!IF(OR(AND(idea.Workflow_Status__c = 'National Evaluator Queue',idea.Request_Additional_Information__c = 'No',idea.Further_investigation_required__c != 'No'),AND(idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback',idea.Request_Additional_Information__c = 'Yes',idea.Further_investigation_required__c != 'No',NOT(ISBLANK(idea.Additional_Information__c)))), true, false)}">
+ 
+        </apex:pageblockSection>
+        -->
+        
+        <!-- Main Evalusation Form -->
+        <apex:outputPanel id="decision2">
+        <apex:pageBlockSection title="Admin - National Evaluator Queue" rendered="{!IF(OR(AND(idea.Workflow_Status__c = 'National Evaluator Queue',OR(idea.Request_Additional_Information__c = 'No',ideaDetail.Request_Additional_Information__c = 'No')),AND(idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback',idea.Request_Additional_Information__c = 'Yes',NOT(ISBLANK(idea.Additional_Information__c)))), true, false)}">
+                   
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:inputField required="True" value="{!ideaDetail.Decision__c}">
+                    <apex:actionSupport event="onchange" rerender="decision2"/>
+                </apex:inputField>
+            </apex:pageblockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!IF(OR(ideaDetail.Decision__c = 'Implement',ideaDetail.Decision__c = 'One for the Future', ideaDetail.Decision__c = 'Reject'), true, false)}">
+                <apex:outputLabel value="Evaluator Story" />
+                <apex:inputField required="true" style="width:250px;height:120px;" value="{!ideaDetail.Evaluator_Story__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(AND(ideaDetail.Decision__c != null, ideaDetail.Decision__c != 'Reject'), true, false)}" >
+                <apex:outputLabel value="Reward Amount" />
+                <apex:outputText >{!IF(ideaDetail.Decision__c = 'Implement','£50','£5')}</apex:outputText>
+            </apex:pageblockSectionItem>
+             <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c = 'Implement', true, false)}">
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c = 'One for the Future', true, false)}">
+                <apex:outputLabel value="Re-evaluation Date (One For the Future)" />
+                <apex:inputField required="true" value="{!ideaDetail.Re_evaluation_Date__c}"/>
+            </apex:pageblockSectionItem>
+ 
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c != null, true, false)}" helpText="Max character limit is 250"  >
+                <apex:outputLabel value="System Comment" />
+                <apex:inputField onkeydown="textCounter(this, 250)"  required="true" style="width:250px;height:60px;" value="{!ideaDetail.System_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(ideaDetail.Decision__c != null, true, false)}">
+                <apex:outputLabel value="Comments To Delivering More" />
+                <apex:inputField style="width:250px;height:60px;" value="{!ideaDetail.Evaluator_Comments_To_DM__c}"/>
+            </apex:pageblockSectionItem>
+            
+        </apex:pageblockSection>
+        </apex:outputPanel>
+
+        
+        <!-- Delivery More Local -->
+        
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF((IdeaAdminSectionFilter = '1st_Stage_Evaluator'), true, false)}"> -->
+        <apex:pageBlockSection title="Admin - Delivering More" rendered="{!IF(idea.Workflow_Status__c = 'Local Delivering More Queue', true, false)}">    
+            
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:outputField value="{!idea.Decision__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Re-evaluation Date (One For the Future)" />
+                <apex:outputField value="{!idea.Re_evaluation_Date__c}"/>
+            </apex:pageblockSectionItem>
+ 
+             <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Evaluator Story" />
+                <!-- <apex:inputField required="true" style="width:250px;height:120px;" value="{!ideaDetail.Evaluator_Story__c}"/> -->
+                <apex:outputField style="width:250px;height:120px;" value="{!idea.Evaluator_Story__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Reward" />
+                <apex:outputText >{!IF(idea.Decision__c = 'Implement','£10','£5')}</apex:outputText>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(idea.CreatedBy.Id = idea.Assigned_Admin__r.Id,false,true)}" >
+                <apex:outputLabel value="Agree reward decision" />
+                <apex:inputField required="True" value="{!ideaDetail.Delivery_More_Approved__c}"/>
+            </apex:pageblockSectionItem>            
+            
+            <apex:pageBlockSectionItem helpText="Max character limit is 250"  >
+                <apex:outputLabel value="System Comment" />
+                <!-- <apex:inputField required="true" style="width:250px;height:60px;" value="{!ideaDetail.System_Comment__c}"/> -->
+                <apex:outputField value="{!idea.System_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Comments To Evaluator" />
+                <apex:inputField style="width:250px;height:60px;" value="{!ideaDetail.DM_Comments_To_Evaluator__c}"/>
+            </apex:pageblockSectionItem>
+               
+        </apex:pageblockSection>
+        
+        <!-- Delivery More National -->
+        
+        <!-- <apex:pageBlockSection title="Admin" rendered="{!IF((IdeaAdminSectionFilter = '1st_Stage_Evaluator'), true, false)}"> -->
+        <apex:pageBlockSection title="Admin - Delivering More" rendered="{!IF(idea.Workflow_Status__c = 'National Delivering More Queue', true, false)}">    
+            
+ 
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Decision" />
+                <apex:outputField value="{!idea.Decision__c}"/>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Re-evaluation Date (One For the Future)" />
+                <apex:outputField value="{!idea.Re_evaluation_Date__c}"/>
+            </apex:pageblockSectionItem>
+ 
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="When" />
+                <apex:outputField value="{!idea.When__c}"/>
+            </apex:pageblockSectionItem>
+ 
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Evaluator Idea Rewarded" />
+                <apex:outputField value="{!idea.Idea_Rewarded__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Reward" />
+                <apex:outputText >{!IF(idea.Decision__c = 'Implement','£50','£5')}</apex:outputText>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!IF(idea.CreatedBy.Id = idea.Assigned_Admin__r.Id,false,true)}" >
+                <apex:outputLabel value="Agree reward decision" />
+                <apex:inputField required="True" value="{!ideaDetail.Delivery_More_Approved__c}"/>
+            </apex:pageblockSectionItem>            
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Evaluator Story" />
+                <!-- <apex:inputField required="true" style="width:250px;height:120px;" value="{!ideaDetail.Evaluator_Story__c}"/> -->
+                <apex:outputField style="width:250px;height:120px;" value="{!idea.Evaluator_Story__c}"/>
+            </apex:pageblockSectionItem>
+
+            <apex:pageBlockSectionItem helpText="Max character limit is 250"  >
+                <apex:outputLabel value="System Comment" />
+                <!-- <apex:inputField onkeydown="textCounter(this, 250)"  required="true" style="width:250px;height:60px;" value="{!ideaDetail.System_Comment__c}"/> -->
+                <apex:outputField value="{!idea.System_Comment__c}"/>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Comments To Evaluator" />
+                <apex:inputField style="width:250px;height:60px;" value="{!ideaDetail.DM_Comments_To_Evaluator__c}"/>
+            </apex:pageblockSectionItem>
+               
+        </apex:pageblockSection>
+         
+        <apex:pageBlockSection columns="1" title="Evaluator Feedback" rendered="{!IF(OR(idea.Workflow_Status__c = 'National Evaluator Queue',idea.Workflow_Status__c = 'National Evaluator Queue- Awaiting User Feedback',idea.Workflow_Status__c = 'Local Evaluator Queue',idea.Workflow_Status__c = 'Local Evaluator Queue - Awaiting User Feedback'), true, false)}">
+            
+            <apex:pageBlockSectionItem >
+            
+            <apex:iframe height="150" scrolling="true" rendered="true" src="{!$Page.ideas_admin_request}?id={!idea.id}"/>
+            
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageblockSection>
+        
+        <apex:pageBlockSection columns="1" title="Comments">
+            
+            <apex:pageBlockSectionItem >
+            
+            <apex:iframe height="150" scrolling="true" rendered="true" src="{!$Page.ideas_admin_comments}?id={!idea.id}"/>
+            
+            </apex:pageBlockSectionItem>
+            
+        </apex:pageblockSection>
+       
+    </apex:pageBlock>
+</apex:outputPanel>
+
+
+
+</apex:form>
+
+
+
+</apex:page>

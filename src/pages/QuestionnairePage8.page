@@ -1,0 +1,96 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+      
+      <script> 
+      function validate(question) 
+          {
+        if (question.value == "Yes")
+            {
+                alert('You have chosen Yes - Please enter which carrier you are going to in the comments box.');
+            } 
+          }
+      </script>
+  
+  <apex:form >
+      <apex:pageBlock title="Your Role">
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">      
+    
+     <font size="2"><b>17. What did you like about your role?</b></font>  
+           <br/><br/><b>Comments:</b>
+             <apex:inputTextarea id="q17comments" value="{!Questionnaire__c.Question17Comment__c}" cols="100" rows="4" required="true"/>
+       <p/><p/>
+       
+           <font size="2"><b>18. What did you dislike about your role?</b></font>   
+           <br/><br/><b>Comments:</b>
+             <apex:inputTextarea id="q18comments" value="{!Questionnaire__c.Question18Comment__c}" cols="100" rows="4" required="true"/> 
+       <p/><p/>
+       
+       <font size="2"><b>19. What could TNT have done to prevent you leaving?</b></font> 
+                       <br/><br/><b>Comments:</b>
+             <apex:inputTextarea id="q19comments" value="{!Questionnaire__c.Question19Comment__c}" cols="100" rows="4" required="true"/>
+              
+<p/><p/><font size="2"><b>20. Would you consider coming back to TNT?</b></font>                        
+        <apex:selectRadio id="q20" value="{!Questionnaire__c.Question20__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+             <apex:selectoption itemLabel="Maybe" itemValue="Maybe"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+             
+             <b>Comments:</b>
+             <apex:inputTextarea id="q20comments" value="{!Questionnaire__c.Question20Comment__c}" cols="100" rows="4" /> 
+                      
+<p/><p/><font size="2"><b>21. Are you leaving to go to another company?</b></font>                         
+        <apex:selectRadio id="q21" value="{!Questionnaire__c.Question21__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+             
+             <b>Comments:</b>
+             <apex:inputTextarea id="q21comments" value="{!Questionnaire__c.Question21Comment__c}" cols="100" rows="4"/>     
+
+<p/><p/><font size="2"><b>22. Are you staying in the same industry?</b></font>                         
+        <apex:selectRadio id="q22" value="{!Questionnaire__c.Question22__c}" layout="pageDirection" required="true" onclick="validate(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="Not Applicable" itemValue="Not Applicable"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+             
+             <b>Comments:</b>
+             <apex:inputTextarea id="q22comments" value="{!Questionnaire__c.Question22Comment__c}" cols="100" rows="4" />  
+       
+  <p/><p/><font size="2"><b>23. What attracted you to your new role?</b></font>  
+                       <br/><br/><b>Comments:</b>
+             <apex:inputTextarea id="q23comments" value="{!Questionnaire__c.Question23Comment__c}" cols="100" rows="4" required="true"/>          
+ 
+ <p/><p/><font size="2"><b>24. How did you become aware of your new role?</b></font>                        
+        <apex:selectRadio id="q24" value="{!Questionnaire__c.Question24__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Website" itemValue="Website"></apex:selectoption>
+            <apex:selectoption itemLabel="Newspaper" itemValue="Newspaper"></apex:selectoption>
+            <apex:selectoption itemLabel="Recruitment Agency" itemValue="Recruitment Agency"></apex:selectoption>
+            <apex:selectoption itemLabel="Other" itemValue="Other"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+             
+             <b>Comments:</b>
+             <apex:inputTextarea id="q24comments" value="{!Questionnaire__c.Question24Comment__c}" cols="100" rows="4"/> 
+        <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page8}" value="Previous"/></td> 
+            </tr>
+            </table>
+            
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage8}" value="Next"/></td>
+            </tr>
+            </table>
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

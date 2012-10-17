@@ -1,0 +1,8 @@
+<apex:page showHeader="false" standardStylesheets="false" standardController="IR_Customer__c" extensions="IR_Booking_Email_Verification_Extension" action="{!verifyEmail}">
+    <center>
+        <h4><apex:pageMessages /></h4>
+        <br/>
+        
+        <apex:image url="{!URLFOR($Resource.IR_tnt_sure_we_can)}"/>
+    </center>
+</apex:page>

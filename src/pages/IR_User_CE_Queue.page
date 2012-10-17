@@ -1,0 +1,41 @@
+<apex:page standardController="IR_Customer__c" tabStyle="IR_CE_Queue__tab" extensions="IR_User_CE_Queue_Extension" >
+    <apex:sectionHeader title="Customers Experience" subtitle="The Customers Experience Queue"/>
+    <apex:pageMessages id="userMessages"/>
+    
+    <apex:form >
+        <apex:pageBlock title="Current Queue">
+            <apex:actionPoller action="{!refreshScreen}" interval="30" status="queueRefreshStatus" reRender="ExperienceQueueCustomer"/>
+            
+            <apex:pageBlockTable id="ExperienceQueueCustomer" value="{!ExperienceQueueCustomers}" var="ExperienceQueue">
+                <apex:column headerValue="Action">
+                    <apex:commandLink value="Accept" action="{!acceptCustomer}">
+                        <apex:param name="userSelection" value="{!ExperienceQueue.customer.Id}"/>
+                    </apex:commandLink>
+                </apex:column>
+                
+                <apex:column value="{!ExperienceQueue.customer.Name}"/>
+                <apex:column value="{!ExperienceQueue.customer.First_Name__c}"/>
+                <apex:column value="{!ExperienceQueue.customer.Surname__c}"/>
+                <apex:column value="{!ExperienceQueue.customer.Time_Order_Placed__c}"/>
+                <apex:column value="{!ExperienceQueue.customer.Register_Only__c}"/>
+                
+                <apex:column headerValue="Status">
+                    <apex:image width="60px" height="20px" url="/img/samples/light_green.gif" rendered="{!(ExperienceQueue.customer.SLA_CE_Status_Text__c =='GREEN')}"/>
+                    <apex:image width="60px" height="20px" url="/img/samples/light_yellow.gif" rendered="{!(ExperienceQueue.customer.SLA_CE_Status_Text__c =='YELLOW')}"/>
+                    <apex:image width="60px" height="20px" url="/img/samples/light_red.gif" rendered="{!(ExperienceQueue.customer.SLA_CE_Status_Text__c =='RED')}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Refresh" action="{!refreshScreen}" status="queueRefreshStatus" reRender="ExperienceQueue"/>
+                <apex:actionStatus id="queueRefreshStatus">
+                    <apex:facet name="start">
+                        <apex:outputPanel >
+                            <apex:image url="{!URLFOR($Resource.loadingWheel)}"/>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

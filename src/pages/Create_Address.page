@@ -1,0 +1,72 @@
+<apex:page standardController="Address__c" extensions="Create_Address_Controller">
+    <apex:sectionHeader title="Address" subtitle="Edit Address" />
+    <apex:form id="createAddressForm">
+        <apex:actionFunction action="{!populateAddress}" name="onSelect"/>
+        <apex:pageBlock id="pageBlock" title="Edit Address">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageMessages id="pageErrors"></apex:pageMessages>
+            
+            <apex:pageBlockSection collapsible="true" title="Address" id="new" columns="1">
+                <apex:inputField value="{!Address__c.Customer_Company__c}" required="false" rendered="{!IF(Address__c.Customer_Company__c==null,true,false)}"/>
+                <apex:outputField value="{!Address__c.Customer_Company__c}" rendered="{!IF(Address__c.Customer_Company__c!=null,true,false)}"/>
+                
+                <apex:pageBlockSectionItem rendered="{!IF(Address__c.Customer_Company__c!=null,true,false)}">
+                    <apex:outputLabel for="customerCompanyName">{!$ObjectType.Account.Fields.Customer_Company_Name__c.Label}</apex:outputLabel>
+                    <apex:outputText value="{!customerCompanyName}" id="customerCompanyName" rendered="{!IF(Address__c.Customer_Company__c!=null,true,false)}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="addressRef_Text">{!$ObjectType.Address__c.Fields.Name.Label}</apex:outputLabel>
+                    <apex:inputText id="addressRef_Text" value="{!Address__c.Name}" maxlength="8"/>
+                </apex:pageBlockSectionItem>
+                <!--<apex:inputField value="{!Address__c.Name}" />-->
+                <apex:inputField value="{!Address__c.Company_Name__c}" required="false"/>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="Post_Code__c">{!$ObjectType.Address__c.Fields.Post_Code__c.Label}</apex:outputLabel>
+                    <apex:inputText id="Post_Code__c" value="{!Postcode}"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    <apex:commandButton value="Check Postcode" action="{!findAddress}" reRender="pageBlock, Post_Code__c" status="addressDetailsLoading">
+                        <apex:param name="Pc" value="{!Postcode}"/>
+                    </apex:commandButton>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel ></apex:outputLabel>
+                    
+                    <apex:outputPanel >
+                        <apex:actionStatus id="addressDetailsLoading">
+                            <apex:facet name="start">
+                                <apex:outputPanel id="addressDetailsLoadingImage" style="position:center">
+                                    <p>Loading</p>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            
+                            <apex:facet name="stop">
+                                <apex:selectList value="{!selectedAddress}" size="1" onchange="onSelect(this.value);" rendered="{!findAddr}" style="width:150px;">
+                                    <apex:selectOptions value="{!AddressList}"></apex:selectOptions>
+                                </apex:selectList>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem> 
+                
+                <apex:inputField value="{!Address__c.Address_1__c}" required="false"/>
+                <apex:inputField value="{!Address__c.Address_2__c}"/>
+                <apex:inputField value="{!Address__c.Address_3__c}"/>
+                <apex:inputField value="{!Address__c.Town__c}" required="false"/>
+                <apex:inputField value="{!Address__c.Country__c}" style="width:150px"/>
+                <apex:inputField value="{!Address__c.State__c}" style="width:150px"/>
+                <apex:inputField value="{!Address__c.Tel_No__c}" required="false"/>
+                <apex:inputField value="{!Address__c.Contact_Name__c}"/>            
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

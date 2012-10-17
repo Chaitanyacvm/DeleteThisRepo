@@ -1,0 +1,24 @@
+<apex:page controller="FeedbackPortalController">
+	<apex:form >
+		<apex:pageblock title="Your Feedback Home">
+			<apex:pageblockbuttons location="top">
+				<apex:commandbutton action="{!create}" value="New Feedback" />
+			</apex:pageblockbuttons>
+			
+			<apex:pageblocksection Title="Useful Links" columns="1" collapsible="false">
+		
+				<apex:outputLink value="http://kc.ics.express.tnt/livelink/livelink.exe?func=ll&objid=153799172&objAction=download&lang=Anon&country=Anon">
+					Letter Library
+				</apex:outputLink>
+				<apex:outputLink value="http://kc.ics.express.tnt/livelink/livelink.exe?func=ll&objid=134688499&objAction=download&lang=Anon&country=Anon">
+					CSR Info Table
+				</apex:outputLink>
+				<apex:outputLink value="http://kc.ics.express.tnt/livelink/livelink.exe?func=ll&objid=170126680&objAction=open&lang=Anon&country=Anon">
+					www.salesforce.com
+				</apex:outputLink>
+			
+			</apex:pageblocksection>
+			
+		</apex:pageblock>
+	</apex:form>
+</apex:page>

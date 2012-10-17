@@ -1,0 +1,65 @@
+<apex:page standardController="Questionnaire__c" extensions="QuestionnaireExtension" sidebar="false" showHeader="false">
+      
+    <script> 
+      function validate(question) 
+          {
+              if (question.value == "Yes")
+            {
+                alert('Please enter comments');
+            } 
+          }
+    </script>
+  <apex:form >
+      <apex:pageBlock title="Induction" >
+      <apex:pageMessages ></apex:pageMessages>
+           <apex:pageblockSection columns="1">      
+        
+      <font size="2"><b>6. How relevant was your induction to your role?</b></font>   
+        <apex:selectRadio id="q6" value="{!Questionnaire__c.Question6__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Extremely" itemValue="Extremely"></apex:selectoption>
+            <apex:selectoption itemLabel="Moderately" itemValue="Moderately"></apex:selectoption>
+            <apex:selectoption itemLabel="Slightly" itemValue="Slightly"></apex:selectoption>
+            <apex:selectoption itemLabel="Not at all" itemValue="Not at all"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q6comments" value="{!Questionnaire__c.Question6Comment__c}" cols="100" rows="4"/>
+            
+<p/><p/>
+ <font size="2"><b>7. Was your induction undertaken immediately and scheduled to finish within a 13 week period?</b></font>                         
+        <apex:selectRadio id="q7" value="{!Questionnaire__c.Question7__c}" layout="pageDirection" required="true">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q7comments" value="{!Questionnaire__c.Question7Comment__c}" cols="100" rows="4"/>
+                      
+<p/><p/> <font size="2"><b>8. Could any improvements been made?</b></font>                                             
+        <apex:selectRadio id="q8" value="{!Questionnaire__c.Question8__c}" layout="pageDirection" required="true" onclick="validate(this)">
+            <apex:selectoption itemLabel="Yes" itemValue="Yes"></apex:selectoption>
+            <apex:selectoption itemLabel="No" itemValue="No"></apex:selectoption>
+            <apex:selectoption itemLabel="No Comment" itemValue="No Comment"></apex:selectoption>
+            </apex:selectradio>
+            <p/><p/> 
+            <b>Comments:</b>
+             <apex:inputTextarea id="q8comments" value="{!Questionnaire__c.Question8Comment__c}" cols="100" rows="4"/>     
+            <br/><br/>
+<table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+             <td align="left">  <apex:commandButton action="{!Previous_on_page5}" value="Previous"/></td> 
+            </tr>
+            </table>
+            
+              <table border="0" bordercolor="#FFFFFF"  width="50" cellpadding="0" cellspacing="0" align="left">
+        <tr>
+            <td align="right">  <apex:commandButton action="{!savePage5}" value="Next"/></td>
+            </tr>
+            </table>
+
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      </apex:form>
+</apex:page>

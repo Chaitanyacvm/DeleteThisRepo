@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>21.0</apiVersion>
+    <description>Version 1 – New registration for eInvoicing and myTNT</description>
+    <label>IR_User_Welcome_Pack_V1</label>
+</ApexComponent>
