@@ -17,5 +17,5 @@ trigger IR_Note on Note (after insert, after update, before insert, before updat
         } else if (trigger.isUpdate) {
             
         }
-    }
+    } 
 }
