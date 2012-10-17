@@ -27,7 +27,7 @@ global class Address_Postcode_Check_Controller
         return currentAddress;
     }
     
-    private Address__c clearAddress(Address__c currentAddress) {
+    private Address__c clearAddress(Address__c currentAddress) {  
         currentAddress.Company_Name__c = '';
         currentAddress.Address_1__c = '';
         currentAddress.Address_2__c = '';
